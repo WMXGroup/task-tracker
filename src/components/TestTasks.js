@@ -15,7 +15,8 @@ export const tasks = [
   dueMonth: 1,
   assigned: 'Adam',
   contact: 'Dan',
-  notes:'this is a test note'
+  notes:'this is a test note',
+  isActive: true,
 },
 {
   id: 2,
@@ -34,6 +35,7 @@ export const tasks = [
   dueMonth: 1,
   assigned: 'John',
   contact: 'Jeff',
+  isActive: true,
 },
 {
   id: 3,
@@ -51,6 +53,7 @@ export const tasks = [
   dueMonth: 2,
   assigned: 'Adam',
   contact: 'Dan',
+  isActive: true,
 },
 {
   id: 4,
@@ -68,6 +71,7 @@ export const tasks = [
   dueMonth: 3,
   assigned: 'Adam',
   contact: 'Dan',
+  isActive: true,
 },
 {
   id: 5,
@@ -85,6 +89,7 @@ export const tasks = [
   dueMonth: 4,
   assigned: 'Adam',
   contact: 'Dan',
+  isActive: true,
 },
 {
   id: 6,
@@ -102,6 +107,7 @@ export const tasks = [
   dueMonth: 5,
   assigned: 'Adam',
   contact: 'Dan',
+  isActive: true,
 },
 {
   id: 7,
@@ -118,6 +124,7 @@ export const tasks = [
   dueWeek: 3,
   dueMonth: 2,
   assigned: 'Adam',
+  isActive: true,
   contact: 'Dan',
 },
 {

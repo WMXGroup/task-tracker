@@ -8,13 +8,12 @@ const theme = createMuiTheme({
   palette: {
     primary: blue
   },
+
   typography: {
 
   },
   overrides: {
-      colorPrimary: {
-        backgroundColor: 'Navy'
-      },
+
   },
 });
 

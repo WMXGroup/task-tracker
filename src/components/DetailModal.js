@@ -76,7 +76,7 @@ export default class AddModal extends Component {
     priority: this.props.type === 'Edit'? this.props.taskDetails.priority : '',
     assigned: this.props.type === 'Edit'? this.props.taskDetails.assigned : '',
     contact: this.props.type === 'Edit'? this.props.taskDetails.contact : '',
-    isActive: this.props.type === 'Edit'? this.props.taskDetails.isActive : false,
+    isActive: this.props.type === 'Edit'? this.props.taskDetails.isActive : true,
     workTime: this.props.type === 'Edit'? this.props.taskDetails.workTime : [],
     tags: this.props.type === 'Edit'? this.props.taskDetails.tags : [],
     completedDate: this.props.type === 'Edit'? this.props.taskDetails.completedDate : '',

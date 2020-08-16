@@ -4,17 +4,19 @@ import Toolbar from '@material-ui/core/Toolbar';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 import IconButton from '@material-ui/core/IconButton';
-import AddCircleIcon from '@material-ui/icons/AddCircle';
 import MenuIcon from '@material-ui/icons/Menu';
 import Typography from '@material-ui/core/Typography';
 import TextField from '@material-ui/core/TextField';
+import Fab from '@material-ui/core/Fab';
+import AddIcon from '@material-ui/icons/Add';
+import Divider from '@material-ui/core/Divider';
 import { withStyles } from '@material-ui/core/styles';
 import TaskGroup from './TaskGroup';
 import DetailModal from './DetailModal';
 import {tasks} from './TestTasks';
-import Sort from './Sort';
+import SortAlt from './SortAlt';
+import ActiveFilter from './ActiveFilter';
 import axios from 'axios';
-import moment from 'moment';
 
 const styles = theme => ({
   taskContainer: {
@@ -32,6 +34,21 @@ const styles = theme => ({
   },
   actionBar: {
     display: 'flex'
+  },
+  appBar: {
+    top: 'auto',
+    bottom: 0,
+  },
+  grow: {
+    flexGrow: 1,
+  },
+  fabButton: {
+    position: 'absolute',
+    zIndex: 1,
+    top: -30,
+    left: 0,
+    right: 0,
+    margin: '0 auto',
   },
 });
 
@@ -52,19 +69,23 @@ class Main extends Component {
     categories: [],
     assignedUsers: [],
     contactUsers: [],
-    taskDetails: {}
+    taskDetails: {},
+    filterOption: 'Active'
   }
 
   componentDidMount = () => {
     this.getServerData();
+    // this.setState({
+    //   tasks: tasks
+    // })
   }
 
   componentDidUpdate = (prevProps, prevState) => {
     if (this.state.tasks !== prevState.tasks) {
       this.getSortHeaders(this.state.tasks, this.state.currentSort);
-      this.getUniqueValues(tasks, 'category', 'categories');
-      this.getUniqueValues(tasks, 'assigned', 'assignedUsers');
-      this.getUniqueValues(tasks, 'contact', 'contactUsers');
+      this.getUniqueValues(this.state.tasks, 'category', 'categories');
+      this.getUniqueValues(this.state.tasks, 'assigned', 'assignedUsers');
+      this.getUniqueValues(this.state.tasks, 'contact', 'contactUsers');
     }
   }
 
@@ -304,8 +325,20 @@ class Main extends Component {
     })
   }
 
-  handleSortChange = (event) => {
-    this.getSortHeaders(this.state.tasks, event.target.value)
+  handleSwitchChange = (e) => {
+    this.setState({
+      [e.target.name]: e.target.checked
+    })
+  }
+
+  handleSortChange = (sortOption) => {
+    this.getSortHeaders(this.state.tasks, sortOption)
+  };
+
+  handleFilterChange = (filterOption) => {
+    this.setState({
+      filterOption
+    })
   };
 
   toggleModal = () => {
@@ -320,13 +353,14 @@ class Main extends Component {
       classes
     } = this.props;
 
-    // console.log('Main State:', this.state);
+    console.log('Main State:', this.state);
 
     return (
       <React.Fragment>
         <AppBar 
           position="fixed" 
-          color="primary">
+          color="primary"
+          >
             <Toolbar>
               <IconButton
                 edge="start"
@@ -369,26 +403,15 @@ class Main extends Component {
               <Typography variant="h6">
                   Task Tracker
               </Typography>
-              {/* <Button 
-                variant="contained"
-                color="default"
-                onClick={() => this.launchModal('Add')}
-                className={classes.addButton}
-                >
-                Add
-              </Button> */}
-              <IconButton
-                edge="start"
-                className={classes.addButton}
-                onClick={() => this.launchModal('Add')}
-                >
-                <AddCircleIcon />
-              </IconButton>
+              <div className={classes.grow} />
               <div className={classes.addButton}>
-                <Sort 
-                  currentSort={this.state.currentSort}
+                <SortAlt
                   handleSortChange={this.handleSortChange}
-                  sortOptions
+                />
+              </div>
+              <div className={classes.addButton}>
+                <ActiveFilter
+                  handleFilterChange={this.handleFilterChange}
                 />
               </div>
             </Toolbar>
@@ -415,34 +438,48 @@ class Main extends Component {
             value={this.state.trackerName}
             onChange={this.handleTitleChange}
           />
-        <div className={classes.taskContainer}>
-          {this.state.headers.map ((header, i) => (
-            <TaskGroup
-              tasks={this.state.tasks}
-              header={header}
-              currentSort={this.state.currentSort}
-              key={i}
-              completeTask={this.completeTask}
+          <Divider />
+          <div className={classes.taskContainer}>
+            {this.state.headers.map ((header, i) => (
+              <TaskGroup
+                tasks={this.state.tasks}
+                header={header}
+                currentSort={this.state.currentSort}
+                key={i}
+                completeTask={this.completeTask}
+                deleteTask={this.deleteTask}
+                launchModal={this.launchModal}
+                getKeyName={this.getKeyName}
+                filterOption={this.state.filterOption}
+                />
+            ))}
+          </div>
+          {this.state.openModal === true &&
+            <DetailModal
+              toggleModal={this.toggleModal}
+              openModal={this.state.openModal}
+              type={this.state.modalType}
+              categories={this.state.categories}
+              assignedUsers={this.state.assignedUsers}
+              contactUsers={this.state.contactUsers}
+              createTask={this.createTask}
+              taskDetails={this.state.taskDetails}
+              saveTask={this.saveTask}
               deleteTask={this.deleteTask}
-              launchModal={this.launchModal}
-              getKeyName={this.getKeyName}
-              />
-          ))}
-        </div>
-        {this.state.openModal === true &&
-          <DetailModal
-            toggleModal={this.toggleModal}
-            openModal={this.state.openModal}
-            type={this.state.modalType}
-            categories={this.state.categories}
-            assignedUsers={this.state.assignedUsers}
-            contactUsers={this.state.contactUsers}
-            createTask={this.createTask}
-            taskDetails={this.state.taskDetails}
-            saveTask={this.saveTask}
-            deleteTask={this.deleteTask}
-          />
-        }
+            />
+          }
+      <AppBar position="fixed" color="primary" className={classes.appBar}>
+        <Toolbar>
+          <Fab 
+            color="secondary" 
+            aria-label="add" 
+            className={classes.fabButton}
+            onClick={() => this.launchModal('Add')}
+            >
+            <AddIcon />
+          </Fab>
+        </Toolbar>
+      </AppBar>
       </React.Fragment>
     )
   }

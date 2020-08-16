@@ -12,16 +12,27 @@ export default class TaskGroup extends Component {
       deleteTask,
       edit,
       launchModal,
-      getKeyName
+      getKeyName,
+      filterOption
     } = this.props;
 
     const lowercurrentSort = getKeyName(currentSort);
-    const groupTasks = tasks.filter((task) => task[lowercurrentSort] === header)
+    let groupTasks;
+    console.log(filterOption);
+
+    if (filterOption === 'Active') {
+      groupTasks = tasks.filter((task) => (task[lowercurrentSort] === header && task.isActive === true ))
+    } else if(filterOption === 'In-Active') {
+      groupTasks = tasks.filter((task) => (task[lowercurrentSort] === header && task.isActive === false ))
+    } else {
+      groupTasks = tasks.filter((task) => task[lowercurrentSort] === header)
+    }
 
     return (
       <div>
         <h2>{header}</h2>
         {groupTasks.map ((task, i) => (
+
           <Task
           task={task}
           key={i}
