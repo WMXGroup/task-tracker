@@ -353,7 +353,7 @@ class Main extends Component {
       classes
     } = this.props;
 
-    console.log('Main State:', this.state);
+    // console.log('Main State:', this.state);
 
     return (
       <React.Fragment>

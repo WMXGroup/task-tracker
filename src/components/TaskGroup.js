@@ -18,7 +18,6 @@ export default class TaskGroup extends Component {
 
     const lowercurrentSort = getKeyName(currentSort);
     let groupTasks;
-    console.log(filterOption);
 
     if (filterOption === 'Active') {
       groupTasks = tasks.filter((task) => (task[lowercurrentSort] === header && task.isActive === true ))

@@ -27,7 +27,7 @@ const styles = {
     display: 'flex',
     alignContent: 'center',
     alignItems: 'center',
-    margin: '5px',
+    margin: '.5rem',
   },
   inputStyle: {
     height: '40px',
@@ -56,14 +56,18 @@ const styles = {
   },
   headerContainer: {
     display: 'flex',
-    justifyContent: 'space-between'
+    justifyContent: 'space-between',
+    padding: '10px'
   },
   dateContainer: {
     paddingLeft: '5px'
+  },
+  dialogContainer: {
+    display: 'flex'
   }
 };
 
-export default class AddModal extends Component {
+export default class DetailModal extends Component {
 
   state = {
     id: this.props.type === 'Edit'? this.props.taskDetails.id : '',
@@ -188,239 +192,243 @@ export default class AddModal extends Component {
         disableBackdropClick
         disableEscapeKeyDown	
         >
-        <div style={styles.headerContainer}>
-          <div style={styles.headerName}>
-            <Typography variant="h5">
-                Task Management
-            </Typography>
-          </div>
-          <div style={styles.headerClose}>
-            <IconButton
-              onClick={() => toggleModal()}
-              size='small'
-              >
-              <CloseIcon />
-            </IconButton>
-          </div>
-        </div>
-        <div style={styles.fieldContainer}>
-          <Typography style={styles.fieldLabel}>
-            Description
-          </Typography>
-          <TextField 
-            style={styles.fieldStyle}
-            name='description'
-            variant="outlined"
-            InputProps={{
-              style: styles.inputStyle
-            }}
-            onChange={this.onChange}
-            value={this.state.description}
-            multiline
-          />
-        </div>
-        <div style={styles.fieldContainer}>
-          <Typography style={styles.fieldLabel}>
-            Category
-          </Typography>
-          <Autocomplete
-            size='small'
-            style={styles.fieldStyle}
-            options={categories}
-            defaultValue={this.state.category}
-            getOptionLabel={(option) => typeof option === 'string' ? option : option.category}
-            renderInput={(params) => <TextField {...params} variant="outlined" />}
-            freeSolo
-            inputValue={this.state.category}
-            onInputChange={(e, newValue) => this.onAutoChange(e, newValue, 'category')}
-            />
-        </ div>
-        <div style={styles.fieldContainer}>
-          <Typography style={styles.fieldLabel}>
-            Status
-          </Typography>
-          <Autocomplete
-            options={['Not Started','In Progress','On Hold','Complete']}
-            defaultValue={this.state.status}
-            getOptionLabel={(option) => typeof option === 'string' ? option : option.status}
-            style={styles.fieldStyle}
-            size='small'
-            renderInput={(params) => <TextField {...params} variant="outlined" />}
-            inputValue={this.state.status}
-            onInputChange={(e, newValue) => this.onAutoChange(e, newValue, 'status')}
-            />
-        </ div>
-        <div style={styles.fieldContainer}>
-          <Typography style={styles.fieldLabel}>
-            Priority
-          </Typography>
-          <Autocomplete
-            options={['1','2','3','4','5']}
-            defaultValue={this.state.priority}
-            getOptionLabel={(option) => typeof option === 'string' ? option : option.priority}
-            style={styles.fieldStyle}
-            size='small'
-            renderInput={(params) => <TextField {...params} variant="outlined" />}
-            inputValue={this.state.priority}
-            onInputChange={(e, newValue) => this.onAutoChange(e, newValue, 'priority')}
-            />
-        </ div>
-        <div style={styles.fieldContainer}>
-          <Typography style={styles.fieldLabel}>
-            Due Date
-          </Typography>
-          <div style={styles.dateContainer}>
-            <MuiPickersUtilsProvider utils={DateFnsUtils}>
-              <KeyboardDatePicker
-                disableToolbar
-                autoOk={true}
-                variant="inline"
-                format="MM/dd/yyyy"
-                margin="normal"
-                value={this.state.dueDate}
-                onChange={(e) => this.dateChange(e)}
-                KeyboardButtonProps={{
-                  'aria-label': 'change date',
-                }}
-                inputVariant="outlined"
-                InputProps={{
-                  style: styles.inputStyle
-                }}
-                />
-            </MuiPickersUtilsProvider>
-          </div>
-        </div>
-        <div style={styles.fieldContainer}>
-          <Typography style={styles.fieldLabel}>
-            Actual
-          </Typography>
-          <TextField 
-            style={styles.fieldStyle}
-            name='actual'
-            type="number"
-            variant="outlined"
-            InputProps={{
-              style: styles.inputStyle
-            }}
-            onChange={this.onChange}
-            value={this.state.actual}
-            multiline
-          />
-        </div>
-        <div style={styles.fieldContainer}>
-          <Typography style={styles.fieldLabel}>
-            Goal
-          </Typography>
-          <TextField 
-            style={styles.fieldStyle}
-            name='goal'
-            type="number"
-            variant="outlined"
-            InputProps={{
-              style: styles.inputStyle
-            }}
-            onChange={this.onChange}
-            value={this.state.goal}
-            multiline
-          />
-        </div>
-        <div style={styles.fieldContainer}>
-          <Typography style={styles.fieldLabel}>
-            Assigned
-          </Typography>
-          <Autocomplete
-            options={assignedUsers}
-            defaultValue={this.state.assigned}
-            getOptionLabel={(option) => typeof option === 'string' ? option : option.assigned}
-            style={styles.fieldStyle}
-            size='small'
-            renderInput={(params) => <TextField {...params} variant="outlined" />}
-            freeSolo
-            inputValue={this.state.assigned}
-            onInputChange={(e, newValue) => this.onAutoChange(e, newValue, 'assigned')}
-            />
-        </ div>
-        <div style={styles.fieldContainer}>
-          <Typography style={styles.fieldLabel}>
-            Contact
-          </Typography>
-          <Autocomplete
-            options={contactUsers}
-            defaultValue={this.state.contact}
-            getOptionLabel={(option) => typeof option === 'string' ? option : option.contact}
-            style={styles.fieldStyle}
-            size='small'
-            renderInput={(params) => <TextField {...params} variant="outlined" />}
-            freeSolo
-            inputValue={this.state.contact}
-            onInputChange={(e, newValue) => this.onAutoChange(e, newValue, 'contact')}
-            />
-        </div>
-        <div style={styles.fieldContainer}>
-          <Typography style={styles.fieldLabel}>
-            Active
-          </Typography>
-          <Checkbox
-            checked={this.state.isActive}
-            name='isActive'
-            onChange={this.onCheck}
-            color="primary"
-            size='small'
-          />
-        </div>
-        <div style={styles.fieldContainer}>
-          <Typography style={styles.fieldLabel}>
-            Notes
-          </Typography>
-          <TextField 
-            style={styles.fieldStyle}
-            name='notes'
-            variant="outlined"
-            InputProps={{
-              style: styles.inputStyle
-            }}
-            onChange={this.onChange}
-            value={this.state.notes}
-            multiline
-          />
-        </div>
-        <div style={styles.buttonContainer}>
-          {type === 'Add' &&
-            <div style={styles.buttonStyle}>
-              <Button 
-                style={styles.buttonStyle}
-                variant="contained"
-                color="primary"
-                onClick={this.addTask}
-                >
-                Add
-              </Button>
+        <div
+          className={styles.dialogContainer}
+        >
+          <div style={styles.headerContainer}>
+            <div style={styles.headerName}>
+              <Typography variant="h5">
+                  Task Management
+              </Typography>
             </div>
-          }
-          {type === 'Edit' &&
-            <React.Fragment>
+            <div style={styles.headerClose}>
+              <IconButton
+                onClick={() => toggleModal()}
+                size='small'
+                >
+                <CloseIcon />
+              </IconButton>
+            </div>
+          </div>
+          <div style={styles.fieldContainer}>
+            <Typography style={styles.fieldLabel}>
+              Description
+            </Typography>
+            <TextField 
+              style={styles.fieldStyle}
+              name='description'
+              variant="outlined"
+              InputProps={{
+                style: styles.inputStyle
+              }}
+              onChange={this.onChange}
+              value={this.state.description}
+              multiline
+            />
+          </div>
+          <div style={styles.fieldContainer}>
+            <Typography style={styles.fieldLabel}>
+              Category
+            </Typography>
+            <Autocomplete
+              size='small'
+              style={styles.fieldStyle}
+              options={categories}
+              defaultValue={this.state.category}
+              getOptionLabel={(option) => typeof option === 'string' ? option : option.category}
+              renderInput={(params) => <TextField {...params} variant="outlined" />}
+              freeSolo
+              inputValue={this.state.category}
+              onInputChange={(e, newValue) => this.onAutoChange(e, newValue, 'category')}
+              />
+          </ div>
+          <div style={styles.fieldContainer}>
+            <Typography style={styles.fieldLabel}>
+              Status
+            </Typography>
+            <Autocomplete
+              options={['Not Started','In Progress','On Hold','Complete']}
+              defaultValue={this.state.status}
+              getOptionLabel={(option) => typeof option === 'string' ? option : option.status}
+              style={styles.fieldStyle}
+              size='small'
+              renderInput={(params) => <TextField {...params} variant="outlined" />}
+              inputValue={this.state.status}
+              onInputChange={(e, newValue) => this.onAutoChange(e, newValue, 'status')}
+              />
+          </ div>
+          <div style={styles.fieldContainer}>
+            <Typography style={styles.fieldLabel}>
+              Priority
+            </Typography>
+            <Autocomplete
+              options={['1','2','3','4','5']}
+              defaultValue={this.state.priority}
+              getOptionLabel={(option) => typeof option === 'string' ? option : option.priority}
+              style={styles.fieldStyle}
+              size='small'
+              renderInput={(params) => <TextField {...params} variant="outlined" />}
+              inputValue={this.state.priority}
+              onInputChange={(e, newValue) => this.onAutoChange(e, newValue, 'priority')}
+              />
+          </ div>
+          <div style={styles.fieldContainer}>
+            <Typography style={styles.fieldLabel}>
+              Due Date
+            </Typography>
+            <div style={styles.dateContainer}>
+              <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                <KeyboardDatePicker
+                  disableToolbar
+                  autoOk={true}
+                  variant="inline"
+                  format="MM/dd/yyyy"
+                  margin="normal"
+                  value={this.state.dueDate}
+                  onChange={(e) => this.dateChange(e)}
+                  KeyboardButtonProps={{
+                    'aria-label': 'change date',
+                  }}
+                  inputVariant="outlined"
+                  InputProps={{
+                    style: styles.inputStyle
+                  }}
+                  />
+              </MuiPickersUtilsProvider>
+            </div>
+          </div>
+          <div style={styles.fieldContainer}>
+            <Typography style={styles.fieldLabel}>
+              Actual
+            </Typography>
+            <TextField 
+              style={styles.fieldStyle}
+              name='actual'
+              type="number"
+              variant="outlined"
+              InputProps={{
+                style: styles.inputStyle
+              }}
+              onChange={this.onChange}
+              value={this.state.actual}
+              multiline
+            />
+          </div>
+          <div style={styles.fieldContainer}>
+            <Typography style={styles.fieldLabel}>
+              Goal
+            </Typography>
+            <TextField 
+              style={styles.fieldStyle}
+              name='goal'
+              type="number"
+              variant="outlined"
+              InputProps={{
+                style: styles.inputStyle
+              }}
+              onChange={this.onChange}
+              value={this.state.goal}
+              multiline
+            />
+          </div>
+          <div style={styles.fieldContainer}>
+            <Typography style={styles.fieldLabel}>
+              Assigned
+            </Typography>
+            <Autocomplete
+              options={assignedUsers}
+              defaultValue={this.state.assigned}
+              getOptionLabel={(option) => typeof option === 'string' ? option : option.assigned}
+              style={styles.fieldStyle}
+              size='small'
+              renderInput={(params) => <TextField {...params} variant="outlined" />}
+              freeSolo
+              inputValue={this.state.assigned}
+              onInputChange={(e, newValue) => this.onAutoChange(e, newValue, 'assigned')}
+              />
+          </ div>
+          <div style={styles.fieldContainer}>
+            <Typography style={styles.fieldLabel}>
+              Contact
+            </Typography>
+            <Autocomplete
+              options={contactUsers}
+              defaultValue={this.state.contact}
+              getOptionLabel={(option) => typeof option === 'string' ? option : option.contact}
+              style={styles.fieldStyle}
+              size='small'
+              renderInput={(params) => <TextField {...params} variant="outlined" />}
+              freeSolo
+              inputValue={this.state.contact}
+              onInputChange={(e, newValue) => this.onAutoChange(e, newValue, 'contact')}
+              />
+          </div>
+          <div style={styles.fieldContainer}>
+            <Typography style={styles.fieldLabel}>
+              Active
+            </Typography>
+            <Checkbox
+              checked={this.state.isActive}
+              name='isActive'
+              onChange={this.onCheck}
+              color="primary"
+              size='small'
+            />
+          </div>
+          <div style={styles.fieldContainer}>
+            <Typography style={styles.fieldLabel}>
+              Notes
+            </Typography>
+            <TextField 
+              style={styles.fieldStyle}
+              name='notes'
+              variant="outlined"
+              InputProps={{
+                style: styles.inputStyle
+              }}
+              onChange={this.onChange}
+              value={this.state.notes}
+              multiline
+            />
+          </div>
+          <div style={styles.buttonContainer}>
+            {type === 'Add' &&
               <div style={styles.buttonStyle}>
                 <Button 
                   style={styles.buttonStyle}
                   variant="contained"
                   color="primary"
-                  onClick={this.saveCurrentTask}
+                  onClick={this.addTask}
                   >
-                  Save
+                  Add
                 </Button>
               </div>
-              <div style={styles.buttonStyle}>
-                <Button 
-                  style={styles.buttonStyle}
-                  variant="contained"
-                  color="primary"
-                  onClick={this.deleteCurrentTask}
-                  >
-                  Delete
-                </Button>
-              </div>
-            </React.Fragment>
-          }
+            }
+            {type === 'Edit' &&
+              <React.Fragment>
+                <div style={styles.buttonStyle}>
+                  <Button 
+                    style={styles.buttonStyle}
+                    variant="contained"
+                    color="primary"
+                    onClick={this.saveCurrentTask}
+                    >
+                    Save
+                  </Button>
+                </div>
+                <div style={styles.buttonStyle}>
+                  <Button 
+                    style={styles.buttonStyle}
+                    variant="contained"
+                    color="primary"
+                    onClick={this.deleteCurrentTask}
+                    >
+                    Delete
+                  </Button>
+                </div>
+              </React.Fragment>
+            }
+          </div>
         </div>
       </Dialog>
     )
