@@ -21,7 +21,7 @@ export default class TaskGroup extends Component {
 
     if (filterOption === 'Active') {
       groupTasks = tasks.filter((task) => (task[lowercurrentSort] === header && task.isActive === true ))
-    } else if(filterOption === 'In-Active') {
+    } else if(filterOption === 'Inactive') {
       groupTasks = tasks.filter((task) => (task[lowercurrentSort] === header && task.isActive === false ))
     } else {
       groupTasks = tasks.filter((task) => task[lowercurrentSort] === header)

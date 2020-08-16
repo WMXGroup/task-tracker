@@ -9,7 +9,7 @@ export default class ActiveFilter extends Component {
   state = {
     filterOptions: [
       'Active',
-      'In-Active',
+      'Inactive',
       'Both',
     ],
     anchorEl: null,
