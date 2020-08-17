@@ -20,7 +20,8 @@ import axios from 'axios';
 
 const styles = theme => ({
   taskContainer: {
-    maxWidth: '700px'
+    maxWidth: '700px',
+    marginBottom: '70px'
   },
   formControl: {
     minWidth: 120,
@@ -74,10 +75,10 @@ class Main extends Component {
   }
 
   componentDidMount = () => {
-    this.getServerData();
-    // this.setState({
-    //   tasks: tasks
-    // })
+    // this.getServerData();
+    this.setState({
+      tasks: tasks
+    })
   }
 
   componentDidUpdate = (prevProps, prevState) => {
@@ -253,6 +254,7 @@ class Main extends Component {
       }
       return null;
     });
+    resArr.sort();
     this.setState({
       headers: resArr,
       currentSort: keyName,

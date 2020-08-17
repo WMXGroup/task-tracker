@@ -17,7 +17,7 @@ import CloseIcon from '@material-ui/icons/Close';
 const styles = {
   fieldStyle:{
     width:'700px',
-    margin: '5px',
+    // margin: '5px',
   },
   fieldLabel: {
     alignContent: 'center',
@@ -30,8 +30,20 @@ const styles = {
     margin: '.5rem',
   },
   inputStyle: {
+    paddingLeft: '15px',
+    paddingTop: '10px',
+    paddingBottom: '10px'
+  },
+  dateStyle: {
     height: '40px',
-    paddingLeft: '15px'
+    padding: 0
+  },
+  dateContainer: {
+    display: 'flex',
+    alignContent: 'center',
+    alignItems: 'center',
+    padding: 0,
+    margin: 0
   },
   buttonContainer: {
     display: 'flex',
@@ -46,7 +58,6 @@ const styles = {
     margin: '5px'
   },
   headerName: {
-    // position: 'absolute',
     color: '#aaa',
     margin: '10px',
   },
@@ -58,9 +69,6 @@ const styles = {
     display: 'flex',
     justifyContent: 'space-between',
     padding: '10px'
-  },
-  dateContainer: {
-    paddingLeft: '5px'
   },
   dialogContainer: {
     display: 'flex'
@@ -97,7 +105,7 @@ export default class DetailModal extends Component {
 
   dateChange = (e) => {
     this.setState({
-      dueDate: moment(e),
+      dueDate: moment(e).format('MM/DD/YYYY'),
       dueWeek: moment(e).startOf('week').format('MM/DD/YYYY'),
       dueMonth: moment(e).format('MMMM YYYY'),
     })
@@ -283,7 +291,6 @@ export default class DetailModal extends Component {
                   autoOk={true}
                   variant="inline"
                   format="MM/dd/yyyy"
-                  margin="normal"
                   value={this.state.dueDate}
                   onChange={(e) => this.dateChange(e)}
                   KeyboardButtonProps={{
@@ -291,7 +298,7 @@ export default class DetailModal extends Component {
                   }}
                   inputVariant="outlined"
                   InputProps={{
-                    style: styles.inputStyle
+                    style: styles.dateStyle
                   }}
                   />
               </MuiPickersUtilsProvider>
