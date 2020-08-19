@@ -77,7 +77,6 @@ class Main extends Component {
 
   componentDidMount = () => {
     this.getServerData();
-    this.activateTasks();
     // this.setState({
     //   tasks: tasks
     // })
@@ -110,6 +109,7 @@ class Main extends Component {
           isLoading: false
         }))
         .then(() => {
+          this.activateTasks()
           this.getSortHeaders(this.state.tasks, this.state.currentSort)
           this.getUniqueValues(this.state.tasks, 'category', 'categories')
           this.getUniqueValues(this.state.tasks, 'assigned', 'assignedUsers')
