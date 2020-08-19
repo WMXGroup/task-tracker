@@ -9,7 +9,6 @@ export default class TaskGroup extends Component {
       tasks,
       currentSort,
       completeTask,
-      deleteTask,
       edit,
       launchModal,
       getKeyName,
@@ -17,7 +16,7 @@ export default class TaskGroup extends Component {
     } = this.props;
 
     const lowercurrentSort = getKeyName(currentSort);
-    let groupTasks;
+    let groupTasks = [];
 
     if (filterOption === 'Active') {
       groupTasks = tasks.filter((task) => (task[lowercurrentSort] === header && task.isActive === true ))
@@ -28,20 +27,20 @@ export default class TaskGroup extends Component {
     }
 
     return (
-      <div>
+      <React.Fragment>
+        {groupTasks.length !== 0 &&
         <h2>{header}</h2>
+        }
         {groupTasks.map ((task, i) => (
-
           <Task
           task={task}
           key={i}
           completeTask={completeTask}
-          deleteTask={deleteTask}
           edit={edit}
           launchModal={launchModal}
           />
         ))}
-      </div>
+      </React.Fragment>
     )
   }
 }

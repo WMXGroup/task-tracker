@@ -21,7 +21,8 @@ const styles = {
   },
   fieldLabel: {
     alignContent: 'center',
-    minWidth: '90px'
+    minWidth: '90px',
+    maxWidth: '90px'
   },
   fieldContainer: {
     display: 'flex',
@@ -89,12 +90,16 @@ export default class DetailModal extends Component {
     assigned: this.props.type === 'Edit'? this.props.taskDetails.assigned : '',
     contact: this.props.type === 'Edit'? this.props.taskDetails.contact : '',
     isActive: this.props.type === 'Edit'? this.props.taskDetails.isActive : true,
+    activeDate: this.props.type === 'Edit'? this.props.taskDetails.activeDate : moment().format('MM/DD/YYYY'),
     workTime: this.props.type === 'Edit'? this.props.taskDetails.workTime : [],
     tags: this.props.type === 'Edit'? this.props.taskDetails.tags : [],
     completedDate: this.props.type === 'Edit'? this.props.taskDetails.completedDate : '',
     dueWeek: this.props.type === 'Edit'? this.props.taskDetails.dueweek : moment().startOf('isoweek').format('MM/DD/YYYY'),
     dueMonth: this.props.type === 'Edit'? this.props.taskDetails.dueMonth : moment().format('MMMM YYYY'),
     notes: this.props.type === 'Edit'? this.props.taskDetails.notes : '',
+    type: this.props.type === 'Edit'? this.props.taskDetails.type : 'One-time',
+    recurDays: this.props.type === 'Edit'? this.props.taskDetails.recurDays : 0,
+    isUpdating: false,
   }
 
   onChange = (e) => {
@@ -111,10 +116,64 @@ export default class DetailModal extends Component {
     })
   }
 
+  activeDateChange = (e) => {
+    this.setState({
+      activeDate: moment(e).format('MM/DD/YYYY'),
+      isActive: moment().format('YYYY-MM-DD') >= moment(e).format('YYYY-MM-DD') ? true : this.state.isActive
+    })
+  }
+
   onAutoChange = (e, newValue, fieldName) => {
-      this.setState({
-        [fieldName]: newValue
-      });
+    this.setState({
+      [fieldName]: newValue
+    });
+  }
+
+  onStatusChange = (e, newValue, fieldName) => {
+    const {
+      type,
+      dueDate,
+      activeDate,
+      recurDays,
+      isUpdating
+    } = this.state
+    if (isUpdating === false) {
+      if (newValue === 'Completed') {
+        if (type === 'Recurring') {
+          console.log('Test');
+          this.setState({
+            isUpdating: true,
+            status: '',
+            completedDate: '',
+            dueDate: moment(dueDate).add(recurDays, 'days').format('MM/DD/YYYYY'),
+            dueWeek: moment(dueDate).add(recurDays, 'days').startOf('week').format('MM/DD/YYYY'),
+            dueMonth: moment(dueDate).add(recurDays, 'days').format('MMMM YYYY'),
+            activeDate: moment(activeDate).add(recurDays, 'days'),
+            isActive: moment(activeDate).format('YYYY-MM-DD') < moment().format('YYYY-MM-DD') ? true : false
+          }, ()=> {
+            this.setState({ 
+              isUpdating: false,
+            })
+          });
+        } else if (type === 'One-time') {
+          this.setState({
+            isUpdating: true,
+            completedDate: moment().format('MM/DD/YYYY'),
+            status: 'Completed,',
+            isActive: false
+          }, ()=> {
+            this.setState({ 
+              isUpdating: false,
+            })
+          })
+        }
+      } else {
+        this.setState({
+          [fieldName]: newValue,
+        })
+      }
+    }
+
   }
 
   onCheck = () => {
@@ -140,12 +199,15 @@ export default class DetailModal extends Component {
       assigned: this.state.assigned,
       contact: this.state.contact,
       isActive: this.state.isActive,
+      activeDate: this.state.activeDate,
       workTime: this.state.workTime,
       tags: this.state.tags,
       completedDate: this.state.completedDate,
       dueWeek: this.state.dueWeek,
       dueMonth: this.state.dueMonth,
-      notes: this.state.notes
+      notes: this.state.notes,
+      type: this.state.type,
+      recurDays: this.state.recurDays,
     });
     this.props.toggleModal();
   }
@@ -163,12 +225,15 @@ export default class DetailModal extends Component {
       assigned: this.state.assigned,
       contact: this.state.contact,
       isActive: this.state.isActive,
+      activeDate: this.state.activeDate,
       workTime: this.state.workTime,
       tags: this.state.tags,
       completedDate: this.state.completedDate,
       dueWeek: this.state.dueWeek,
       dueMonth: this.state.dueMonth,
-      notes: this.state.notes
+      notes: this.state.notes,
+      type: this.state.type,
+      recurDays: this.state.recurDays,
     });
     this.props.toggleModal();
   }
@@ -252,17 +317,49 @@ export default class DetailModal extends Component {
           </ div>
           <div style={styles.fieldContainer}>
             <Typography style={styles.fieldLabel}>
+              Type
+            </Typography>
+            <Autocomplete
+              options={['One-time','Recurring']}
+              defaultValue={this.state.type}
+              getOptionLabel={(option) => typeof option === 'string' ? option : option.type}
+              style={styles.fieldStyle}
+              size='small'
+              renderInput={(params) => <TextField {...params} variant="outlined" />}
+              inputValue={this.state.type}
+              onInputChange={(e, newValue) => this.onAutoChange(e, newValue, 'type')}
+              />
+          </ div>\
+          <div style={styles.fieldContainer}>
+            <Typography style={styles.fieldLabel}>
+              Recurring Days
+            </Typography>
+            <TextField 
+              style={styles.fieldStyle}
+              name='recurDays'
+              type="number"
+              variant="outlined"
+              InputProps={{
+                style: styles.inputStyle
+              }}
+              onChange={this.onChange}
+              value={this.state.recurDays}
+              multiline
+            />
+          </div>
+          <div style={styles.fieldContainer}>
+            <Typography style={styles.fieldLabel}>
               Status
             </Typography>
             <Autocomplete
-              options={['Not Started','In Progress','On Hold','Complete']}
+              options={['Not Started','In Progress','On Hold','Completed']}
               defaultValue={this.state.status}
               getOptionLabel={(option) => typeof option === 'string' ? option : option.status}
               style={styles.fieldStyle}
               size='small'
               renderInput={(params) => <TextField {...params} variant="outlined" />}
               inputValue={this.state.status}
-              onInputChange={(e, newValue) => this.onAutoChange(e, newValue, 'status')}
+              onInputChange={(e, newValue) => this.onStatusChange(e, newValue, 'status')}
               />
           </ div>
           <div style={styles.fieldContainer}>
@@ -293,6 +390,30 @@ export default class DetailModal extends Component {
                   format="MM/dd/yyyy"
                   value={this.state.dueDate}
                   onChange={(e) => this.dateChange(e)}
+                  KeyboardButtonProps={{
+                    'aria-label': 'change date',
+                  }}
+                  inputVariant="outlined"
+                  InputProps={{
+                    style: styles.dateStyle
+                  }}
+                  />
+              </MuiPickersUtilsProvider>
+            </div>
+          </div>
+          <div style={styles.fieldContainer}>
+            <Typography style={styles.fieldLabel}>
+              Active Date
+            </Typography>
+            <div style={styles.dateContainer}>
+              <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                <KeyboardDatePicker
+                  disableToolbar
+                  autoOk={true}
+                  variant="inline"
+                  format="MM/dd/yyyy"
+                  value={this.state.activeDate}
+                  onChange={(e) => this.activeDateChange(e)}
                   KeyboardButtonProps={{
                     'aria-label': 'change date',
                   }}

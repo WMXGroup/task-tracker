@@ -16,6 +16,7 @@ import DetailModal from './DetailModal';
 import {tasks} from './TestTasks';
 import SortAlt from './SortAlt';
 import ActiveFilter from './ActiveFilter';
+import moment from 'moment';
 import axios from 'axios';
 
 const styles = theme => ({
@@ -76,6 +77,7 @@ class Main extends Component {
 
   componentDidMount = () => {
     this.getServerData();
+    this.activateTasks();
     // this.setState({
     //   tasks: tasks
     // })
@@ -223,7 +225,29 @@ class Main extends Component {
   completeTask = (id) => {
     const newTasks = this.state.tasks.map((task) => {
       if (task.id === id) {
-        task.completed = !task.completed
+        if (task.type === 'Recurring') {
+          task.dueDate = moment(task.dueDate).add(task.recurDays, 'days').format('MM/DD/YYYY');
+          task.dueWeek = moment(task.dueDate).add(task.recurDays, 'days').startOf('week').format('MM/DD/YYYY');
+          task.dueMonth = moment(task.dueDate).add(task.recurDays, 'days').format('MMMM YYYY');
+          task.activeDate = moment(task.activeDate).add(task.recurDays, 'days');
+          task.isActive = moment(task.activeDate).format('YYYY-MM-DD') < moment().format('YYYY-MM-DD') ? true : false
+        } else if (task.type === 'One-time') {
+          task.completedDate = moment().format('MM/DD/YYYY');
+          task.status = 'Completed';
+          task.isActive = false;
+        }
+      }
+      return task;
+    });
+    this.setState({
+      tasks: newTasks,
+    })
+  }
+
+  activateTasks = () => {
+    const newTasks = this.state.tasks.map((task) => {
+      if (moment().format('YYYY-MM-DD') >= moment(task.activeDate).format('YYYY-MM-DD') && task.activeDate !== '') {
+        task.isActive = true;
       }
       return task;
     });
@@ -449,7 +473,6 @@ class Main extends Component {
                 currentSort={this.state.currentSort}
                 key={i}
                 completeTask={this.completeTask}
-                deleteTask={this.deleteTask}
                 launchModal={this.launchModal}
                 getKeyName={this.getKeyName}
                 filterOption={this.state.filterOption}

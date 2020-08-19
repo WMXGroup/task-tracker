@@ -35,19 +35,20 @@ class Task extends Component {
       classes,
       task,
       completeTask,
-      deleteTask,
       launchModal
     } = this.props;
 
     return (
       <div className={classes.taskContainer} key={task.id}>
-        <Checkbox
-            checked={task.completed}
+        {task.status !== 'Completed' &&
+          <Checkbox
+            checked={task.status === 'Completed' ? true : false}
             className={classes.checkbox}
             onChange={() => completeTask(task.id)}
             color="primary"
             size='small'
-          />
+            />
+        }
         <TextField
           className={classes.taskStyle}
           disabled
