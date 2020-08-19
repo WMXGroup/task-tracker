@@ -140,7 +140,6 @@ export default class DetailModal extends Component {
     if (isUpdating === false) {
       if (newValue === 'Completed') {
         if (type === 'Recurring') {
-          console.log('Test');
           this.setState({
             isUpdating: true,
             status: '',
@@ -159,7 +158,7 @@ export default class DetailModal extends Component {
           this.setState({
             isUpdating: true,
             completedDate: moment().format('MM/DD/YYYY'),
-            status: 'Completed,',
+            status: 'Completed',
             isActive: false
           }, ()=> {
             this.setState({ 
