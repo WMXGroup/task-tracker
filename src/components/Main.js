@@ -246,7 +246,7 @@ class Main extends Component {
 
   activateTasks = () => {
     const newTasks = this.state.tasks.map((task) => {
-      if (moment().format('YYYY-MM-DD') >= moment(task.activeDate).format('YYYY-MM-DD') && task.activeDate !== '') {
+      if (moment().format('YYYY-MM-DD') >= moment(task.activeDate).format('YYYY-MM-DD') && task.activeDate !== '' && task.status !== 'Completed') {
         task.isActive = true;
       }
       return task;
