@@ -235,12 +235,12 @@ export default class DetailModal extends Component {
       type: this.state.type,
       recurDays: this.state.recurDays,
     });
-    this.props.toggleDisplay('Details');
+    this.props.toggleDisplay('Tasks');
   }
 
   deleteCurrentTask = () => {
     this.props.deleteTask(this.state.id);
-    this.props.toggleDisplay('Details');
+    this.props.toggleDisplay('Tasks');
   }
 
   render() {
@@ -249,6 +249,7 @@ export default class DetailModal extends Component {
       categories,
       assignedUsers,
       contactUsers,
+      toggleDisplay
     } = this.props;
 
     // console.log(this.props)
@@ -264,7 +265,7 @@ export default class DetailModal extends Component {
           </div>
           <div style={styles.headerClose}>
             <IconButton
-              onClick={() => this.props.toggleDisplay('Tasks')}
+              onClick={() => toggleDisplay('Tasks')}
               size='small'
               >
               <CloseIcon />
