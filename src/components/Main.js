@@ -12,7 +12,7 @@ import AddIcon from '@material-ui/icons/Add';
 import Divider from '@material-ui/core/Divider';
 import { withStyles } from '@material-ui/core/styles';
 import TaskGroup from './TaskGroup';
-import DetailModal from './DetailModal';
+import TaskDetails from './TaskDetails';
 import {tasks} from './TestTasks';
 import SortAlt from './SortAlt';
 import ActiveFilter from './ActiveFilter';
@@ -66,20 +66,20 @@ class Main extends Component {
     currentSort: 'Category',
     trackerName: 'Test Title',
     selectedTask: null,
-    openModal: false,
-    modalType: null,
+    detailType: null,
     categories: [],
     assignedUsers: [],
     contactUsers: [],
     taskDetails: {},
-    filterOption: 'Active'
+    filterOption: 'Active',
+    display: 'Tasks',
   }
 
   componentDidMount = () => {
-    this.getServerData();
-    // this.setState({
-    //   tasks: tasks
-    // })
+    // this.getServerData();
+    this.setState({
+      tasks: tasks
+    })
   }
 
   componentDidUpdate = (prevProps, prevState) => {
@@ -213,13 +213,13 @@ class Main extends Component {
     )
   }
 
-  launchModal = (type, id) => {
+  launchDetails = (type, id) => {
     const taskDetail = this.state.tasks.filter((task) => task.id === id)
     this.setState({
-      modalType: type,
+      detailType: type,
       taskDetails: taskDetail[0]
     },
-    () => this.toggleModal());
+    () => this.toggleDisplay('Details'));
   }
 
   completeTask = (id) => {
@@ -367,9 +367,9 @@ class Main extends Component {
     })
   };
 
-  toggleModal = () => {
+  toggleDisplay = (displayName) => {
     this.setState({
-      openModal: !this.state.openModal,
+      display: displayName
     })
   }
 
@@ -379,7 +379,7 @@ class Main extends Component {
       classes
     } = this.props;
 
-    // console.log('Main State:', this.state);
+    console.log('Main State:', this.state);
 
     return (
       <React.Fragment>
@@ -443,47 +443,50 @@ class Main extends Component {
             </Toolbar>
           </AppBar>
           <Toolbar />
-          <div
-            style={{
-              fontStyle:'italic',
-              color:'#bbb',
-            }}>
-              {this.state.lastSaved === null ? 'Not Saved' : 'Last Saved: ' + this.state.lastSaved}
-          </div>
-          <TextField
-            InputProps={{
-              disableUnderline: true,
-              style: {
-                display: 'block',
-                fontSize: '2em',
-                marginTop: '0.3em',
-                marginBottom: '0.3em',
-                // padding: 0
-              },
-            }}
-            value={this.state.trackerName}
-            onChange={this.handleTitleChange}
-          />
-          <Divider />
-          <div className={classes.taskContainer}>
-            {this.state.headers.map ((header, i) => (
-              <TaskGroup
-                tasks={this.state.tasks}
-                header={header}
-                currentSort={this.state.currentSort}
-                key={i}
-                completeTask={this.completeTask}
-                launchModal={this.launchModal}
-                getKeyName={this.getKeyName}
-                filterOption={this.state.filterOption}
-                />
-            ))}
-          </div>
-          {this.state.openModal === true &&
-            <DetailModal
-              toggleModal={this.toggleModal}
-              openModal={this.state.openModal}
-              type={this.state.modalType}
+          {this.state.display === 'Tasks' &&
+            <React.Fragment>
+              <div
+                style={{
+                  fontStyle:'italic',
+                  color:'#bbb',
+                }}>
+                  {this.state.lastSaved === null ? 'Not Saved' : 'Last Saved: ' + this.state.lastSaved}
+              </div>
+              <TextField
+                InputProps={{
+                  disableUnderline: true,
+                  style: {
+                    display: 'block',
+                    fontSize: '2em',
+                    marginTop: '0.3em',
+                    marginBottom: '0.3em',
+                    // padding: 0
+                  },
+                }}
+                value={this.state.trackerName}
+                onChange={this.handleTitleChange}
+              />
+              <Divider />
+              <div className={classes.taskContainer}>
+                {this.state.headers.map ((header, i) => (
+                  <TaskGroup
+                    tasks={this.state.tasks}
+                    header={header}
+                    currentSort={this.state.currentSort}
+                    key={i}
+                    completeTask={this.completeTask}
+                    launchDetails={this.launchDetails}
+                    getKeyName={this.getKeyName}
+                    filterOption={this.state.filterOption}
+                    />
+                ))}
+              </div>
+            </React.Fragment>
+          }
+          {this.state.display === 'Details' &&
+            <TaskDetails
+              toggleDisplay={this.toggleDisplay}
+              type={this.state.detailType}
               categories={this.state.categories}
               assignedUsers={this.state.assignedUsers}
               contactUsers={this.state.contactUsers}
@@ -493,18 +496,18 @@ class Main extends Component {
               deleteTask={this.deleteTask}
             />
           }
-      <AppBar position="fixed" color="primary" className={classes.appBar}>
-        <Toolbar>
-          <Fab 
-            color="secondary" 
-            aria-label="add" 
-            className={classes.fabButton}
-            onClick={() => this.launchModal('Add')}
-            >
-            <AddIcon />
-          </Fab>
-        </Toolbar>
-      </AppBar>
+        <AppBar position="fixed" color="primary" className={classes.appBar}>
+          <Toolbar>
+            <Fab 
+              color="secondary" 
+              aria-label="add" 
+              className={classes.fabButton}
+              onClick={() => this.launchModal('Add')}
+              >
+              <AddIcon />
+            </Fab>
+          </Toolbar>
+        </AppBar>
       </React.Fragment>
     )
   }

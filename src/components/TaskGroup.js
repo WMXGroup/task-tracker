@@ -9,8 +9,7 @@ export default class TaskGroup extends Component {
       tasks,
       currentSort,
       completeTask,
-      edit,
-      launchModal,
+      launchDetails,
       getKeyName,
       filterOption
     } = this.props;
@@ -36,8 +35,7 @@ export default class TaskGroup extends Component {
           task={task}
           key={i}
           completeTask={completeTask}
-          edit={edit}
-          launchModal={launchModal}
+          launchDetails={launchDetails}
           />
         ))}
       </React.Fragment>

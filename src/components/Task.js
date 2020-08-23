@@ -35,7 +35,7 @@ class Task extends Component {
       classes,
       task,
       completeTask,
-      launchModal
+      launchDetails
     } = this.props;
 
     return (
@@ -65,7 +65,7 @@ class Task extends Component {
           multiline
         />
           <IconButton
-          onClick={() => launchModal('Edit', task.id)} 
+          onClick={() => launchDetails('Edit', task.id)} 
           size='small'
           >
           <MoreHoriz

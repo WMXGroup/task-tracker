@@ -119,7 +119,7 @@ export default class DetailModal extends Component {
   activeDateChange = (e) => {
     this.setState({
       activeDate: moment(e).format('MM/DD/YYYY'),
-      isActive: moment().format('YYYY-MM-DD') >= moment(e).format('YYYY-MM-DD') ? true : this.state.isActive
+      isActive: e = '' ? this.state.isActive : moment().format('YYYY-MM-DD') >= moment(e).format('YYYY-MM-DD') ? true : moment(e).format('YYYY-MM-DD')  > moment().format('YYYY-MM-DD') ? false : this.state.isActive
     })
   }
 
