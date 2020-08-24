@@ -215,7 +215,7 @@ export default class DetailModal extends Component {
       recurDays: this.state.recurDays,
       startTime: this.state.startTime
     });
-    this.props.toggleDisplay('Details');
+    this.props.toggleDisplay('Tasks');
   }
 
   saveCurrentTask = () => {
