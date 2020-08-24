@@ -10,7 +10,8 @@ export default class ActiveFilter extends Component {
     filterOptions: [
       'Active',
       'Inactive',
-      'Both',
+      'Completed',
+      'All',
     ],
     anchorEl: null,
     setAnchorEl: false,

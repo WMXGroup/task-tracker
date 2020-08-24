@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import Dialog from '@material-ui/core/Dialog';
 import Typography from '@material-ui/core/Typography';
 import TextField from '@material-ui/core/TextField';
 import Autocomplete from '@material-ui/lab/Autocomplete';
@@ -73,8 +72,7 @@ const styles = {
   },
   dialogContainer: {
     marginBottom: '70px'
-    // display: 'flex'
-  }
+  },
 };
 
 export default class DetailModal extends Component {
@@ -101,6 +99,7 @@ export default class DetailModal extends Component {
     type: this.props.type === 'Edit'? this.props.taskDetails.type : 'One-time',
     recurDays: this.props.type === 'Edit'? this.props.taskDetails.recurDays : 0,
     isUpdating: false,
+    startTime: this.props.type === 'Edit'? this.props.taskDetails.startTime : moment({hour: 5}),
   }
 
   onChange = (e) => {
@@ -122,6 +121,12 @@ export default class DetailModal extends Component {
       activeDate: moment(e).format('MM/DD/YYYY'),
       isActive: e = '' ? this.state.isActive : moment().format('YYYY-MM-DD') >= moment(e).format('YYYY-MM-DD') ? true : moment(e).format('YYYY-MM-DD')  > moment().format('YYYY-MM-DD') ? false : this.state.isActive
     })
+  }
+
+  startTimeChange = (e) => {
+    this.setState(({
+      startTime: moment(e)
+    }))
   }
 
   onAutoChange = (e, newValue, fieldName) => {
@@ -208,6 +213,7 @@ export default class DetailModal extends Component {
       notes: this.state.notes,
       type: this.state.type,
       recurDays: this.state.recurDays,
+      startTime: this.state.startTime
     });
     this.props.toggleDisplay('Details');
   }
@@ -234,6 +240,7 @@ export default class DetailModal extends Component {
       notes: this.state.notes,
       type: this.state.type,
       recurDays: this.state.recurDays,
+      startTime: this.state.startTime
     });
     this.props.toggleDisplay('Tasks');
   }
@@ -318,7 +325,7 @@ export default class DetailModal extends Component {
             inputValue={this.state.type}
             onInputChange={(e, newValue) => this.onAutoChange(e, newValue, 'type')}
             />
-        </ div>\
+        </ div>
         <div style={styles.fieldContainer}>
           <Typography style={styles.fieldLabel}>
             Recurring Days
@@ -355,17 +362,19 @@ export default class DetailModal extends Component {
           <Typography style={styles.fieldLabel}>
             Priority
           </Typography>
-          <Autocomplete
-            options={['1','2','3','4','5']}
-            defaultValue={this.state.priority}
-            getOptionLabel={(option) => typeof option === 'string' ? option : option.priority}
+          <TextField 
             style={styles.fieldStyle}
-            size='small'
-            renderInput={(params) => <TextField {...params} variant="outlined" />}
-            inputValue={this.state.priority}
-            onInputChange={(e, newValue) => this.onAutoChange(e, newValue, 'priority')}
-            />
-        </ div>
+            name='priority'
+            type="number"
+            variant="outlined"
+            InputProps={{
+              style: styles.inputStyle
+            }}
+            onChange={this.onChange}
+            value={this.state.priority}
+            multiline
+          />
+        </div>
         <div style={styles.fieldContainer}>
           <Typography style={styles.fieldLabel}>
             Due Date

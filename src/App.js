@@ -13,7 +13,17 @@ const theme = createMuiTheme({
 
   },
   overrides: {
-
+    MuiAutocomplete: {
+      // paper: {
+      //   backgroundColor: 'blue'
+      // },
+      // option: {
+      //   backgroundColor: 'green'
+      // },
+      listbox: {
+        backgroundColor: '#bbdefb',
+      }
+    }
   },
 });
 

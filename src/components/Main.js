@@ -76,10 +76,10 @@ class Main extends Component {
   }
 
   componentDidMount = () => {
-    this.getServerData();
-    // this.setState({
-    //   tasks: tasks
-    // })
+    // this.getServerData();
+    this.setState({
+      tasks: tasks
+    })
   }
 
   componentDidUpdate = (prevProps, prevState) => {
@@ -218,6 +218,13 @@ class Main extends Component {
     this.setState({
       detailType: type,
       taskDetails: taskDetail[0]
+    },
+    () => this.toggleDisplay('Details'));
+  }
+
+  launchNewTask = () => {
+    this.setState({
+      detailType: 'Add'
     },
     () => this.toggleDisplay('Details'));
   }
@@ -379,7 +386,7 @@ class Main extends Component {
       classes
     } = this.props;
 
-    console.log('Main State:', this.state);
+    // console.log('Main State:', this.state);
 
     return (
       <React.Fragment>
@@ -502,7 +509,7 @@ class Main extends Component {
               color="secondary" 
               aria-label="add" 
               className={classes.fabButton}
-              onClick={() => this.launchModal('Add')}
+              onClick={() => this.launchNewTask()}
               >
               <AddIcon />
             </Fab>

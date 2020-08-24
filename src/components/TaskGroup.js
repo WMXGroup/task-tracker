@@ -20,10 +20,14 @@ export default class TaskGroup extends Component {
     if (filterOption === 'Active') {
       groupTasks = tasks.filter((task) => (task[lowercurrentSort] === header && task.isActive === true ))
     } else if(filterOption === 'Inactive') {
-      groupTasks = tasks.filter((task) => (task[lowercurrentSort] === header && task.isActive === false ))
+      groupTasks = tasks.filter((task) => (task[lowercurrentSort] === header && task.isActive === false && task.status !== 'Completed' ))
+    }  else if(filterOption === 'Completed') {
+      groupTasks = tasks.filter((task) => (task[lowercurrentSort] === header && task.status === 'Completed' ))
     } else {
       groupTasks = tasks.filter((task) => task[lowercurrentSort] === header)
     }
+
+    groupTasks.sort((a,b) => (a.priority > b.priority) ? 1 : -1);
 
     return (
       <React.Fragment>
