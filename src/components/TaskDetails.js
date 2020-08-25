@@ -102,6 +102,10 @@ export default class DetailModal extends Component {
     startTime: this.props.type === 'Edit'? this.props.taskDetails.startTime : moment({hour: 5}),
   }
 
+  componentDidMount() {
+    window.scrollTo(0, 0);
+  }
+
   onChange = (e) => {
     this.setState({
       [e.target.name]: e.target.value

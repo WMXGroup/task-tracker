@@ -248,7 +248,7 @@ class Main extends Component {
     });
     this.setState({
       tasks: newTasks,
-    })
+    }, () => this.saveData());
   }
 
   activateTasks = () => {
@@ -260,19 +260,19 @@ class Main extends Component {
     });
     this.setState({
       tasks: newTasks,
-    })
+    }, () => this.saveData());
   }
 
   saveTask = (id, task) => {
     const newTasks = this.state.tasks.filter((task) => task.id !== id)
-    this.setState({ tasks: [...newTasks, task]})
+    this.setState({ tasks: [...newTasks, task]}, () => this.saveData());
   }
 
   deleteTask = (id) => {
     const newTasks = this.state.tasks.filter((task) => task.id !== id)
     this.setState({
       tasks: newTasks,
-    })
+    }, () => this.saveData());
   }
 
   getSortHeaders = (data, keyName) => {
