@@ -155,7 +155,7 @@ class Main extends Component {
         this.setState({
           lastSaved: currentDT
         })
-        alert('Data saved successfully!')
+        // alert('Data saved successfully!')
       });
     }
   }
