@@ -334,6 +334,7 @@ class Main extends Component {
       }
       return null;
     });
+    resArr.sort((a,b) => (a.priority > b.priority) ? 1 : -1);
     this.setState({
       [arrayName]: resArr
     })
@@ -430,7 +431,7 @@ class Main extends Component {
                     <MenuItem onClick={() => this.getFile()}>Import JSON</MenuItem>
                   </label>
                   <MenuItem onClick={() => this.exportJSON()}>Export Data</MenuItem>
-                  <MenuItem onClick={() => this.saveData()}>Save Data</MenuItem>
+                  {/* <MenuItem onClick={() => this.saveData()}>Save Data</MenuItem> */}
                   <MenuItem onClick={() => this.createNew()}>Create New</MenuItem>
                 </Menu>
               <Typography variant="h6">
@@ -503,18 +504,20 @@ class Main extends Component {
               deleteTask={this.deleteTask}
             />
           }
-        <AppBar position="fixed" color="primary" className={classes.appBar}>
-          <Toolbar>
-            <Fab 
-              color="secondary" 
-              aria-label="add" 
-              className={classes.fabButton}
-              onClick={() => this.launchNewTask()}
-              >
-              <AddIcon />
-            </Fab>
-          </Toolbar>
-        </AppBar>
+          {this.state.display !== 'Details' &&
+            <AppBar position="fixed" color="primary" className={classes.appBar}>
+              <Toolbar>
+                <Fab 
+                  color="secondary" 
+                  aria-label="add" 
+                  className={classes.fabButton}
+                  onClick={() => this.launchNewTask()}
+                  >
+                  <AddIcon />
+                </Fab>
+              </Toolbar>
+            </AppBar>
+          }
       </React.Fragment>
     )
   }
