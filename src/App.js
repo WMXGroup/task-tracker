@@ -2,11 +2,16 @@ import React from 'react';
 import Main from './components/Main';
 import { ThemeProvider } from '@material-ui/styles';
 import { createMuiTheme } from "@material-ui/core";
-import { blue } from '@material-ui/core/colors';
+import { teal, indigo } from '@material-ui/core/colors';
 
 const theme = createMuiTheme({
   palette: {
-    primary: blue
+    primary: {
+      main: teal[500],
+    },
+    secondary: {
+      main: indigo[500],
+    },
   },
 
   typography: {
