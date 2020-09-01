@@ -126,6 +126,7 @@ class Main extends Component {
     let params = new URLSearchParams(search);
     let listId = params.get('query');
     const currentDT = new Date();
+    console.log(listId);
 
     if(listId === null){
       axios
@@ -209,8 +210,7 @@ class Main extends Component {
   }
 
   createTask = (task) => {
-    this.setState({ tasks: [...this.state.tasks, task]}
-    )
+    this.setState({ tasks: [...this.state.tasks, task]}, () => this.saveData());
   }
 
   launchDetails = (type, id) => {

@@ -1,7 +1,7 @@
 export const tasks = [
   {
     id: 1,
-    description: 'Task 1',
+    description: 'Fix the door',
     category:'House',
     status: 'Started',
     dueDate: '8/17/2020',
@@ -23,7 +23,7 @@ export const tasks = [
   },
   {
     id: 2,
-    description: 'Task 2',
+    description: 'Check Transactions',
     category:'Finance',
     status: 'Started',
     dueDate: '8/17/2020',
@@ -45,7 +45,7 @@ export const tasks = [
   },
   {
     id: 3,
-    description: 'Task 3',
+    description: 'Review Task list',
     category:'Work',
     status: 'Started',
     dueDate: '8/17/2020',
@@ -67,7 +67,7 @@ export const tasks = [
   },
   {
     id: 4,
-    description: 'Task 4',
+    description: 'Get a lower interest rate',
     category:'Finance',
     status: 'Started',
     dueDate: '8/17/2020',
@@ -89,7 +89,7 @@ export const tasks = [
   },
   {
     id: 5,
-    description: 'Task 5',
+    description: 'Fix the front steps',
     category:'House',
     status: 'Started',
     dueDate: '8/17/2020',
@@ -111,7 +111,7 @@ export const tasks = [
   },
   {
     id: 6,
-    description: 'Task 6',
+    description: 'Go see a movie',
     category:'Fun',
     status: 'Started',
     dueDate: '8/17/2020',
@@ -133,8 +133,8 @@ export const tasks = [
   },
   {
     id: 7,
-    description: 'Task 7',
-    category:'Dailies',
+    description: 'Drink 8 cups of water',
+    category:'Daily',
     status: 'Started',
     dueDate: '8/10/2020',
     actual: 0,
@@ -155,8 +155,8 @@ export const tasks = [
   },
   {
     id: 8,
-    description: 'Task 8',
-    category:'Dailies',
+    description: 'Exercise',
+    category:'Daily',
     status: 'Started',
     dueDate: '8/17/2020',
     actual: 0,
@@ -177,8 +177,8 @@ export const tasks = [
   },
   {
     id: 9,
-    description: 'Task 9',
-    category:'Dailies',
+    description: 'Plan tommorows dinner',
+    category:'Daily',
     status: 'Started',
     dueDate: '8/17/2020',
     actual: 0,
