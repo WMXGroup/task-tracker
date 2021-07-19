@@ -76,10 +76,10 @@ class Main extends Component {
   }
 
   componentDidMount = () => {
-    // this.getServerData();
-    this.setState({
-      tasks: tasks
-    })
+    this.getServerData();
+    // this.setState({
+    //   tasks: tasks
+    // })
     
   }
 
