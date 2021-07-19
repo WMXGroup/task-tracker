@@ -15,7 +15,7 @@ import CloseIcon from '@material-ui/icons/Close';
 import Paper from '@material-ui/core/Paper';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
-import ListItemText from '@material-ui/core/ListItemText';
+import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
 
 const styles = {
   fieldStyle:{
@@ -262,6 +262,13 @@ export default class DetailModal extends Component {
   deleteCurrentTask = () => {
     this.props.deleteTask(this.state.id);
     this.props.toggleDisplay('Tasks');
+  }
+
+  handleDeleteDate = (value) => {
+    const newDates = this.state.completedDates.filter((date) => date !== value)
+    this.setState({
+      completedDates: newDates,
+    });
   }
 
   render() {
@@ -535,12 +542,20 @@ export default class DetailModal extends Component {
         <Typography style={styles.fieldLabel}>
             Completed Dates
           </Typography>
-          <Paper style={{maxHeight: 100, overflow: 'auto'}}>
+          <Paper variant="outlined" style={{maxHeight: 100, width: 200, overflow: 'auto'}}>
             <List>
               {
                 this.state.completedDates.map((date) => (
                   <ListItem button>
                     {date}
+                    <ListItemSecondaryAction>
+                      <IconButton 
+                        edge="end" 
+                        aria-label="delete"
+                        onClick={() => this.handleDeleteDate(date)}>
+                        <CloseIcon />
+                      </IconButton>
+                    </ListItemSecondaryAction>
                   </ListItem>
                 ))
               }
