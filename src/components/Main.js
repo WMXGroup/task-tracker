@@ -80,6 +80,7 @@ class Main extends Component {
     // this.setState({
     //   tasks: tasks
     // })
+    
   }
 
   componentDidUpdate = (prevProps, prevState) => {
@@ -89,6 +90,18 @@ class Main extends Component {
       this.getUniqueValues(this.state.tasks, 'assigned', 'assignedUsers');
       this.getUniqueValues(this.state.tasks, 'contact', 'contactUsers');
     }
+  }
+
+  fixMissingFields = () => {
+    const newTasks = this.state.tasks.map((task) => {
+      if (task.completedDates === undefined) {
+        task.completedDates = []
+      }
+      return task;
+    })
+    this.setState({
+      tasks: newTasks,
+    }, () => this.saveData());
   }
 
   getServerData = () => {
@@ -114,6 +127,7 @@ class Main extends Component {
           this.getUniqueValues(this.state.tasks, 'category', 'categories')
           this.getUniqueValues(this.state.tasks, 'assigned', 'assignedUsers')
           this.getUniqueValues(this.state.tasks, 'contact', 'contactUsers')
+          this.fixMissingFields()
         })
         }
       )
