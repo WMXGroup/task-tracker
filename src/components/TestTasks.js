@@ -20,6 +20,7 @@ export const tasks = [
     tags: [],
     type: 'One-time',
     recurDays: '',
+    completedDates: [],
   },
   {
     id: 2,
@@ -42,6 +43,7 @@ export const tasks = [
     tags: [],
     type: 'One-time',
     recurDays: '',
+    completedDates: [],
   },
   {
     id: 3,
@@ -64,6 +66,7 @@ export const tasks = [
     tags: [],
     type: 'One-time',
     recurDays: '',
+    completedDates: [],
   },
   {
     id: 4,
@@ -86,6 +89,7 @@ export const tasks = [
     tags: [],
     type: 'One-time',
     recurDays: '',
+    completedDates: [],
   },
   {
     id: 5,
@@ -108,6 +112,7 @@ export const tasks = [
     tags: [],
     type: 'One-time',
     recurDays: '',
+    completedDates: [],
   },
   {
     id: 6,
@@ -130,20 +135,21 @@ export const tasks = [
     tags: [],
     type: 'One-time',
     recurDays: '',
+    completedDates: [],
   },
   {
     id: 7,
     description: 'Drink 8 cups of water',
     category:'Daily',
     status: 'Started',
-    dueDate: '8/10/2020',
+    dueDate: '7/16/2021',
     actual: 0,
     goal: 0,
     priority: '1',
     assigned: 'Adam',
     contact: 'Dan',
     isActive: true,
-    activeDate: '8/10/2020',
+    activeDate: '7/16/2021',
     notes: '',
     dueWeek: '8/10/2020',
     dueMonth: 'August 2020',
@@ -152,6 +158,7 @@ export const tasks = [
     tags: [],
     type: 'Recurring',
     recurDays: '1',
+    completedDates: ['05/01/2020', '06/01/2021', '06/02/2021', '06/03/2021' ],
   },
   {
     id: 8,
@@ -174,6 +181,7 @@ export const tasks = [
     tags: [],
     type: 'Recurring',
     recurDays: '1',
+    completedDates: [],
   },
   {
     id: 9,
@@ -196,5 +204,6 @@ export const tasks = [
     tags: [],
     type: 'Recurring',
     recurDays: '1',
+    completedDates: [],
   },
 ]

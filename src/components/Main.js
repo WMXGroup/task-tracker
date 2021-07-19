@@ -238,8 +238,10 @@ class Main extends Component {
           task.dueMonth = moment(task.dueDate).add(task.recurDays, 'days').format('MMMM YYYY');
           task.activeDate = moment(task.activeDate).add(task.recurDays, 'days');
           task.isActive = moment(task.activeDate).format('YYYY-MM-DD') < moment().format('YYYY-MM-DD') ? true : false
+          task.completedDates = [...task.completedDates, moment(task.dueDate).format('MM/DD/YYYY')]
         } else if (task.type === 'One-time') {
           task.completedDate = moment().format('MM/DD/YYYY');
+          task.completedDates = [...task.completedDates, moment(task.dueDate).format('MM/DD/YYYY')]
           task.status = 'Completed';
           task.isActive = false;
         }
@@ -265,7 +267,11 @@ class Main extends Component {
 
   saveTask = (id, task) => {
     const newTasks = this.state.tasks.filter((task) => task.id !== id)
-    this.setState({ tasks: [...newTasks, task]}, () => this.saveData());
+    this.setState(
+      { tasks: [...newTasks, task],
+        completedTasks : task.status === 'completed' ? [...this.state.completedTasks, task] : this.state.completedTasks
+      }, () => this.saveData()
+      );
   }
 
   deleteTask = (id) => {
@@ -387,7 +393,7 @@ class Main extends Component {
       classes
     } = this.props;
 
-    // console.log('Main State:', this.state);
+    console.log('Main State:', this.state);
 
     return (
       <React.Fragment>

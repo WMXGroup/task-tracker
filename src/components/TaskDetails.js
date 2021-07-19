@@ -12,6 +12,10 @@ import {
 import moment from 'moment';
 import IconButton from '@material-ui/core/IconButton';
 import CloseIcon from '@material-ui/icons/Close';
+import Paper from '@material-ui/core/Paper';
+import List from '@material-ui/core/List';
+import ListItem from '@material-ui/core/ListItem';
+import ListItemText from '@material-ui/core/ListItemText';
 
 const styles = {
   fieldStyle:{
@@ -93,6 +97,7 @@ export default class DetailModal extends Component {
     workTime: this.props.type === 'Edit'? this.props.taskDetails.workTime : [],
     tags: this.props.type === 'Edit'? this.props.taskDetails.tags : [],
     completedDate: this.props.type === 'Edit'? this.props.taskDetails.completedDate : '',
+    completedDates: this.props.type === 'Edit'? this.props.taskDetails.completedDates : [],
     dueWeek: this.props.type === 'Edit'? this.props.taskDetails.dueweek : moment().startOf('isoweek').format('MM/DD/YYYY'),
     dueMonth: this.props.type === 'Edit'? this.props.taskDetails.dueMonth : moment().format('MMMM YYYY'),
     notes: this.props.type === 'Edit'? this.props.taskDetails.notes : '',
@@ -145,7 +150,8 @@ export default class DetailModal extends Component {
       dueDate,
       activeDate,
       recurDays,
-      isUpdating
+      isUpdating,
+      completedDates
     } = this.state
     if (isUpdating === false) {
       if (newValue === 'Completed') {
@@ -158,22 +164,24 @@ export default class DetailModal extends Component {
             dueWeek: moment(dueDate).add(recurDays, 'days').startOf('week').format('MM/DD/YYYY'),
             dueMonth: moment(dueDate).add(recurDays, 'days').format('MMMM YYYY'),
             activeDate: moment(activeDate).add(recurDays, 'days'),
-            isActive: moment(activeDate).format('YYYY-MM-DD') < moment().format('YYYY-MM-DD') ? true : false
+            isActive: moment(activeDate).format('YYYY-MM-DD') < moment().format('YYYY-MM-DD') ? true : false,
+            completedDates: [...completedDates, moment(dueDate).format('MM/DD/YYYY')]
           }, ()=> {
             this.setState({ 
               isUpdating: false,
-            })
+            }, () => this.saveCurrentTask())
           });
         } else if (type === 'One-time') {
           this.setState({
             isUpdating: true,
             completedDate: moment().format('MM/DD/YYYY'),
+            completedDates: [moment(dueDate).format('MM/DD/YYYY')],
             status: 'Completed',
             isActive: false
           }, ()=> {
             this.setState({ 
               isUpdating: false,
-            })
+            }, () => this.saveCurrentTask())
           })
         }
       } else {
@@ -212,6 +220,7 @@ export default class DetailModal extends Component {
       workTime: this.state.workTime,
       tags: this.state.tags,
       completedDate: this.state.completedDate,
+      completedDates: this.state.completedDates,
       dueWeek: this.state.dueWeek,
       dueMonth: this.state.dueMonth,
       notes: this.state.notes,
@@ -239,6 +248,7 @@ export default class DetailModal extends Component {
       workTime: this.state.workTime,
       tags: this.state.tags,
       completedDate: this.state.completedDate,
+      completedDates: this.state.completedDates,
       dueWeek: this.state.dueWeek,
       dueMonth: this.state.dueMonth,
       notes: this.state.notes,
@@ -520,6 +530,22 @@ export default class DetailModal extends Component {
             value={this.state.notes}
             multiline
           />
+        </div>
+        <div style={styles.fieldContainer}>
+        <Typography style={styles.fieldLabel}>
+            Completed Dates
+          </Typography>
+          <Paper style={{maxHeight: 100, overflow: 'auto'}}>
+            <List>
+              {
+                this.state.completedDates.map((date) => (
+                  <ListItem button>
+                    {date}
+                  </ListItem>
+                ))
+              }
+            </List>
+          </Paper>
         </div>
         <div style={styles.buttonContainer}>
           {type === 'Add' &&
