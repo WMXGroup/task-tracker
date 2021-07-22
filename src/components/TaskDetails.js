@@ -105,6 +105,7 @@ export default class DetailModal extends Component {
     recurDays: this.props.type === 'Edit'? this.props.taskDetails.recurDays : 0,
     isUpdating: false,
     startTime: this.props.type === 'Edit'? this.props.taskDetails.startTime : moment({hour: 5}),
+    points: this.props.type === 'Edit'? this.props.taskDetails.points : '',
   }
 
   componentDidMount() {
@@ -226,7 +227,8 @@ export default class DetailModal extends Component {
       notes: this.state.notes,
       type: this.state.type,
       recurDays: this.state.recurDays,
-      startTime: this.state.startTime
+      startTime: this.state.startTime,
+      points: this.state.points,
     });
     this.props.toggleDisplay('Tasks');
   }
@@ -254,7 +256,8 @@ export default class DetailModal extends Component {
       notes: this.state.notes,
       type: this.state.type,
       recurDays: this.state.recurDays,
-      startTime: this.state.startTime
+      startTime: this.state.startTime,
+      points: this.state.points,
     });
     this.props.toggleDisplay('Tasks');
   }
@@ -475,6 +478,23 @@ export default class DetailModal extends Component {
             }}
             onChange={this.onChange}
             value={this.state.goal}
+            multiline
+          />
+        </div>
+        <div style={styles.fieldContainer}>
+          <Typography style={styles.fieldLabel}>
+            Points
+          </Typography>
+          <TextField 
+            style={styles.fieldStyle}
+            name='points'
+            type="number"
+            variant="outlined"
+            InputProps={{
+              style: styles.inputStyle
+            }}
+            onChange={this.onChange}
+            value={this.state.points}
             multiline
           />
         </div>

@@ -94,8 +94,8 @@ class Main extends Component {
 
   fixMissingFields = () => {
     const newTasks = this.state.tasks.map((task) => {
-      if (task.completedDates === undefined) {
-        task.completedDates = []
+      if (task.points === undefined) {
+        task.points = 0
       }
       return task;
     })
@@ -140,7 +140,6 @@ class Main extends Component {
     let params = new URLSearchParams(search);
     let listId = params.get('query');
     const currentDT = new Date();
-    console.log(listId);
 
     if(listId === null){
       axios
