@@ -2,7 +2,8 @@ import React, { Component } from 'react';
 import Checkbox from '@material-ui/core/Checkbox';
 import TextField from '@material-ui/core/TextField';
 import IconButton from '@material-ui/core/IconButton';
-import MoreHoriz from '@material-ui/icons/MoreHoriz';
+import EditIcon from '@material-ui/icons/Edit';
+import SnoozeIcon from '@material-ui/icons/Snooze';
 import { withStyles } from '@material-ui/core/styles';
 
 const styles = (theme) => ({
@@ -35,6 +36,7 @@ class Task extends Component {
       classes,
       task,
       completeTask,
+      ignoreTask,
       launchDetails
     } = this.props;
 
@@ -49,6 +51,14 @@ class Task extends Component {
             size='small'
             />
         }
+        <IconButton
+        onClick={() => ignoreTask(task.id)} 
+        size='small'
+        >
+          <SnoozeIcon
+            className={classes.moveButtons}
+          />
+        </IconButton>
         <TextField
           className={classes.taskStyle}
           disabled
@@ -64,11 +74,11 @@ class Task extends Component {
           value={task.description}
           multiline
         />
-          <IconButton
-          onClick={() => launchDetails('Edit', task.id)} 
-          size='small'
-          >
-          <MoreHoriz
+        <IconButton
+        onClick={() => launchDetails('Edit', task.id)} 
+        size='small'
+        >
+          <EditIcon
             className={classes.moveButtons}
           />
         </IconButton>

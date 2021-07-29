@@ -73,14 +73,17 @@ class Main extends Component {
     taskDetails: {},
     filterOption: 'Active',
     display: 'Tasks',
+    debugMode: false,
   }
 
   componentDidMount = () => {
-    this.getServerData();
-    // this.setState({
-    //   tasks: tasks
-    // })
-    
+    if(this.state.debugMode === true){
+      this.setState({
+        tasks: tasks
+      })
+    } else {
+      this.getServerData();
+    }
   }
 
   componentDidUpdate = (prevProps, prevState) => {
@@ -141,36 +144,37 @@ class Main extends Component {
     let listId = params.get('query');
     const currentDT = new Date();
 
-    if(listId === null){
-      axios
-      .post(`https://guarded-mesa-76047.herokuapp.com/api/lists/new`, {
-        list: this.state.tasks,
-        listName: this.state.trackerName,
-        lastSaved: new Date()
-      })
-      .then((res) => {
-        alert('New list created!')
-        return(res);
-      })
-      .then((res) => {
-        const newId = res.data._id;
-        const a = document.createElement("a");
-        a.href = `https://wmxgroup.github.io/task-tracker/?query=${newId}`;
-        a.click();
-      })
-    } else {
-      axios
-      .post(`https://guarded-mesa-76047.herokuapp.com/api/lists/update/${listId}`, {
-        list: this.state.tasks,
-        listName: this.state.trackerName,
-        lastSaved: currentDT
-      })
-      .then(() => {
-        this.setState({
+    if(this.state.debugMode === false){
+      if(listId === null){
+        axios
+        .post(`https://guarded-mesa-76047.herokuapp.com/api/lists/new`, {
+          list: this.state.tasks,
+          listName: this.state.trackerName,
+          lastSaved: new Date()
+        })
+        .then((res) => {
+          alert('New list created!')
+          return(res);
+        })
+        .then((res) => {
+          const newId = res.data._id;
+          const a = document.createElement("a");
+          a.href = `https://wmxgroup.github.io/task-tracker/?query=${newId}`;
+          a.click();
+        })
+      } else {
+        axios
+        .post(`https://guarded-mesa-76047.herokuapp.com/api/lists/update/${listId}`, {
+          list: this.state.tasks,
+          listName: this.state.trackerName,
           lastSaved: currentDT
         })
-        // alert('Data saved successfully!')
-      });
+        .then(() => {
+          this.setState({
+            lastSaved: currentDT
+          })
+        });
+      }
     }
   }
 
@@ -256,6 +260,27 @@ class Main extends Component {
           task.completedDate = moment().format('MM/DD/YYYY');
           task.completedDates = [...task.completedDates, moment(task.dueDate).format('MM/DD/YYYY')]
           task.status = 'Completed';
+          task.isActive = false;
+        }
+      }
+      return task;
+    });
+    this.setState({
+      tasks: newTasks,
+    }, () => this.saveData());
+  }
+
+  ignoreTask = (id) => {
+    const newTasks = this.state.tasks.map((task) => {
+      if (task.id === id) {
+        if (task.type === 'Recurring') {
+          task.dueDate = moment(task.dueDate).add(task.recurDays, 'days').format('MM/DD/YYYY');
+          task.dueWeek = moment(task.dueDate).add(task.recurDays, 'days').startOf('week').format('MM/DD/YYYY');
+          task.dueMonth = moment(task.dueDate).add(task.recurDays, 'days').format('MMMM YYYY');
+          task.activeDate = moment(task.activeDate).add(task.recurDays, 'days');
+          task.isActive = moment(task.activeDate).format('YYYY-MM-DD') < moment().format('YYYY-MM-DD') ? true : false
+        } else if (task.type === 'One-time') {
+          task.status = 'On Hold';
           task.isActive = false;
         }
       }
@@ -503,6 +528,7 @@ class Main extends Component {
                     key={i}
                     completeTask={this.completeTask}
                     launchDetails={this.launchDetails}
+                    ignoreTask={this.ignoreTask}
                     getKeyName={this.getKeyName}
                     filterOption={this.state.filterOption}
                     />

@@ -9,6 +9,7 @@ export default class TaskGroup extends Component {
       tasks,
       currentSort,
       completeTask,
+      ignoreTask,
       launchDetails,
       getKeyName,
       filterOption
@@ -39,6 +40,7 @@ export default class TaskGroup extends Component {
           task={task}
           key={i}
           completeTask={completeTask}
+          ignoreTask={ignoreTask}
           launchDetails={launchDetails}
           />
         ))}
