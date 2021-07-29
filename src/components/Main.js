@@ -63,7 +63,7 @@ class Main extends Component {
     isLoading: false,
     anchorEl: null,
     setAnchorEl: false,
-    currentSort: 'Category',
+    currentSort: 'Due Date',
     trackerName: 'Test Title',
     selectedTask: null,
     detailType: null,
