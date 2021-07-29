@@ -278,7 +278,7 @@ class Main extends Component {
           task.dueWeek = moment(task.dueDate).add(task.recurDays, 'days').startOf('week').format('MM/DD/YYYY');
           task.dueMonth = moment(task.dueDate).add(task.recurDays, 'days').format('MMMM YYYY');
           task.activeDate = moment(task.activeDate).add(task.recurDays, 'days');
-          task.isActive = moment(task.activeDate).format('YYYY-MM-DD') < moment().format('YYYY-MM-DD') ? true : false
+          task.isActive = moment(task.activeDate).format('YYYY-MM-DD') <= moment().format('YYYY-MM-DD') ? true : false
         } else if (task.type === 'One-time') {
           task.status = 'On Hold';
           task.isActive = false;
