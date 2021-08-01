@@ -283,9 +283,6 @@ export default class DetailModal extends Component {
       toggleDisplay
     } = this.props;
 
-    // console.log(this.props)
-    // console.log(this.state)
-
     return (
       <div style={styles.dialogContainer}>
         <div style={styles.headerContainer}> 

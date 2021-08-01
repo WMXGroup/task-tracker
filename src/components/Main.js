@@ -16,6 +16,7 @@ import TaskDetails from './TaskDetails';
 import {tasks} from './TestTasks';
 import SortAlt from './SortAlt';
 import ActiveFilter from './ActiveFilter';
+import CategoryFilter from './CategoryFilter';
 import moment from 'moment';
 import axios from 'axios';
 
@@ -72,8 +73,9 @@ class Main extends Component {
     contactUsers: [],
     taskDetails: {},
     filterOption: 'Active',
+    categoryFilter: 'All',
     display: 'Tasks',
-    debugMode: false,
+    debugMode: true,
   }
 
   componentDidMount = () => {
@@ -278,7 +280,7 @@ class Main extends Component {
           task.dueDate = moment(task.dueDate).add(task.recurDays, 'days').format('MM/DD/YYYY');
           task.dueWeek = moment(task.dueDate).add(task.recurDays, 'days').startOf('week').format('MM/DD/YYYY');
           task.dueMonth = moment(task.dueDate).add(task.recurDays, 'days').format('MMMM YYYY');
-          task.activeDate = moment(task.activeDate).add(task.recurDays, 'days');
+          task.activeDate = moment(task.activeDate).add(1, 'days');
           task.isActive = moment(task.activeDate).format('YYYY-MM-DD') <= moment().format('YYYY-MM-DD') ? true : false
         } else if (task.type === 'One-time') {
           task.status = 'On Hold';
@@ -420,6 +422,12 @@ class Main extends Component {
     })
   };
 
+  handleCategoryFilterChange = (categoryFilter) => {
+    this.setState({
+      categoryFilter
+    })
+  };
+
   toggleDisplay = (displayName) => {
     this.setState({
       display: displayName
@@ -431,8 +439,6 @@ class Main extends Component {
     const {
       classes
     } = this.props;
-
-    // console.log('Main State:', this.state);
 
     return (
       <React.Fragment>
@@ -493,6 +499,12 @@ class Main extends Component {
                   handleFilterChange={this.handleFilterChange}
                 />
               </div>
+              <div className={classes.addButton}>
+                <CategoryFilter
+                  handleFilterChange={this.handleCategoryFilterChange}
+                  categories={this.state.categories}
+                />
+              </div>
             </Toolbar>
           </AppBar>
           <Toolbar />
@@ -532,6 +544,7 @@ class Main extends Component {
                     ignoreTask={this.ignoreTask}
                     getKeyName={this.getKeyName}
                     filterOption={this.state.filterOption}
+                    categoryFilter={this.state.categoryFilter}
                     />
                 ))}
               </div>

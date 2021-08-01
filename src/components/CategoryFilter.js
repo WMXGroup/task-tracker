@@ -1,21 +1,21 @@
 import React, { Component } from 'react';
 import IconButton from '@material-ui/core/IconButton';
-import FilterList from '@material-ui/icons/FilterList';
+import CategoryIcon from '@material-ui/icons/Category';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 
-export default class ActiveFilter extends Component {
+export default class CategoryFilterr extends Component {
 
   state = {
-    filterOptions: [
-      'Active',
-      'Inactive',
-      'Completed',
-      'Incomplete',
-      'All',
-    ],
+    filterOptions: [],
     anchorEl: null,
     setAnchorEl: false,
+  }
+
+  componentWillReceiveProps(nextProps, prevProps) {
+    this.setState({
+      filterOptions: [...nextProps.categories, 'All']
+    })
   }
 
   handleMenu = event => {
@@ -45,7 +45,7 @@ export default class ActiveFilter extends Component {
           color="inherit"
           onClick={this.handleMenu}
           >
-          <FilterList />
+          <CategoryIcon />
         </IconButton>
         <Menu
             id="menu-appbar"

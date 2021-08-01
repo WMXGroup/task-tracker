@@ -8,7 +8,7 @@ import { withStyles } from '@material-ui/core/styles';
 
 const styles = (theme) => ({
   taskStyle:{
-    border: '1px solid #ccc',
+    border: '1px solid',
     borderRadius: '25px',
     width:'700px',
     marginTop: '5px',
@@ -61,6 +61,9 @@ class Task extends Component {
         </IconButton>
         <TextField
           className={classes.taskStyle}
+          style={{
+            borderColor: this.props.task.dueDate === 'Invalid date' ? 'red' : '#ccc',
+          }}
           disabled
           InputProps={{
             disableUnderline: true,

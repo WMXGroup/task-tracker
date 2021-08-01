@@ -12,7 +12,8 @@ export default class TaskGroup extends Component {
       ignoreTask,
       launchDetails,
       getKeyName,
-      filterOption
+      filterOption,
+      categoryFilter,
     } = this.props;
 
     const lowercurrentSort = getKeyName(currentSort);
@@ -24,11 +25,15 @@ export default class TaskGroup extends Component {
       groupTasks = tasks.filter((task) => (task[lowercurrentSort] === header && task.isActive === false && task.status !== 'Completed' ))
     }  else if(filterOption === 'Completed') {
       groupTasks = tasks.filter((task) => (task[lowercurrentSort] === header && task.status === 'Completed' ))
+    }  else if(filterOption === 'Incomplete') {
+      groupTasks = tasks.filter((task) => (task[lowercurrentSort] === header && task.status !== 'Completed' ))
     } else {
       groupTasks = tasks.filter((task) => task[lowercurrentSort] === header)
     }
 
     groupTasks.sort((a,b) => (a.priority > b.priority) ? 1 : -1);
+
+    groupTasks = groupTasks.filter((task) => (task.category === categoryFilter || categoryFilter === 'All'))
 
     return (
       <React.Fragment>
