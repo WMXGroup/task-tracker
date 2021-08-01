@@ -75,7 +75,7 @@ class Main extends Component {
     filterOption: 'Active',
     categoryFilter: 'All',
     display: 'Tasks',
-    debugMode: false,
+    debugMode: true,
   }
 
   componentDidMount = () => {
@@ -276,14 +276,14 @@ class Main extends Component {
   ignoreTask = (id) => {
     const newTasks = this.state.tasks.map((task) => {
       if (task.id === id) {
-        task.dueDate = moment(task.dueDate).add(1, 'days').format('MM/DD/YYYY');
-        task.dueWeek = moment(task.dueDate).add(1, 'days').startOf('week').format('MM/DD/YYYY');
-        task.dueMonth = moment(task.dueDate).add(1, 'days').format('MMMM YYYY');
-        task.activeDate = moment(task.activeDate).add(1, 'days');
-        task.isActive = moment(task.activeDate).format('YYYY-MM-DD') <= moment().format('YYYY-MM-DD') ? true : false
-      return task;
+          task.dueDate = moment(task.dueDate).add(1, 'days').format('MM/DD/YYYY');
+          task.dueWeek = moment(task.dueDate).add(1, 'days').startOf('week').format('MM/DD/YYYY');
+          task.dueMonth = moment(task.dueDate).add(1, 'days').format('MMMM YYYY');
+          task.activeDate = moment(task.activeDate).add(1, 'days');
+          task.isActive = moment(task.activeDate).format('YYYY-MM-DD') <= moment().format('YYYY-MM-DD') ? true : false
       }
-    })
+      return task;
+    });
     this.setState({
       tasks: newTasks,
     }, () => this.saveData());
