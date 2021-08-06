@@ -76,7 +76,7 @@ class Main extends Component {
     filterOption: 'Active',
     categoryFilter: 'All',
     display: 'Tasks',
-    debugMode: true,
+    debugMode: false,
     categoryReport: [],
   }
 
