@@ -21,6 +21,7 @@ export const tasks = [
     type: 'One-time',
     recurDays: '',
     completedDates: [],
+    points: 1,
   },
   {
     id: 2,
@@ -44,6 +45,7 @@ export const tasks = [
     type: 'One-time',
     recurDays: '',
     completedDates: [],
+    points: 1,
   },
   {
     id: 3,
@@ -67,6 +69,7 @@ export const tasks = [
     type: 'One-time',
     recurDays: '',
     completedDates: [],
+    points: 1,
   },
   {
     id: 4,
@@ -90,6 +93,7 @@ export const tasks = [
     type: 'One-time',
     recurDays: '',
     completedDates: [],
+    points: 1,
   },
   {
     id: 5,
@@ -113,6 +117,7 @@ export const tasks = [
     type: 'One-time',
     recurDays: '',
     completedDates: [],
+    points: 1,
   },
   {
     id: 6,
@@ -135,7 +140,8 @@ export const tasks = [
     tags: [],
     type: 'One-time',
     recurDays: '',
-    completedDates: [],
+    completedDates: ['05/01/2020', '06/01/2021'],
+    points: 1,
   },
   {
     id: 7,
@@ -159,6 +165,7 @@ export const tasks = [
     type: 'Recurring',
     recurDays: '1',
     completedDates: ['05/01/2020', '06/01/2021', '06/02/2021', '06/03/2021' ],
+    points: 1,
   },
   {
     id: 8,
@@ -181,7 +188,8 @@ export const tasks = [
     tags: [],
     type: 'Recurring',
     recurDays: '1',
-    completedDates: [],
+    completedDates: ['05/01/2020', '06/01/2021'],
+    points: 1,
   },
   {
     id: 9,
@@ -205,5 +213,6 @@ export const tasks = [
     type: 'Recurring',
     recurDays: '1',
     completedDates: [],
+    points: 1,
   },
 ]

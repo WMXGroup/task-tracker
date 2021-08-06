@@ -17,6 +17,7 @@ import {tasks} from './TestTasks';
 import SortAlt from './SortAlt';
 import ActiveFilter from './ActiveFilter';
 import CategoryFilter from './CategoryFilter';
+import Report from './Report';
 import moment from 'moment';
 import axios from 'axios';
 
@@ -75,7 +76,8 @@ class Main extends Component {
     filterOption: 'Active',
     categoryFilter: 'All',
     display: 'Tasks',
-    debugMode: false,
+    debugMode: true,
+    categoryReport: [],
   }
 
   componentDidMount = () => {
@@ -85,7 +87,8 @@ class Main extends Component {
       })
     } else {
       this.getServerData();
-    }
+    };
+    
   }
 
   componentDidUpdate = (prevProps, prevState) => {
@@ -429,11 +432,49 @@ class Main extends Component {
     })
   }
 
+  calculatePoints = () => {
+    console.log('ran');
+    let pointsArray = [];
+    const {
+      categories,
+      tasks,
+    } = this.state;
+
+    for (let i = 0; i < categories.length; i++) {
+      pointsArray.push({
+        category: categories[i],
+        totalPoints: 0
+      })
+    }
+
+    for (let i = 0; i < tasks.length; i++) {
+      for (let j = 0; j < pointsArray.length; j++) {
+        if (pointsArray[j].category === tasks[i].category) {
+          for (let k = 0; k < tasks[i].completedDates.length; k++) {
+            pointsArray[j].totalPoints += 1;
+          }
+        }
+      }
+    }
+
+    this.setState({
+      categoryReport: pointsArray,
+    })
+  }
+
+  launchReport = async () => {
+    await this.handleClose();
+    await this.calculatePoints();
+    await this.toggleDisplay('Report');
+  }
+
   render() {
 
     const {
       classes
     } = this.props;
+
+    console.log(this.state);
 
     return (
       <React.Fragment>
@@ -479,6 +520,7 @@ class Main extends Component {
                   <MenuItem onClick={() => this.exportJSON()}>Export Data</MenuItem>
                   {/* <MenuItem onClick={() => this.saveData()}>Save Data</MenuItem> */}
                   <MenuItem onClick={() => this.createNew()}>Create New</MenuItem>
+                  <MenuItem onClick={() => this.launchReport()}>Show Report</MenuItem>
                 </Menu>
               <Typography variant="h6">
                   Task Tracker
@@ -556,6 +598,12 @@ class Main extends Component {
               taskDetails={this.state.taskDetails}
               saveTask={this.saveTask}
               deleteTask={this.deleteTask}
+            />
+          }
+          {this.state.display === 'Report' &&
+            <Report
+              categoryReport={this.state.categoryReport}
+              toggleDisplay={this.toggleDisplay}
             />
           }
           {this.state.display !== 'Details' &&
