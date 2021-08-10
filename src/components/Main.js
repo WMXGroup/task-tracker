@@ -76,7 +76,7 @@ class Main extends Component {
     filterOption: 'Active',
     categoryFilter: 'All',
     display: 'Tasks',
-    debugMode: false,
+    debugMode: true,
     categoryReport: [],
   }
 
@@ -450,7 +450,7 @@ class Main extends Component {
     for (let i = 0; i < tasks.length; i++) {
       for (let j = 0; j < pointsArray.length; j++) {
         if (pointsArray[j].category === tasks[i].category) {
-          pointsArray[j].weeklyPoints += tasks[i].points * (tasks[i].recurDays === null ? 0 : (tasks[i].recurDays/7).toFixed(2))
+          pointsArray[j].weeklyPoints += tasks[i].points * ((tasks[i].recurDays === 0 || tasks[i].recurDays === null || tasks[i].recurDays === '' ) ? 0 : Math.floor(7/tasks[i].recurDays))
           for (let k = 0; k < tasks[i].completedDates.length; k++) {
             if (moment(tasks[i].completedDates[k]).format('YYYYMMDD') >= moment().startOf('week').format('YYYYMMDD'))
             pointsArray[j].totalPoints += 1;

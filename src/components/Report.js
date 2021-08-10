@@ -36,7 +36,7 @@ const styles = theme => ({
     margin: '.1rem'
   },
   reportContainer: {
-    marginBottom: '.5rem'
+    marginBottom: '70px'
   }
 });
 
@@ -85,7 +85,7 @@ class Report extends Component {
                   {`Total : ${item.weeklyPoints}`}
                 </Typography>
                 <Typography className={classes.fieldLabel}>
-                  {`Rating : ${item.weeklyPoints === 0 ? 0 : (item.totalPoints/item.weeklyPoints*100).toFixed(2)}%`}
+                  {`Rating : ${item.weeklyPoints === 0 ? 0 : (item.totalPoints/item.weeklyPoints*100).toFixed(0)}%`}
                 </Typography>
               </div>
             </div>
