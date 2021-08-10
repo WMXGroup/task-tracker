@@ -35,6 +35,9 @@ const styles = theme => ({
     alignItems: 'center',
     margin: '.1rem'
   },
+  reportContainer: {
+    marginBottom: '.5rem'
+  }
 });
 
 class Report extends Component {
@@ -66,7 +69,7 @@ class Report extends Component {
             </IconButton>
           </div>
         </div>
-        <div>
+        <div className={classes.reportContainer}>
           {categoryReport.map ((item, i) => (
             <div className={classes.fieldContainer} key={i}>
               <div className={classes.headerName}>
