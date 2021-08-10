@@ -10,7 +10,7 @@ const styles = theme => ({
     marginBottom: '70px'
   },
   headerName: {
-    margin: '.1rem',
+    margin: '.1rem'
   },
   headerClose: {
     margin: '10px',
@@ -19,16 +19,17 @@ const styles = theme => ({
   headerContainer: {
     display: 'flex',
     justifyContent: 'space-between',
-    padding: '10px'
+    padding: '10px',
   },
   fieldLabel: {
     alignContent: 'center',
     minWidth: '90px',
   },
   fieldContainer: {
-    display: 'flex',
-    flexDirection: 'column',
-    margin: '.5rem'
+    border: '1px solid #ccc',
+    margin: '5px',
+    padding: '5px',
+    minWidth: '200px'
   },
   countContainer: {
     alignContent: 'center',
@@ -36,6 +37,8 @@ const styles = theme => ({
     margin: '.1rem'
   },
   reportContainer: {
+    display: 'flex',
+    flexWrap: 'wrap',
     marginBottom: '70px'
   }
 });
@@ -71,7 +74,7 @@ class Report extends Component {
         </div>
         <div className={classes.reportContainer}>
           {categoryReport.map ((item, i) => (
-            <div className={classes.fieldContainer} key={i}>
+            <div className={classes.fieldContainer}>
               <div className={classes.headerName}>
                 <Typography variant='h4'>
                   {item.category}
