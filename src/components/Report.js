@@ -10,12 +10,11 @@ const styles = theme => ({
     marginBottom: '70px'
   },
   headerName: {
-    color: '#aaa',
-    margin: '10px',
+    margin: '.1rem',
   },
   headerClose: {
     margin: '10px',
-    color: '#aaa',
+    color: '#aaa'
   },
   headerContainer: {
     display: 'flex',
@@ -25,13 +24,16 @@ const styles = theme => ({
   fieldLabel: {
     alignContent: 'center',
     minWidth: '90px',
-    maxWidth: '90px'
   },
   fieldContainer: {
     display: 'flex',
+    flexDirection: 'column',
+    margin: '.5rem'
+  },
+  countContainer: {
     alignContent: 'center',
     alignItems: 'center',
-    margin: '.5rem',
+    margin: '.1rem'
   },
 });
 
@@ -52,7 +54,7 @@ class Report extends Component {
         <div className={classes.headerContainer}> 
           <div className={classes.headerName}>
             <Typography variant="h5">
-                Report
+                Weekly Report
             </Typography>
           </div>
           <div className={classes.headerClose}>
@@ -64,15 +66,25 @@ class Report extends Component {
             </IconButton>
           </div>
         </div>
-        <div className={classes.fieldContainer}>
+        <div>
           {categoryReport.map ((item, i) => (
-            <div key={i}>
-              <Typography className={classes.fieldLabel}>
-                {item.category}
-              </Typography>
-              <Typography className={classes.fieldLabel}>
-                {item.totalPoints}
-              </Typography>
+            <div className={classes.fieldContainer} key={i}>
+              <div className={classes.headerName}>
+                <Typography variant='h4'>
+                  {item.category}
+                </Typography>
+              </div>
+              <div className={classes.countContainer}>
+                <Typography className={classes.fieldLabel}>
+                  {`Points : ${item.totalPoints}`}
+                </Typography>
+                <Typography className={classes.fieldLabel}>
+                  {`Total : ${item.weeklyPoints}`}
+                </Typography>
+                <Typography className={classes.fieldLabel}>
+                  {`Rating : ${item.weeklyPoints === 0 ? 0 : (item.totalPoints/item.weeklyPoints*100).toFixed(2)}%`}
+                </Typography>
+              </div>
             </div>
           ))}
         </div>

@@ -433,7 +433,6 @@ class Main extends Component {
   }
 
   calculatePoints = () => {
-    console.log('ran');
     let pointsArray = [];
     const {
       categories,
@@ -443,14 +442,17 @@ class Main extends Component {
     for (let i = 0; i < categories.length; i++) {
       pointsArray.push({
         category: categories[i],
-        totalPoints: 0
+        totalPoints: 0,
+        weeklyPoints: 0,
       })
     }
 
     for (let i = 0; i < tasks.length; i++) {
       for (let j = 0; j < pointsArray.length; j++) {
         if (pointsArray[j].category === tasks[i].category) {
+          pointsArray[j].weeklyPoints += tasks[i].points * 7
           for (let k = 0; k < tasks[i].completedDates.length; k++) {
+            if (moment(tasks[i].completedDates[k]).format('YYYYMMDD') >= moment().startOf('week').format('YYYYMMDD'))
             pointsArray[j].totalPoints += 1;
           }
         }
@@ -473,8 +475,6 @@ class Main extends Component {
     const {
       classes
     } = this.props;
-
-    console.log(this.state);
 
     return (
       <React.Fragment>
