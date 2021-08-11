@@ -29,7 +29,8 @@ const styles = theme => ({
     border: '1px solid #ccc',
     margin: '5px',
     padding: '5px',
-    minWidth: '200px'
+    minWidth: '200px',
+    maxWidth: '200px'
   },
   countContainer: {
     alignContent: 'center',
