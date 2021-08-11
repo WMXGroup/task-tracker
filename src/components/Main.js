@@ -379,7 +379,7 @@ class Main extends Component {
       }
       return null;
     });
-    resArr.sort((a,b) => (a.priority > b.priority) ? 1 : -1);
+    resArr.sort((a,b) => (a > b) ? 1 : -1);
     this.setState({
       [arrayName]: resArr
     })
