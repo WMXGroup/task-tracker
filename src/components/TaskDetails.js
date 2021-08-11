@@ -157,6 +157,7 @@ export default class DetailModal extends Component {
     if (isUpdating === false) {
       if (newValue === 'Completed') {
         if (type === 'Recurring') {
+          let newActiveDate = moment(activeDate).add(recurDays, 'days');
           this.setState({
             isUpdating: true,
             status: '',
@@ -164,8 +165,8 @@ export default class DetailModal extends Component {
             dueDate: moment(dueDate).add(recurDays, 'days').format('MM/DD/YYYYY'),
             dueWeek: moment(dueDate).add(recurDays, 'days').startOf('week').format('MM/DD/YYYY'),
             dueMonth: moment(dueDate).add(recurDays, 'days').format('MMMM YYYY'),
-            activeDate: moment(activeDate).add(recurDays, 'days'),
-            isActive: moment(activeDate).format('YYYY-MM-DD') < moment().format('YYYY-MM-DD') ? true : false,
+            activeDate: newActiveDate,
+            isActive: moment(newActiveDate).format('YYYY-MM-DD') < moment().format('YYYY-MM-DD') ? true : false,
             completedDates: [...completedDates, moment(dueDate).format('MM/DD/YYYY')]
           }, ()=> {
             this.setState({ 
