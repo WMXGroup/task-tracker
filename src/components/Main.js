@@ -255,13 +255,13 @@ class Main extends Component {
     const newTasks = this.state.tasks.map((task) => {
       if (task.id === id) {
         let curDueDate = task.dueDate;
-        let curActiveDate = task.activeDate;
+        let newActiveDate = moment(task.activeDate).add(task.recurDays, 'days');
         if (task.type === 'Recurring') {
           task.dueDate = moment(curDueDate).add(task.recurDays, 'days').format('MM/DD/YYYY');
           task.dueWeek = moment(curDueDate).add(task.recurDays, 'days').startOf('week').format('MM/DD/YYYY');
           task.dueMonth = moment(curDueDate).add(task.recurDays, 'days').format('MMMM YYYY');
-          task.activeDate = moment(curActiveDate).add(task.recurDays, 'days');
-          task.isActive = moment(curActiveDate).format('YYYY-MM-DD') < moment().format('YYYY-MM-DD') ? true : false
+          task.activeDate = moment(task.activeDate).add(task.recurDays, 'days');
+          task.isActive = moment(newActiveDate).format('YYYY-MM-DD') < moment().format('YYYY-MM-DD') ? true : false
           task.completedDates = [...task.completedDates, moment(curDueDate).format('MM/DD/YYYY')]
         } else if (task.type === 'One-time') {
           task.completedDate = moment().format('MM/DD/YYYY');
