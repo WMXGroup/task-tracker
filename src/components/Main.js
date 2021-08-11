@@ -453,7 +453,7 @@ class Main extends Component {
           pointsArray[j].weeklyPoints += tasks[i].points * ((tasks[i].recurDays === 0 || tasks[i].recurDays === null || tasks[i].recurDays === '' ) ? 0 : Math.floor(7/tasks[i].recurDays))
           for (let k = 0; k < tasks[i].completedDates.length; k++) {
             if (moment(tasks[i].completedDates[k]).format('YYYYMMDD') >= moment().startOf('week').format('YYYYMMDD'))
-            pointsArray[j].totalPoints += 1;
+            pointsArray[j].totalPoints += tasks[i].points;
           }
         }
       }
