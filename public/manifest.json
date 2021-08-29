@@ -1,6 +1,6 @@
 {
-  "short_name": "React App",
-  "name": "Create React App Sample",
+  "short_name": "Task Tracker",
+  "name": "Task Tracker",
   "icons": [
     {
       "src": "favicon.ico",
@@ -18,7 +18,7 @@
       "sizes": "512x512"
     }
   ],
-  "start_url": ".",
+  "start_url": "./?query=5f3955fded7d6c00172720a1",
   "display": "standalone",
   "theme_color": "#000000",
   "background_color": "#ffffff"
