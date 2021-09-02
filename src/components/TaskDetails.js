@@ -8,6 +8,7 @@ import DateFnsUtils from '@date-io/date-fns';
 import {
   MuiPickersUtilsProvider,
   KeyboardDatePicker,
+  KeyboardTimePicker,
 } from '@material-ui/pickers';
 import moment from 'moment';
 import IconButton from '@material-ui/core/IconButton';
@@ -87,8 +88,8 @@ export default class DetailModal extends Component {
     category: this.props.type === 'Edit'? this.props.taskDetails.category : '',
     status: this.props.type === 'Edit'? this.props.taskDetails.status : '',
     dueDate: this.props.type === 'Edit'? this.props.taskDetails.dueDate : moment().format('MM/DD/YYYY'),
-    actual: this.props.type === 'Edit'? this.props.taskDetails.actual : 0,
-    goal: this.props.type === 'Edit'? this.props.taskDetails.goal : 0,
+    hours: this.props.type === 'Edit'? this.props.taskDetails.hours : 0,
+    weeklyGoal: this.props.type === 'Edit'? this.props.taskDetails.weeklyGoal : 0,
     priority: this.props.type === 'Edit'? this.props.taskDetails.priority : '',
     assigned: this.props.type === 'Edit'? this.props.taskDetails.assigned : '',
     contact: this.props.type === 'Edit'? this.props.taskDetails.contact : '',
@@ -106,6 +107,7 @@ export default class DetailModal extends Component {
     isUpdating: false,
     startTime: this.props.type === 'Edit'? this.props.taskDetails.startTime : moment({hour: 5}),
     points: this.props.type === 'Edit'? this.props.taskDetails.points : '',
+    log: this.props.type === 'Edit'? this.props.taskDetails.log : [],
   }
 
   componentDidMount() {
@@ -157,12 +159,12 @@ export default class DetailModal extends Component {
     if (isUpdating === false) {
       if (newValue === 'Completed') {
         if (type === 'Recurring') {
-          let newActiveDate = moment(activeDate).add(recurDays, 'days');
+          let newActiveDate = moment(activeDate).add(recurDays, 'days').format('MM/DD/YYYY');
           this.setState({
             isUpdating: true,
             status: '',
             completedDate: '',
-            dueDate: moment(dueDate).add(recurDays, 'days').format('MM/DD/YYYYY'),
+            dueDate: moment(dueDate).add(recurDays, 'days').format('MM/DD/YYYY'),
             dueWeek: moment(dueDate).add(recurDays, 'days').startOf('week').format('MM/DD/YYYY'),
             dueMonth: moment(dueDate).add(recurDays, 'days').format('MMMM YYYY'),
             activeDate: newActiveDate,
@@ -212,8 +214,8 @@ export default class DetailModal extends Component {
       category: this.state.category,
       status: this.state.status,
       dueDate: this.state.dueDate,
-      actual: this.state.actual,
-      goal: this.state.goal,
+      hours: this.state.hours,
+      weeklyGoal: this.state.weeklyGoal,
       priority: this.state.priority,
       assigned: this.state.assigned,
       contact: this.state.contact,
@@ -230,6 +232,7 @@ export default class DetailModal extends Component {
       recurDays: this.state.recurDays,
       startTime: this.state.startTime,
       points: this.state.points,
+      log: this.state.log,
     });
     this.props.toggleDisplay('Tasks');
   }
@@ -241,8 +244,8 @@ export default class DetailModal extends Component {
       category: this.state.category,
       status: this.state.status,
       dueDate: this.state.dueDate,
-      actual: this.state.actual,
-      goal: this.state.goal,
+      hours: this.state.hours,
+      weeklyGoal: this.state.weeklyGoal,
       priority: this.state.priority,
       assigned: this.state.assigned,
       contact: this.state.contact,
@@ -259,6 +262,7 @@ export default class DetailModal extends Component {
       recurDays: this.state.recurDays,
       startTime: this.state.startTime,
       points: this.state.points,
+      log: this.state.log,
     });
     this.props.toggleDisplay('Tasks');
   }
@@ -272,6 +276,20 @@ export default class DetailModal extends Component {
     const newDates = this.state.completedDates.filter((date) => date !== value)
     this.setState({
       completedDates: newDates,
+    });
+  }
+
+  handleTimeChange = (value) => {
+    this.setState({
+      startTime: moment(value).format('hh:mm A'),
+    })
+  };
+
+  handleDeleteLog = (id) => {
+    console.log(id);
+    const newLogs = this.state.log.filter((log) => log.logId !== id)
+    this.setState({
+      log: newLogs,
     });
   }
 
@@ -447,35 +465,60 @@ export default class DetailModal extends Component {
         </div>
         <div style={styles.fieldContainer}>
           <Typography style={styles.fieldLabel}>
-            Actual
+            Start Time
+          </Typography>
+          <div style={styles.dateContainer}>
+            <MuiPickersUtilsProvider utils={DateFnsUtils}>
+              <KeyboardTimePicker
+                disableToolbar
+                autoOk={true}
+                variant="inline"
+                placeholder="12:00 AM"
+                mask="__:__ _M"
+                value={moment('01/01/2000' + ' ' + this.state.startTime)}
+                onChange={date => this.handleTimeChange(date)}
+                KeyboardButtonProps={{
+                  'aria-label': 'change time',
+                }}
+                inputVariant="outlined"
+                InputProps={{
+                  style: styles.dateStyle
+                }}
+              />
+            </MuiPickersUtilsProvider>
+          </div>
+        </div>
+        <div style={styles.fieldContainer}>
+          <Typography style={styles.fieldLabel}>
+            Hours
           </Typography>
           <TextField 
             style={styles.fieldStyle}
-            name='actual'
+            name='hours'
             type="number"
             variant="outlined"
             InputProps={{
               style: styles.inputStyle
             }}
             onChange={this.onChange}
-            value={this.state.actual}
+            value={this.state.hours}
             multiline
           />
         </div>
         <div style={styles.fieldContainer}>
           <Typography style={styles.fieldLabel}>
-            Goal
+            Weekly Goal
           </Typography>
           <TextField 
             style={styles.fieldStyle}
-            name='goal'
+            name='weeklyGoal'
             type="number"
             variant="outlined"
             InputProps={{
               style: styles.inputStyle
             }}
             onChange={this.onChange}
-            value={this.state.goal}
+            value={this.state.weeklyGoal}
             multiline
           />
         </div>
@@ -557,7 +600,7 @@ export default class DetailModal extends Component {
           />
         </div>
         <div style={styles.fieldContainer}>
-        <Typography style={styles.fieldLabel}>
+          <Typography style={styles.fieldLabel}>
             Completed Dates
           </Typography>
           <Paper variant="outlined" style={{maxHeight: 100, width: 200, overflow: 'auto'}}>
@@ -579,6 +622,53 @@ export default class DetailModal extends Component {
               }
             </List>
           </Paper>
+        </div>
+        <div style={styles.fieldContainer}>
+          <Typography style={styles.fieldLabel}>
+            Log
+          </Typography>
+          <Paper variant="outlined" style={{maxHeight: 100, width: 400, overflow: 'auto'}}>
+            <List>
+              {
+                this.state.log.map((item) => (
+                  <ListItem 
+                    button
+                    onClick={() => this.props.launchEditLog(this.state, item)}
+                    >
+                    <div style={{border: '1px solid #ccc'}}>
+                      <div>
+                        {'Date: '}{item.logDate}
+                      </div>
+                      <div>
+                        {'Note: '}{item.logText}
+                      </div>
+                      <div>
+                        {'Value: '}{item.logValue}
+                      </div>
+                    </div>
+                    <ListItemSecondaryAction>
+                      <IconButton 
+                        edge="end" 
+                        aria-label="delete"
+                        onClick={() => this.handleDeleteLog(item.logId)}>
+                        <CloseIcon />
+                      </IconButton>
+                    </ListItemSecondaryAction>
+                  </ListItem>
+                ))
+              }
+            </List>
+          </Paper>
+          <div style={styles.buttonStyle}>
+            <Button 
+              style={styles.buttonStyle}
+              variant="contained"
+              color="primary"
+              onClick={() => this.props.launchNewLog(this.state)}
+              >
+              +
+            </Button>
+          </div>
         </div>
         <div style={styles.buttonContainer}>
           {type === 'Add' &&

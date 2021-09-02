@@ -13,6 +13,7 @@ import Divider from '@material-ui/core/Divider';
 import { withStyles } from '@material-ui/core/styles';
 import TaskGroup from './TaskGroup';
 import TaskDetails from './TaskDetails';
+import LogDetail from './LogDetail';
 import {tasks} from './TestTasks';
 import SortAlt from './SortAlt';
 import ActiveFilter from './ActiveFilter';
@@ -69,6 +70,8 @@ class Main extends Component {
     trackerName: 'Test Title',
     selectedTask: null,
     detailType: null,
+    logForm: null,
+    logDetails: {},
     categories: [],
     assignedUsers: [],
     contactUsers: [],
@@ -102,8 +105,17 @@ class Main extends Component {
 
   fixMissingFields = () => {
     const newTasks = this.state.tasks.map((task) => {
-      if (task.points === undefined) {
-        task.points = 0
+      if (task.weeklyGoal === undefined) {
+        task.weeklyGoal = 0
+      }
+      if (task.hours === undefined) {
+        task.hour = 0
+      }
+      if (task.log === undefined) {
+        task.log = []
+      }
+      if (task.startTime === undefined) {
+        task.startTime = null
       }
       return task;
     })
@@ -255,7 +267,7 @@ class Main extends Component {
     const newTasks = this.state.tasks.map((task) => {
       if (task.id === id) {
         let curDueDate = task.dueDate;
-        let newActiveDate = moment(task.activeDate).add(task.recurDays, 'days');
+        let newActiveDate = moment(task.activeDate).add(task.recurDays, 'days').format('MM/DD/YYYY');
         if (task.type === 'Recurring') {
           task.dueDate = moment(curDueDate).add(task.recurDays, 'days').format('MM/DD/YYYY');
           task.dueWeek = moment(curDueDate).add(task.recurDays, 'days').startOf('week').format('MM/DD/YYYY');
@@ -283,7 +295,7 @@ class Main extends Component {
           task.dueDate = moment(task.dueDate).add(1, 'days').format('MM/DD/YYYY');
           task.dueWeek = moment(task.dueDate).add(1, 'days').startOf('week').format('MM/DD/YYYY');
           task.dueMonth = moment(task.dueDate).add(1, 'days').format('MMMM YYYY');
-          task.activeDate = moment(task.activeDate).add(1, 'days');
+          task.activeDate = moment(task.activeDate).add(1, 'days').format('MM/DD/YYYY');
           task.isActive = moment(task.activeDate).format('YYYY-MM-DD') <= moment().format('YYYY-MM-DD') ? true : false
       }
       return task;
@@ -471,7 +483,46 @@ class Main extends Component {
     await this.toggleDisplay('Report');
   }
 
+  launchNewLog = (curTaskDetails) => {
+    this.setState({
+      logForm: 'Add',
+      taskDetails: curTaskDetails
+    },
+    () => this.toggleDisplay('Log'));
+  }
+
+  launchEditLog = (curTaskDetails, logDetails) => {
+    this.setState({
+      logForm: 'Edit',
+      logDetails: logDetails,
+      taskDetails: curTaskDetails
+    },
+    () => this.toggleDisplay('Log'));
+  }
+
+  saveLog = (id, log) => {
+    const newLogs = this.state.taskDetails.log.filter((item) => item.logId !== id)
+    let newTaskDetails = this.state.taskDetails;
+    newTaskDetails.log = [...newLogs, log];
+    this.setState({ 
+      taskDetails: newTaskDetails,
+    },
+    () => this.toggleDisplay('Details'));
+  }
+
+  addLog = (log) => {
+    let newTaskDetails = this.state.taskDetails;
+    const newLogs = [...newTaskDetails.log, log]
+    newTaskDetails.log = newLogs;
+    this.setState({ 
+      taskDetails: newTaskDetails,
+    },
+    () => this.toggleDisplay('Details'));
+  }
+
   render() {
+
+    console.log(this.state);
 
     const {
       classes
@@ -599,12 +650,23 @@ class Main extends Component {
               taskDetails={this.state.taskDetails}
               saveTask={this.saveTask}
               deleteTask={this.deleteTask}
+              launchNewLog={this.launchNewLog}
+              launchEditLog={this.launchEditLog}
             />
           }
           {this.state.display === 'Report' &&
             <Report
               categoryReport={this.state.categoryReport}
               toggleDisplay={this.toggleDisplay}
+            />
+          }
+          {this.state.display === 'Log' &&
+            <LogDetail
+              type={this.state.logForm}
+              toggleDisplay={this.toggleDisplay}
+              saveLog={this.saveLog}
+              addLog={this.addLog}
+              logDetails={this.state.logDetails}
             />
           }
           {this.state.display !== 'Details' &&
