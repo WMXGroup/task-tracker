@@ -79,7 +79,7 @@ class Main extends Component {
     filterOption: 'Active',
     categoryFilter: 'All',
     display: 'Tasks',
-    debugMode: false,
+    debugMode: true,
     categoryReport: [],
   }
 
@@ -361,6 +361,12 @@ class Main extends Component {
         break;
       case 'Priority':
         keyName = "priority";
+        break;
+      case 'Hours':
+        keyName = "hours";
+        break;
+      case 'Start Time':
+        keyName = "startTime";
         break;
       case 'Assigned':
         keyName = "assigned";
