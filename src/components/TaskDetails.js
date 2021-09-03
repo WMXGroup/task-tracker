@@ -86,6 +86,7 @@ export default class DetailModal extends Component {
     id: this.props.type === 'Edit'? this.props.taskDetails.id : '',
     description:  this.props.type === 'Edit'? this.props.taskDetails.description : '',
     category: this.props.type === 'Edit'? this.props.taskDetails.category : '',
+    subCategory: this.props.type === 'Edit'? this.props.taskDetails.subCategory : '',
     status: this.props.type === 'Edit'? this.props.taskDetails.status : '',
     dueDate: this.props.type === 'Edit'? this.props.taskDetails.dueDate : moment().format('MM/DD/YYYY'),
     hours: this.props.type === 'Edit'? this.props.taskDetails.hours : 0,
@@ -212,6 +213,7 @@ export default class DetailModal extends Component {
       id: this.uuidv4(),
       description: this.state.description,
       category: this.state.category,
+      subCategory: this.state.subCategory,
       status: this.state.status,
       dueDate: this.state.dueDate,
       hours: this.state.hours,
@@ -242,6 +244,7 @@ export default class DetailModal extends Component {
       id: this.state.id,
       description: this.state.description,
       category: this.state.category,
+      subCategory: this.state.subCategory,
       status: this.state.status,
       dueDate: this.state.dueDate,
       hours: this.state.hours,
@@ -297,6 +300,7 @@ export default class DetailModal extends Component {
     const {
       type,
       categories,
+      subcategories,
       assignedUsers,
       contactUsers,
       toggleDisplay
@@ -349,6 +353,22 @@ export default class DetailModal extends Component {
             freeSolo
             inputValue={this.state.category}
             onInputChange={(e, newValue) => this.onAutoChange(e, newValue, 'category')}
+            />
+        </ div>
+        <div style={styles.fieldContainer}>
+          <Typography style={styles.fieldLabel}>
+            Sub Category
+          </Typography>
+          <Autocomplete
+            size='small'
+            style={styles.fieldStyle}
+            options={subcategories}
+            defaultValue={this.state.subCategory}
+            getOptionLabel={(option) => typeof option === 'string' ? option : option.subCategory}
+            renderInput={(params) => <TextField {...params} variant="outlined" />}
+            freeSolo
+            inputValue={this.state.subCategory}
+            onInputChange={(e, newValue) => this.onAutoChange(e, newValue, 'subCategory')}
             />
         </ div>
         <div style={styles.fieldContainer}>

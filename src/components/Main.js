@@ -73,13 +73,14 @@ class Main extends Component {
     logForm: null,
     logDetails: {},
     categories: [],
+    subcategories: [],
     assignedUsers: [],
     contactUsers: [],
     taskDetails: {},
     filterOption: 'Active',
     categoryFilter: 'All',
     display: 'Tasks',
-    debugMode: false,
+    debugMode: true,
     categoryReport: [],
   }
 
@@ -98,6 +99,7 @@ class Main extends Component {
     if (this.state.tasks !== prevState.tasks) {
       this.getSortHeaders(this.state.tasks, this.state.currentSort);
       this.getUniqueValues(this.state.tasks, 'category', 'categories');
+      this.getUniqueValues(this.state.tasks, 'subCategory', 'subcategories')
       this.getUniqueValues(this.state.tasks, 'assigned', 'assignedUsers');
       this.getUniqueValues(this.state.tasks, 'contact', 'contactUsers');
     }
@@ -116,6 +118,9 @@ class Main extends Component {
       }
       if (task.startTime === undefined) {
         task.startTime = null
+      }
+      if (task.subCategory === undefined) {
+        task.subCategory = ''
       }
       return task;
     })
@@ -145,6 +150,7 @@ class Main extends Component {
           this.activateTasks()
           this.getSortHeaders(this.state.tasks, this.state.currentSort)
           this.getUniqueValues(this.state.tasks, 'category', 'categories')
+          this.getUniqueValues(this.state.tasks, 'subCategory', 'subcategories')
           this.getUniqueValues(this.state.tasks, 'assigned', 'assignedUsers')
           this.getUniqueValues(this.state.tasks, 'contact', 'contactUsers')
           this.fixMissingFields()
@@ -355,6 +361,9 @@ class Main extends Component {
     switch (sortName) {
       case 'Category':
         keyName = "category";
+        break;
+      case 'Sub Category':
+        keyName = "subCategory";
         break;
       case 'Status':
         keyName = "status";
@@ -650,6 +659,7 @@ class Main extends Component {
               toggleDisplay={this.toggleDisplay}
               type={this.state.detailType}
               categories={this.state.categories}
+              subcategories={this.state.subcategories}
               assignedUsers={this.state.assignedUsers}
               contactUsers={this.state.contactUsers}
               createTask={this.createTask}

@@ -9,6 +9,7 @@ export default class SortAlt extends Component {
   state = {
     sortOptions: [
       'Category',
+      'Sub Category',
       'Status',
       'Priority',
       'Hours',
