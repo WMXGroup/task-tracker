@@ -19,7 +19,8 @@ let myDynamicManifest = {
     }
   ],
   "start_url": ".",
-  "display": "standalone",
+  "display": "fullscreen",
+  "orientation" : "portrait",
   "theme_color": "#000000",
   "background_color": "#ffffff"
 }
