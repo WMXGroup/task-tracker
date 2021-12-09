@@ -3,8 +3,8 @@ import Checkbox from '@material-ui/core/Checkbox';
 import TextField from '@material-ui/core/TextField';
 import IconButton from '@material-ui/core/IconButton';
 import EditIcon from '@material-ui/icons/Edit';
-import SnoozeIcon from '@material-ui/icons/Snooze';
 import { withStyles } from '@material-ui/core/styles';
+import ActionMenu from './ActionMenu';
 
 const styles = (theme) => ({
   taskStyle:{
@@ -37,6 +37,7 @@ class Task extends Component {
       task,
       completeTask,
       ignoreTask,
+      makeCurrent,
       launchDetails
     } = this.props;
 
@@ -51,14 +52,10 @@ class Task extends Component {
             size='small'
             />
         }
-        <IconButton
-        onClick={() => ignoreTask(task.id)} 
-        size='small'
-        >
-          <SnoozeIcon
-            className={classes.moveButtons}
-          />
-        </IconButton>
+        <ActionMenu 
+          ignoreTask={() => ignoreTask(task.id)}
+          makeCurrent={() => makeCurrent(task.id)}
+        />
         <TextField
           className={classes.taskStyle}
           style={{

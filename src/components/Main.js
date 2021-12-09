@@ -80,7 +80,7 @@ class Main extends Component {
     filterOption: 'Active',
     categoryFilter: 'All',
     display: 'Tasks',
-    debugMode: false,
+    debugMode: true,
     categoryReport: [],
   }
 
@@ -303,6 +303,22 @@ class Main extends Component {
           task.dueMonth = moment(task.dueDate).add(1, 'days').format('MMMM YYYY');
           task.activeDate = moment(task.activeDate).add(1, 'days').format('MM/DD/YYYY');
           task.isActive = moment(task.activeDate).format('YYYY-MM-DD') <= moment().format('YYYY-MM-DD') ? true : false
+      }
+      return task;
+    });
+    this.setState({
+      tasks: newTasks,
+    }, () => this.saveData());
+  }
+
+  makeCurrent = (id) => {
+    const newTasks = this.state.tasks.map((task) => {
+      if (task.id === id) {
+          task.dueDate = moment().format('MM/DD/YYYY');
+          task.dueWeek = moment().startOf('week').format('MM/DD/YYYY');
+          task.dueMonth = moment().format('MMMM YYYY');
+          task.activeDate = moment().format('MM/DD/YYYY');
+          task.isActive = true;
       }
       return task;
     });
@@ -646,6 +662,7 @@ class Main extends Component {
                     completeTask={this.completeTask}
                     launchDetails={this.launchDetails}
                     ignoreTask={this.ignoreTask}
+                    makeCurrent={this.makeCurrent}
                     getKeyName={this.getKeyName}
                     filterOption={this.state.filterOption}
                     categoryFilter={this.state.categoryFilter}

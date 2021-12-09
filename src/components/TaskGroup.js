@@ -10,6 +10,7 @@ export default class TaskGroup extends Component {
       currentSort,
       completeTask,
       ignoreTask,
+      makeCurrent,
       launchDetails,
       getKeyName,
       filterOption,
@@ -46,6 +47,7 @@ export default class TaskGroup extends Component {
           key={i}
           completeTask={completeTask}
           ignoreTask={ignoreTask}
+          makeCurrent={makeCurrent}
           launchDetails={launchDetails}
           />
         ))}
