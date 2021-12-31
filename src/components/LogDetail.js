@@ -90,7 +90,7 @@ export default class LogDetail extends Component {
 
   dateChange = (e) => {
     this.setState({
-      logDate: moment(e).format('MM/DD/YYYY'),
+      logDate: moment(e).format('YYYY-MM-DD'),
     })
   }
 

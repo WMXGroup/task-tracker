@@ -39,7 +39,7 @@ export default class DetailModalTest extends Component {
     description:  this.props.type === 'Edit'? this.props.taskDetails.description : '',
     category: this.props.type === 'Edit'? this.props.taskDetails.category : '',
     status: this.props.type === 'Edit'? this.props.taskDetails.status : '',
-    dueDate: this.props.type === 'Edit'? this.props.taskDetails.dueDate : moment().format('MM/DD/YYYY'),
+    dueDate: this.props.type === 'Edit'? this.props.taskDetails.dueDate : moment().format('YYYY-MM-DD'),
     actual: this.props.type === 'Edit'? this.props.taskDetails.actual : 0,
     goal: this.props.type === 'Edit'? this.props.taskDetails.goal : 0,
     priority: this.props.type === 'Edit'? this.props.taskDetails.priority : '',
@@ -49,7 +49,7 @@ export default class DetailModalTest extends Component {
     workTime: this.props.type === 'Edit'? this.props.taskDetails.workTime : [],
     tags: this.props.type === 'Edit'? this.props.taskDetails.tags : [],
     completedDate: this.props.type === 'Edit'? this.props.taskDetails.completedDate : '',
-    dueWeek: this.props.type === 'Edit'? this.props.taskDetails.dueweek : moment().startOf('isoweek').format('MM/DD/YYYY'),
+    dueWeek: this.props.type === 'Edit'? this.props.taskDetails.dueweek : moment().startOf('isoweek').format('YYYY-MM-DD'),
     dueMonth: this.props.type === 'Edit'? this.props.taskDetails.dueMonth : moment().format('MMMM YYYY'),
     notes: this.props.type === 'Edit'? this.props.taskDetails.notes : '',
   }
@@ -63,7 +63,7 @@ export default class DetailModalTest extends Component {
   dateChange = (e) => {
     this.setState({
       dueDate: moment(e),
-      dueWeek: moment(e).startOf('week').format('MM/DD/YYYY'),
+      dueWeek: moment(e).startOf('week').format('YYYY-MM-DD'),
       dueMonth: moment(e).format('MMMM YYYY'),
     })
   }

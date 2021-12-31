@@ -88,19 +88,19 @@ export default class DetailModal extends Component {
     category: this.props.type === 'Edit'? this.props.taskDetails.category : '',
     subCategory: this.props.type === 'Edit'? this.props.taskDetails.subCategory : '',
     status: this.props.type === 'Edit'? this.props.taskDetails.status : '',
-    dueDate: this.props.type === 'Edit'? this.props.taskDetails.dueDate : moment().format('MM/DD/YYYY'),
+    dueDate: this.props.type === 'Edit'? this.props.taskDetails.dueDate : moment().format('YYYY-MM-DD'),
     hours: this.props.type === 'Edit'? this.props.taskDetails.hours : 0,
     weeklyGoal: this.props.type === 'Edit'? this.props.taskDetails.weeklyGoal : 0,
     priority: this.props.type === 'Edit'? this.props.taskDetails.priority : '',
     assigned: this.props.type === 'Edit'? this.props.taskDetails.assigned : '',
     contact: this.props.type === 'Edit'? this.props.taskDetails.contact : '',
     isActive: this.props.type === 'Edit'? this.props.taskDetails.isActive : true,
-    activeDate: this.props.type === 'Edit'? this.props.taskDetails.activeDate : moment().format('MM/DD/YYYY'),
+    activeDate: this.props.type === 'Edit'? this.props.taskDetails.activeDate : moment().format('YYYY-MM-DD'),
     workTime: this.props.type === 'Edit'? this.props.taskDetails.workTime : [],
     tags: this.props.type === 'Edit'? this.props.taskDetails.tags : [],
     completedDate: this.props.type === 'Edit'? this.props.taskDetails.completedDate : '',
     completedDates: this.props.type === 'Edit'? this.props.taskDetails.completedDates : [],
-    dueWeek: this.props.type === 'Edit'? this.props.taskDetails.dueweek : moment().startOf('isoweek').format('MM/DD/YYYY'),
+    dueWeek: this.props.type === 'Edit'? this.props.taskDetails.dueweek : moment().startOf('isoweek').format('YYYY-MM-DD'),
     dueMonth: this.props.type === 'Edit'? this.props.taskDetails.dueMonth : moment().format('MMMM YYYY'),
     notes: this.props.type === 'Edit'? this.props.taskDetails.notes : '',
     type: this.props.type === 'Edit'? this.props.taskDetails.type : 'One-time',
@@ -123,15 +123,15 @@ export default class DetailModal extends Component {
 
   dateChange = (e) => {
     this.setState({
-      dueDate: moment(e).format('MM/DD/YYYY'),
-      dueWeek: moment(e).startOf('week').format('MM/DD/YYYY'),
+      dueDate: moment(e).format('YYYY-MM-DD'),
+      dueWeek: moment(e).startOf('week').format('YYYY-MM-DD'),
       dueMonth: moment(e).format('MMMM YYYY'),
     })
   }
 
   activeDateChange = (e) => {
     this.setState({
-      activeDate: moment(e).format('MM/DD/YYYY'),
+      activeDate: moment(e).format('YYYY-MM-DD'),
       isActive: e = '' ? this.state.isActive : moment().format('YYYY-MM-DD') >= moment(e).format('YYYY-MM-DD') ? true : moment(e).format('YYYY-MM-DD')  > moment().format('YYYY-MM-DD') ? false : this.state.isActive
     })
   }
@@ -160,17 +160,17 @@ export default class DetailModal extends Component {
     if (isUpdating === false) {
       if (newValue === 'Completed') {
         if (type === 'Recurring') {
-          let newActiveDate = moment(activeDate).add(recurDays, 'days').format('MM/DD/YYYY');
+          let newActiveDate = moment(activeDate).add(recurDays, 'days').format('YYYY-MM-DD');
           this.setState({
             isUpdating: true,
             status: '',
             completedDate: '',
-            dueDate: moment(dueDate).add(recurDays, 'days').format('MM/DD/YYYY'),
-            dueWeek: moment(dueDate).add(recurDays, 'days').startOf('week').format('MM/DD/YYYY'),
+            dueDate: moment(dueDate).add(recurDays, 'days').format('YYYY-MM-DD'),
+            dueWeek: moment(dueDate).add(recurDays, 'days').startOf('week').format('YYYY-MM-DD'),
             dueMonth: moment(dueDate).add(recurDays, 'days').format('MMMM YYYY'),
             activeDate: newActiveDate,
             isActive: moment(newActiveDate).format('YYYY-MM-DD') < moment().format('YYYY-MM-DD') ? true : false,
-            completedDates: [...completedDates, moment(dueDate).format('MM/DD/YYYY')]
+            completedDates: [...completedDates, moment(dueDate).format('YYYY-MM-DD')]
           }, ()=> {
             this.setState({ 
               isUpdating: false,
@@ -179,8 +179,8 @@ export default class DetailModal extends Component {
         } else if (type === 'One-time') {
           this.setState({
             isUpdating: true,
-            completedDate: moment().format('MM/DD/YYYY'),
-            completedDates: [moment(dueDate).format('MM/DD/YYYY')],
+            completedDate: moment().format('YYYY-MM-DD'),
+            completedDates: [moment(dueDate).format('YYYY-MM-DD')],
             status: 'Completed',
             isActive: false
           }, ()=> {
