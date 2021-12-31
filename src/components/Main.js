@@ -168,8 +168,8 @@ class Main extends Component {
           this.getUniqueValues(this.state.tasks, 'subCategory', 'subcategories')
           this.getUniqueValues(this.state.tasks, 'assigned', 'assignedUsers')
           this.getUniqueValues(this.state.tasks, 'contact', 'contactUsers')
-          this.fixMissingFields()
-          this.switchDateFormat()
+          // this.fixMissingFields()
+          // this.switchDateFormat()
         })
         }
       )
