@@ -28,7 +28,6 @@ let search = window.location.search;
 let params = new URLSearchParams(search);
 let listId = params.get('query');
 myDynamicManifest.start_url = `./query?${listId}`;
-console.log("myDynamicManifest: ",myDynamicManifest)
 const stringManifest = JSON.stringify(myDynamicManifest);
 const blob = new Blob([stringManifest], {type: 'application/json'});
 const manifestURL = URL.createObjectURL(blob);

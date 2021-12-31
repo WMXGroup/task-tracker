@@ -289,7 +289,6 @@ export default class DetailModal extends Component {
   };
 
   handleDeleteLog = (id) => {
-    console.log(id);
     const newLogs = this.state.log.filter((log) => log.logId !== id)
     this.setState({
       log: newLogs,
@@ -445,8 +444,8 @@ export default class DetailModal extends Component {
                 disableToolbar
                 autoOk={true}
                 variant="inline"
-                format="MM/dd/yyyy"
-                value={this.state.dueDate}
+                format="yyyy-MM-dd"
+                value={moment(this.state.dueDate).toISOString()}
                 onChange={(e) => this.dateChange(e)}
                 KeyboardButtonProps={{
                   'aria-label': 'change date',
@@ -469,8 +468,8 @@ export default class DetailModal extends Component {
                 disableToolbar
                 autoOk={true}
                 variant="inline"
-                format="MM/dd/yyyy"
-                value={this.state.activeDate}
+                format="yyyy-MM-dd"
+                value={moment(this.state.activeDate).toISOString()}
                 onChange={(e) => this.activeDateChange(e)}
                 KeyboardButtonProps={{
                   'aria-label': 'change date',

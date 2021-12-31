@@ -80,7 +80,7 @@ class Main extends Component {
     filterOption: 'Active',
     categoryFilter: 'All',
     display: 'Tasks',
-    debugMode: false,
+    debugMode: true,
     categoryReport: [],
   }
 
@@ -569,7 +569,9 @@ class Main extends Component {
 
   render() {
 
-    console.log(this.state);
+    if(this.state.debugMode === true){
+        // console.log(this.state);
+    }
 
     const {
       classes

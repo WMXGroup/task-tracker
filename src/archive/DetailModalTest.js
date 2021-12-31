@@ -145,9 +145,6 @@ export default class DetailModalTest extends Component {
       contactUsers,
     } = this.props;
 
-    // console.log(this.props)
-    // console.log(this.state)
-
     return (
       <Dialog 
         onClose={() => toggleModal()} 
@@ -263,9 +260,9 @@ export default class DetailModalTest extends Component {
                   disableToolbar
                   autoOk={true}
                   variant="inline"
-                  format="MM/dd/yyyy"
+                  format="yyyy-MM-dd"
                   margin="normal"
-                  value={this.state.dueDate}
+                  value={moment(this.state.dueDate).toISOString()}
                   onChange={(e) => this.dateChange(e)}
                   KeyboardButtonProps={{
                     'aria-label': 'change date',

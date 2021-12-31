@@ -123,8 +123,8 @@ export default class LogDetail extends Component {
                 disableToolbar
                 autoOk={true}
                 variant="inline"
-                format="MM/dd/yyyy"
-                value={this.state.logDate}
+                format="yyyy-MM-dd"
+                value={moment(this.state.logDate).toISOString()}
                 onChange={(e) => this.dateChange(e)}
                 KeyboardButtonProps={{
                   'aria-label': 'change date',
