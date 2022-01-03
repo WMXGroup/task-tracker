@@ -5,6 +5,7 @@ import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 import IconButton from '@material-ui/core/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
+import RefreshIcon from '@material-ui/icons/Refresh';
 import Typography from '@material-ui/core/Typography';
 import TextField from '@material-ui/core/TextField';
 import Fab from '@material-ui/core/Fab';
@@ -627,6 +628,13 @@ class Main extends Component {
                   Task Tracker
               </Typography>
               <div className={classes.grow} />
+              <IconButton
+                edge="start"
+                color="inherit"
+                onClick={() => this.getServerData()}
+                >
+                <RefreshIcon />
+              </IconButton>
               <div className={classes.addButton}>
                 <SortAlt
                   handleSortChange={this.handleSortChange}
