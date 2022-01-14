@@ -139,7 +139,7 @@ class Main extends Component {
       task.dueDate = moment(task.dueDate).format('YYYY-MM-DD')
     }
     if (task.dueMonth !== undefined) {
-      task.dueMonth = moment(task.dueDate).format('YYYY MMMM')
+      task.dueMonth = moment(task.dueDate).format('YYYY-MM')
     }
     if (task.dueWeek !== undefined) {
       task.dueWeek = moment(task.dueWeek).format('YYYY-MM-DD')
