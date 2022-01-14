@@ -1,19 +1,19 @@
 {
   "files": {
-    "main.js": "/task-tracker/static/js/main.8dd4903d.chunk.js",
-    "main.js.map": "/task-tracker/static/js/main.8dd4903d.chunk.js.map",
+    "main.js": "/task-tracker/static/js/main.3e7acdf4.chunk.js",
+    "main.js.map": "/task-tracker/static/js/main.3e7acdf4.chunk.js.map",
     "runtime-main.js": "/task-tracker/static/js/runtime-main.290efcd8.js",
     "runtime-main.js.map": "/task-tracker/static/js/runtime-main.290efcd8.js.map",
     "static/js/2.17073aab.chunk.js": "/task-tracker/static/js/2.17073aab.chunk.js",
     "static/js/2.17073aab.chunk.js.map": "/task-tracker/static/js/2.17073aab.chunk.js.map",
     "index.html": "/task-tracker/index.html",
-    "precache-manifest.a9cb9a9a23476516023e251b3f68dd96.js": "/task-tracker/precache-manifest.a9cb9a9a23476516023e251b3f68dd96.js",
+    "precache-manifest.fd82153329ddf6686d77b56e5e46d626.js": "/task-tracker/precache-manifest.fd82153329ddf6686d77b56e5e46d626.js",
     "service-worker.js": "/task-tracker/service-worker.js",
     "static/js/2.17073aab.chunk.js.LICENSE.txt": "/task-tracker/static/js/2.17073aab.chunk.js.LICENSE.txt"
   },
   "entrypoints": [
     "static/js/runtime-main.290efcd8.js",
     "static/js/2.17073aab.chunk.js",
-    "static/js/main.8dd4903d.chunk.js"
+    "static/js/main.3e7acdf4.chunk.js"
   ]
 }
