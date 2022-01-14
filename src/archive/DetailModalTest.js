@@ -50,7 +50,7 @@ export default class DetailModalTest extends Component {
     tags: this.props.type === 'Edit'? this.props.taskDetails.tags : [],
     completedDate: this.props.type === 'Edit'? this.props.taskDetails.completedDate : '',
     dueWeek: this.props.type === 'Edit'? this.props.taskDetails.dueweek : moment().startOf('isoweek').format('YYYY-MM-DD'),
-    dueMonth: this.props.type === 'Edit'? this.props.taskDetails.dueMonth : moment().format('MMMM YYYY'),
+    dueMonth: this.props.type === 'Edit'? this.props.taskDetails.dueMonth : moment().format('YYYY MMMM'),
     notes: this.props.type === 'Edit'? this.props.taskDetails.notes : '',
   }
 
@@ -64,7 +64,7 @@ export default class DetailModalTest extends Component {
     this.setState({
       dueDate: moment(e),
       dueWeek: moment(e).startOf('week').format('YYYY-MM-DD'),
-      dueMonth: moment(e).format('MMMM YYYY'),
+      dueMonth: moment(e).format('YYYY MMMM'),
     })
   }
 
