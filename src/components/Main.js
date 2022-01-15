@@ -17,9 +17,11 @@ import TaskDetails from './TaskDetails';
 import LogDetail from './LogDetail';
 import {tasks} from './TestTasks';
 import SortAlt from './SortAlt';
+import RelatedLists from './RelatedLists';
 import ActiveFilter from './ActiveFilter';
 import CategoryFilter from './CategoryFilter';
 import Report from './Report';
+import AddRelatedList from './AddRelatedList';
 import moment from 'moment';
 import axios from 'axios';
 
@@ -82,6 +84,7 @@ class Main extends Component {
     categoryFilter: ['All'],
     display: 'Tasks',
     debugMode: false,
+    relatedLists: [],
     categoryReport: [],
   }
 
@@ -181,7 +184,8 @@ class Main extends Component {
           trackerName: res.data.listName,
           tasks: res.data.list,
           lastSaved: res.data.lastSaved,
-          isLoading: false
+          isLoading: false,
+          relatedLists: res.data.relatedLists !== undefined ? res.data.relatedLists: []
         }))
         .then(() => {
           this.activateTasks()
@@ -198,6 +202,18 @@ class Main extends Component {
     }
   }
 
+  changeList = (listId) => {
+    const a = document.createElement("a");
+    a.href = `https://wmxgroup.github.io/task-tracker/?query=${listId}`;
+    a.click();
+  }
+
+  addListValue = (listId) => {
+    this.setState({
+      relatedLists: [...this.state.relatedLists, listId]
+    }, () => this.saveData())
+  }
+
   saveData = () => {
     this.handleClose();
     let search = window.location.search;
@@ -211,7 +227,8 @@ class Main extends Component {
         .post(`https://guarded-mesa-76047.herokuapp.com/api/lists/new`, {
           list: this.state.tasks,
           listName: this.state.trackerName,
-          lastSaved: new Date()
+          lastSaved: new Date(),
+          relatedLists: this.state.relatedLists
         })
         .then((res) => {
           alert('New list created!')
@@ -228,7 +245,8 @@ class Main extends Component {
         .post(`https://guarded-mesa-76047.herokuapp.com/api/lists/update/${listId}`, {
           list: this.state.tasks,
           listName: this.state.trackerName,
-          lastSaved: currentDT
+          lastSaved: currentDT,
+          relatedLists: this.state.relatedLists
         })
         .then(() => {
           this.setState({
@@ -591,6 +609,11 @@ class Main extends Component {
     await this.toggleDisplay('Report');
   }
 
+  launchAddList = async () => {
+    await this.handleClose();
+    await this.toggleDisplay('AddRelatedList');
+  }
+
   launchNewLog = (curTaskDetails) => {
     this.setState({
       logForm: 'Add',
@@ -684,6 +707,7 @@ class Main extends Component {
                   <MenuItem onClick={() => this.createNew()}>Create New</MenuItem>
                   <MenuItem onClick={() => this.launchReport()}>Show Report</MenuItem>
                   <MenuItem onClick={() => this.makeAllActiveCurrent()}>Make Tasks Current</MenuItem>
+                  <MenuItem onClick={() => this.launchAddList()}>Add Related List</MenuItem>
                 </Menu>
               <Typography variant="h6">
                   Task Tracker
@@ -696,6 +720,12 @@ class Main extends Component {
                 >
                 <RefreshIcon />
               </IconButton>
+              <div className={classes.addButton}>
+                <RelatedLists
+                  relatedLists={this.state.relatedLists}
+                  changeList={this.changeList}
+                />
+              </div>              
               <div className={classes.addButton}>
                 <SortAlt
                   currentSort={this.state.currentSort}
@@ -806,6 +836,13 @@ class Main extends Component {
                 </Fab>
               </Toolbar>
             </AppBar>
+          }
+          {this.state.display === 'AddRelatedList' &&
+            <AddRelatedList
+              relatedLists={this.state.relatedLists}
+              toggleDisplay={this.toggleDisplay}
+              addListValue={this.addListValue}
+          />
           }
       </React.Fragment>
     )
