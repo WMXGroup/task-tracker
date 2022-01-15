@@ -300,7 +300,7 @@ class Main extends Component {
         if (task.type === 'Recurring') {
           task.dueDate = moment(curDueDate).add(task.recurDays, 'days').format('YYYY-MM-DD');
           task.dueWeek = moment(curDueDate).add(task.recurDays, 'days').startOf('week').format('YYYY-MM-DD');
-          task.dueMonth = moment(curDueDate).add(task.recurDays, 'days').format('YYYY MMMM');
+          task.dueMonth = moment(curDueDate).add(task.recurDays, 'days').format('YYYY-MM');
           task.activeDate = moment(task.activeDate).add(task.recurDays, 'days');
           task.isActive = moment(newActiveDate).format('YYYY-MM-DD') < moment().format('YYYY-MM-DD') ? true : false
           task.completedDates = [...task.completedDates, moment(curDueDate).format('YYYY-MM-DD')]
@@ -323,7 +323,7 @@ class Main extends Component {
       if (task.id === id) {
           task.dueDate = moment(task.dueDate).add(1, 'days').format('YYYY-MM-DD');
           task.dueWeek = moment(task.dueDate).add(1, 'days').startOf('week').format('YYYY-MM-DD');
-          task.dueMonth = moment(task.dueDate).add(1, 'days').format('YYYY MMMM');
+          task.dueMonth = moment(task.dueDate).add(1, 'days').format('YYYY-MM');
           task.activeDate = moment(task.activeDate).add(1, 'days').format('YYYY-MM-DD');
           task.isActive = moment(task.activeDate).format('YYYY-MM-DD') <= moment().format('YYYY-MM-DD') ? true : false
       }
@@ -339,7 +339,7 @@ class Main extends Component {
       if (task.id === id) {
           task.dueDate = moment().format('YYYY-MM-DD');
           task.dueWeek = moment().startOf('week').format('YYYY-MM-DD');
-          task.dueMonth = moment().format('YYYY MMMM');
+          task.dueMonth = moment().format('YYYY-MM');
           task.activeDate = moment().format('YYYY-MM-DD');
           task.isActive = true;
       }

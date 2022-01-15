@@ -95,7 +95,7 @@ export default class DetailModal extends Component {
     tags: this.props.type === 'Edit'? this.props.taskDetails.tags : [],
     completedDate: this.props.type === 'Edit'? this.props.taskDetails.completedDate : '',
     dueWeek: this.props.type === 'Edit'? this.props.taskDetails.dueweek : moment().startOf('isoweek').format('YYYY-MM-DD'),
-    dueMonth: this.props.type === 'Edit'? this.props.taskDetails.dueMonth : moment().format('YYYY MMMM'),
+    dueMonth: this.props.type === 'Edit'? this.props.taskDetails.dueMonth : moment().format('YYYY-MM'),
     notes: this.props.type === 'Edit'? this.props.taskDetails.notes : '',
     type: this.props.type === 'Edit'? this.props.taskDetails.type : 'One-time',
     recurDays: this.props.type === 'Edit'? this.props.taskDetails.recurDays : 0,
@@ -112,7 +112,7 @@ export default class DetailModal extends Component {
     this.setState({
       dueDate: moment(e).format('YYYY-MM-DD'),
       dueWeek: moment(e).startOf('week').format('YYYY-MM-DD'),
-      dueMonth: moment(e).format('YYYY MMMM'),
+      dueMonth: moment(e).format('YYYY-MM'),
     })
   }
 
@@ -146,7 +146,7 @@ export default class DetailModal extends Component {
             completedDate: '',
             dueDate: moment(dueDate).add(recurDays, 'days').format('MM/DD/YYYYY'),
             dueWeek: moment(dueDate).add(recurDays, 'days').startOf('week').format('YYYY-MM-DD'),
-            dueMonth: moment(dueDate).add(recurDays, 'days').format('YYYY MMMM'),
+            dueMonth: moment(dueDate).add(recurDays, 'days').format('YYYY-MM'),
             activeDate: moment(activeDate).add(recurDays, 'days'),
             isActive: moment(activeDate).format('YYYY-MM-DD') < moment().format('YYYY-MM-DD') ? true : false
           }, ()=> {
