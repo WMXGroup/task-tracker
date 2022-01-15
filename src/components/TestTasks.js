@@ -182,7 +182,7 @@ export const tasks = [
     workTime: [],
     tags: [],
     type: 'Recurring',
-    recurDays: 0,
+    recurDays: 1,
     completedDates: ['05/01/2021', '06/01/2021', '06/02/2021', '06/03/2021' ],
     points: 1,
     log:[

@@ -78,12 +78,18 @@ const styles = {
   dialogContainer: {
     marginBottom: '70px'
   },
+  paperContainer: {
+    height: '80px',
+    padding: 0,
+    width: 400,
+    overflow: 'auto'
+  },
 };
 
 export default class DetailModal extends Component {
 
   state = {
-    id: this.props.type === 'Edit'? this.props.taskDetails.id : '',
+    id: this.props.type === 'Edit'? this.props.taskDetails.id : this.props.uuidv4(),
     description:  this.props.type === 'Edit'? this.props.taskDetails.description : '',
     category: this.props.type === 'Edit'? this.props.taskDetails.category : '',
     subCategory: this.props.type === 'Edit'? this.props.taskDetails.subCategory : '',
@@ -106,7 +112,7 @@ export default class DetailModal extends Component {
     type: this.props.type === 'Edit'? this.props.taskDetails.type : 'One-time',
     recurDays: this.props.type === 'Edit'? this.props.taskDetails.recurDays : 0,
     isUpdating: false,
-    startTime: this.props.type === 'Edit'? this.props.taskDetails.startTime : moment({hour: 5}),
+    startTime: this.props.type === 'Edit'? this.props.taskDetails.startTime : '12:00 AM',
     points: this.props.type === 'Edit'? this.props.taskDetails.points : '',
     log: this.props.type === 'Edit'? this.props.taskDetails.log : [],
   }
@@ -159,18 +165,22 @@ export default class DetailModal extends Component {
     } = this.state
     if (isUpdating === false) {
       if (newValue === 'Completed') {
+        let curDueDate = dueDate === undefined ? moment().format('YYYY-MM-DD') : dueDate;
+        let curRecurDays = recurDays === undefined ? 0 : recurDays;
+        let curActiveDate = activeDate === undefined ? moment().format('YYYY-MM-DD') : activeDate;
+        let newActiveDate = moment(curActiveDate).add(curRecurDays, 'days').format('YYYY-MM-DD');
         if (type === 'Recurring') {
-          let newActiveDate = moment(activeDate).add(recurDays, 'days').format('YYYY-MM-DD');
           this.setState({
             isUpdating: true,
-            status: '',
-            completedDate: '',
-            dueDate: moment(dueDate).add(recurDays, 'days').format('YYYY-MM-DD'),
-            dueWeek: moment(dueDate).add(recurDays, 'days').startOf('week').format('YYYY-MM-DD'),
-            dueMonth: moment(dueDate).add(recurDays, 'days').format('YYYY-MM'),
+            status: 'Not Started',
+            recurDays: curRecurDays,
+            dueDate: moment(curDueDate).add(curRecurDays, 'days').format('YYYY-MM-DD'),
+            dueWeek: moment(curDueDate).add(curRecurDays, 'days').startOf('week').format('YYYY-MM-DD'),
+            dueMonth: moment(curDueDate).add(curRecurDays, 'days').format('YYYY-MM'),
             activeDate: newActiveDate,
             isActive: moment(newActiveDate).format('YYYY-MM-DD') < moment().format('YYYY-MM-DD') ? true : false,
-            completedDates: [...completedDates, moment(dueDate).format('YYYY-MM-DD')]
+            completedDate: '',
+            completedDates: [...completedDates, moment(curDueDate).format('YYYY-MM-DD')]
           }, ()=> {
             this.setState({ 
               isUpdating: false,
@@ -179,10 +189,14 @@ export default class DetailModal extends Component {
         } else if (type === 'One-time') {
           this.setState({
             isUpdating: true,
-            completedDate: moment().format('YYYY-MM-DD'),
-            completedDates: [moment(dueDate).format('YYYY-MM-DD')],
             status: 'Completed',
-            isActive: false
+            dueDate: curDueDate,
+            dueWeek: moment(curDueDate).startOf('week').format('YYYY-MM-DD'),
+            dueMonth: moment(curDueDate).format('YYYY-MM'),
+            activeDate: curActiveDate,
+            isActive: false,
+            completedDate: moment().format('YYYY-MM-DD'),
+            completedDates: [moment(curDueDate).format('YYYY-MM-DD')],
           }, ()=> {
             this.setState({ 
               isUpdating: false,
@@ -204,13 +218,9 @@ export default class DetailModal extends Component {
     })
   }
 
-  uuidv4 = () => {
-    return Math.random().toString(36).substring(2) + Date.now().toString(36);
-  }
-
   addTask = () => {
     this.props.createTask({
-      id: this.uuidv4(),
+      id: this.state.id,
       description: this.state.description,
       category: this.state.category,
       subCategory: this.state.subCategory,
@@ -492,6 +502,8 @@ export default class DetailModal extends Component {
                 disableToolbar
                 autoOk={true}
                 variant="inline"
+                helperText={''}
+                error={false}
                 placeholder="12:00 AM"
                 mask="__:__ _M"
                 value={moment('01/01/2000' + ' ' + this.state.startTime)}
@@ -622,7 +634,9 @@ export default class DetailModal extends Component {
           <Typography style={styles.fieldLabel}>
             Completed Dates
           </Typography>
-          <Paper variant="outlined" style={{maxHeight: 100, width: 200, overflow: 'auto'}}>
+          <Paper 
+            variant="outlined" 
+            style={styles.paperContainer}>
             <List>
               {
                 this.state.completedDates.map((date) => (
@@ -642,53 +656,57 @@ export default class DetailModal extends Component {
             </List>
           </Paper>
         </div>
-        <div style={styles.fieldContainer}>
-          <Typography style={styles.fieldLabel}>
-            Log
-          </Typography>
-          <Paper variant="outlined" style={{maxHeight: 100, width: 400, overflow: 'auto'}}>
-            <List>
-              {
-                this.state.log.map((item) => (
-                  <ListItem 
-                    button
-                    onClick={() => this.props.launchEditLog(this.state, item)}
-                    >
-                    <div style={{border: '1px solid #ccc'}}>
-                      <div>
-                        {'Date: '}{item.logDate}
+        {type === 'Edit' &&
+          <div style={styles.fieldContainer}>
+            <Typography style={styles.fieldLabel}>
+              Log
+            </Typography>
+            <Paper 
+              variant="outlined" 
+              style={styles.paperContainer}>
+              <List>
+                {
+                  this.state.log.map((item) => (
+                    <ListItem 
+                      button
+                      onClick={() => this.props.launchEditLog(this.state, item)}
+                      >
+                      <div style={{border: '1px solid #ccc'}}>
+                        <div>
+                          {'Date: '}{item.logDate}
+                        </div>
+                        <div>
+                          {'Note: '}{item.logText}
+                        </div>
+                        <div>
+                          {'Value: '}{item.logValue}
+                        </div>
                       </div>
-                      <div>
-                        {'Note: '}{item.logText}
-                      </div>
-                      <div>
-                        {'Value: '}{item.logValue}
-                      </div>
-                    </div>
-                    <ListItemSecondaryAction>
-                      <IconButton 
-                        edge="end" 
-                        aria-label="delete"
-                        onClick={() => this.handleDeleteLog(item.logId)}>
-                        <CloseIcon />
-                      </IconButton>
-                    </ListItemSecondaryAction>
-                  </ListItem>
-                ))
-              }
-            </List>
-          </Paper>
-          <div style={styles.buttonStyle}>
-            <Button 
-              style={styles.buttonStyle}
-              variant="contained"
-              color="primary"
-              onClick={() => this.props.launchNewLog(this.state)}
-              >
-              +
-            </Button>
+                      <ListItemSecondaryAction>
+                        <IconButton 
+                          edge="end" 
+                          aria-label="delete"
+                          onClick={() => this.handleDeleteLog(item.logId)}>
+                          <CloseIcon />
+                        </IconButton>
+                      </ListItemSecondaryAction>
+                    </ListItem>
+                  ))
+                }
+              </List>
+            </Paper>
+            <div style={styles.buttonStyle}>
+              <Button 
+                style={styles.buttonStyle}
+                variant="contained"
+                color="primary"
+                onClick={() => this.props.launchNewLog(this.state)}
+                >
+                +
+              </Button>
+            </div>
           </div>
-        </div>
+        }
         <div style={styles.buttonContainer}>
           {type === 'Add' &&
             <div style={styles.buttonStyle}>
