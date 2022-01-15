@@ -33,7 +33,6 @@ export default class CategoryFilterr extends Component {
 
   handleClick = (filterOption) => {
     this.props.handleFilterChange(filterOption);
-    this.handleClose();
   }
 
   render() {
@@ -66,6 +65,7 @@ export default class CategoryFilterr extends Component {
           {this.state.filterOptions.map((filterOption, i) => (
             <MenuItem
               key={i}
+              selected={this.props.categoryFilter.includes(filterOption)}
               value={filterOption}
               onClick={() => this.handleClick(filterOption)}
               >

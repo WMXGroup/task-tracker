@@ -72,6 +72,7 @@ export default class SortAlt extends Component {
           {this.state.sortOptions.map((sortOption, i) => (
             <MenuItem
               key={i}
+              selected={this.props.currentSort === sortOption}
               value={sortOption}
               onClick={() => this.handleClick(sortOption)}
               >

@@ -34,7 +34,7 @@ export default class TaskGroup extends Component {
 
     groupTasks.sort((a,b) => (a.priority > b.priority) ? 1 : -1);
 
-    groupTasks = groupTasks.filter((task) => (task.category === categoryFilter || categoryFilter === 'All'))
+    groupTasks = groupTasks.filter((task) => (categoryFilter.includes(task.category) || categoryFilter.includes('All')))
 
     return (
       <React.Fragment>

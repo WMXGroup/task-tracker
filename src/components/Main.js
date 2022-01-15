@@ -67,7 +67,6 @@ class Main extends Component {
     isLoading: false,
     anchorEl: null,
     setAnchorEl: false,
-    currentSort: 'Due Date',
     trackerName: 'Test Title',
     selectedTask: null,
     detailType: null,
@@ -78,10 +77,11 @@ class Main extends Component {
     assignedUsers: [],
     contactUsers: [],
     taskDetails: {},
+    currentSort: 'Due Date',
     filterOption: 'Active',
-    categoryFilter: 'All',
+    categoryFilter: ['All'],
     display: 'Tasks',
-    debugMode: false,
+    debugMode: true,
     categoryReport: [],
   }
 
@@ -532,10 +532,19 @@ class Main extends Component {
     })
   };
 
-  handleCategoryFilterChange = (categoryFilter) => {
-    this.setState({
-      categoryFilter
-    })
+  handleCategoryFilterChange = (category) => {
+    const { categoryFilter } = this.state;
+    if (categoryFilter.includes(category)) {
+      const newCategoryFilter = categoryFilter.filter((value) => value !== category)
+      this.setState({
+        categoryFilter: newCategoryFilter,
+      });
+
+    } else {
+      this.setState({
+        categoryFilter: [...categoryFilter, category]
+      })
+    }
   };
 
   toggleDisplay = (displayName) => {
@@ -689,11 +698,13 @@ class Main extends Component {
               </IconButton>
               <div className={classes.addButton}>
                 <SortAlt
+                  currentSort={this.state.currentSort}
                   handleSortChange={this.handleSortChange}
                 />
               </div>
               <div className={classes.addButton}>
                 <ActiveFilter
+                  filterOption={this.state.filterOption}
                   handleFilterChange={this.handleFilterChange}
                 />
               </div>
@@ -701,6 +712,7 @@ class Main extends Component {
                 <CategoryFilter
                   handleFilterChange={this.handleCategoryFilterChange}
                   categories={this.state.categories}
+                  categoryFilter={this.state.categoryFilter}
                 />
               </div>
             </Toolbar>
@@ -735,13 +747,13 @@ class Main extends Component {
                   <TaskGroup
                     tasks={this.state.tasks}
                     header={header}
-                    currentSort={this.state.currentSort}
                     key={i}
                     completeTask={this.completeTask}
                     launchDetails={this.launchDetails}
                     ignoreTask={this.ignoreTask}
                     makeCurrent={this.makeCurrent}
                     getKeyName={this.getKeyName}
+                    currentSort={this.state.currentSort}
                     filterOption={this.state.filterOption}
                     categoryFilter={this.state.categoryFilter}
                     />

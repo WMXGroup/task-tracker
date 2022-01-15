@@ -66,6 +66,7 @@ export default class ActiveFilter extends Component {
           {this.state.filterOptions.map((filterOption, i) => (
             <MenuItem
               key={i}
+              selected={this.props.filterOption === filterOption}
               value={filterOption}
               onClick={() => this.handleClick(filterOption)}
               >
