@@ -185,7 +185,7 @@ class Main extends Component {
           tasks: res.data.list,
           lastSaved: res.data.lastSaved,
           isLoading: false,
-          relatedLists: res.data.relatedLists !== undefined ? res.data.relatedLists: []
+          relatedLists: (res.data.relatedLists === undefined || res.data.relatedLists === null) ? [] : res.data.relatedLists,
         }))
         .then(() => {
           this.activateTasks()
@@ -195,7 +195,7 @@ class Main extends Component {
           this.getUniqueValues(this.state.tasks, 'assigned', 'assignedUsers')
           this.getUniqueValues(this.state.tasks, 'contact', 'contactUsers')
           // this.fixMissingFields()
-          this.switchDateFormat()
+          // this.switchDateFormat()
         })
         }
       )
