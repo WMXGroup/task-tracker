@@ -33,6 +33,8 @@ export default class ActionMenu extends Component {
     const {
       ignoreTask,
       makeCurrent,
+      skipOccurence,
+      snoozeWeek
     } = this.props;
 
     return (
@@ -65,9 +67,19 @@ export default class ActionMenu extends Component {
             Snooze to Next Day
           </MenuItem>
           <MenuItem
+            onClick={snoozeWeek}
+            >
+            Snooze to Next Week
+          </MenuItem>
+          <MenuItem
             onClick={makeCurrent}
             >
             Make Current
+          </MenuItem>
+          <MenuItem
+            onClick={skipOccurence}
+            >
+            Skip Occurence
           </MenuItem>
           </Menu>
         </React.Fragment>

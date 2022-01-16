@@ -38,6 +38,8 @@ class Task extends Component {
       completeTask,
       ignoreTask,
       makeCurrent,
+      snoozeWeek,
+      skipOccurence,
       launchDetails
     } = this.props;
 
@@ -53,6 +55,8 @@ class Task extends Component {
             />
         }
         <ActionMenu 
+          snoozeWeek={() => snoozeWeek(task.id)}
+          skipOccurence={() => skipOccurence(task.id)}
           ignoreTask={() => ignoreTask(task.id)}
           makeCurrent={() => makeCurrent(task.id)}
         />

@@ -11,6 +11,8 @@ export default class TaskGroup extends Component {
       completeTask,
       ignoreTask,
       makeCurrent,
+      snoozeWeek,
+      skipOccurence,
       launchDetails,
       getKeyName,
       filterOption,
@@ -45,6 +47,8 @@ export default class TaskGroup extends Component {
           <Task
           task={task}
           key={i}
+          snoozeWeek={snoozeWeek}
+          skipOccurence={skipOccurence}
           completeTask={completeTask}
           ignoreTask={ignoreTask}
           makeCurrent={makeCurrent}

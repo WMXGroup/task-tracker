@@ -69,7 +69,7 @@ class Main extends Component {
     isLoading: false,
     anchorEl: null,
     setAnchorEl: false,
-    trackerName: 'Test Title',
+    trackerName: '',
     selectedTask: null,
     detailType: null,
     logForm: null,
@@ -360,6 +360,46 @@ class Main extends Component {
     }, () => this.saveData());
   }
 
+  skipOccurence = (id) => {
+    const newTasks = this.state.tasks.map((task) => {
+      if (task.id === id) {
+          let curDueDate = task.dueDate === undefined ? moment().format('YYYY-MM-DD') : task.dueDate;
+          let curRecurDays = task.recurDays === undefined ? 0 : task.recurDays;
+          let curActiveDate = task.activeDate === undefined ? moment().format('YYYY-MM-DD') : task.activeDate;
+          let newActiveDate = moment(curActiveDate).add(curRecurDays, 'days').format('YYYY-MM-DD');
+          task.recurDays = curRecurDays;
+          task.dueDate = moment(curDueDate).add(7, 'days').format('YYYY-MM-DD');
+          task.dueWeek = moment(curDueDate).add(7, 'days').startOf('week').format('YYYY-MM-DD');
+          task.dueMonth = moment(curDueDate).add(7, 'days').format('YYYY-MM');
+          task.activeDate = newActiveDate;
+          task.isActive = moment(newActiveDate).format('YYYY-MM-DD') <= moment().format('YYYY-MM-DD') ? true : false
+      }
+      return task;
+    });
+    this.setState({
+      tasks: newTasks,
+    }, () => this.saveData());
+  }
+
+  snoozeWeek = (id) => {
+    const newTasks = this.state.tasks.map((task) => {
+      if (task.id === id) {
+          let curDueDate = task.dueDate === undefined ? moment().format('YYYY-MM-DD') : task.dueDate;
+          let curActiveDate = task.activeDate === undefined ? moment().format('YYYY-MM-DD') : task.activeDate;
+          let newActiveDate = moment(curActiveDate).add(7, 'days').format('YYYY-MM-DD');
+          task.dueDate = moment(curDueDate).add(7, 'days').format('YYYY-MM-DD');
+          task.dueWeek = moment(curDueDate).add(7, 'days').startOf('week').format('YYYY-MM-DD');
+          task.dueMonth = moment(curDueDate).add(7, 'days').format('YYYY-MM');
+          task.activeDate = newActiveDate
+          task.isActive = moment(newActiveDate).format('YYYY-MM-DD') <= moment().format('YYYY-MM-DD') ? true : false
+      }
+      return task;
+    });
+    this.setState({
+      tasks: newTasks,
+    }, () => this.saveData());
+  }
+
   ignoreTask = (id) => {
     const newTasks = this.state.tasks.map((task) => {
       if (task.id === id) {
@@ -531,12 +571,6 @@ class Main extends Component {
   handleTitleChange = (e) => {
     this.setState({
       trackerName: e.target.value
-    })
-  }
-
-  handleSwitchChange = (e) => {
-    this.setState({
-      [e.target.name]: e.target.checked
     })
   }
 
@@ -740,7 +774,7 @@ class Main extends Component {
               </div>
               <div className={classes.addButton}>
                 <CategoryFilter
-                  handleFilterChange={this.handleCategoryFilterChange}
+                  handleCategoryFilterChangee={this.handleCategoryFilterChange}
                   categories={this.state.categories}
                   categoryFilter={this.state.categoryFilter}
                 />
@@ -782,6 +816,8 @@ class Main extends Component {
                     launchDetails={this.launchDetails}
                     ignoreTask={this.ignoreTask}
                     makeCurrent={this.makeCurrent}
+                    snoozeWeek={this.snoozeWeek}
+                    skipOccurence={this.skipOccurence}
                     getKeyName={this.getKeyName}
                     currentSort={this.state.currentSort}
                     filterOption={this.state.filterOption}

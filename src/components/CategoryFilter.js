@@ -4,7 +4,7 @@ import CategoryIcon from '@material-ui/icons/Category';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 
-export default class CategoryFilterr extends Component {
+export default class CategoryFilter extends Component {
 
   state = {
     filterOptions: [],
@@ -32,7 +32,7 @@ export default class CategoryFilterr extends Component {
   };
 
   handleClick = (filterOption) => {
-    this.props.handleFilterChange(filterOption);
+    this.props.handleCategoryFilterChange(filterOption);
   }
 
   render() {
