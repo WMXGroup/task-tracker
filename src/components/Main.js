@@ -586,15 +586,18 @@ class Main extends Component {
 
   handleCategoryFilterChange = (category) => {
     const { categoryFilter } = this.state;
-    if (categoryFilter.includes(category)) {
+    if (category === 'All'){
+      this.setState({
+        categoryFilter: ['All'],
+    })} else if (categoryFilter.includes(category)) {
       const newCategoryFilter = categoryFilter.filter((value) => value !== category)
       this.setState({
         categoryFilter: newCategoryFilter,
-      });
-
+      })
     } else {
+      const newCategoryFilter = categoryFilter.filter((value) => value !== 'All')
       this.setState({
-        categoryFilter: [...categoryFilter, category]
+        categoryFilter: [...newCategoryFilter, category]
       })
     }
   };
@@ -737,7 +740,6 @@ class Main extends Component {
                     <MenuItem onClick={() => this.getFile()}>Import JSON</MenuItem>
                   </label>
                   <MenuItem onClick={() => this.exportJSON()}>Export Data</MenuItem>
-                  {/* <MenuItem onClick={() => this.saveData()}>Save Data</MenuItem> */}
                   <MenuItem onClick={() => this.createNew()}>Create New</MenuItem>
                   <MenuItem onClick={() => this.launchReport()}>Show Report</MenuItem>
                   <MenuItem onClick={() => this.makeAllActiveCurrent()}>Make Tasks Current</MenuItem>
@@ -746,20 +748,7 @@ class Main extends Component {
               <Typography variant="h6">
                   Task Tracker
               </Typography>
-              <div className={classes.grow} />
-              <IconButton
-                edge="start"
-                color="inherit"
-                onClick={() => this.getServerData()}
-                >
-                <RefreshIcon />
-              </IconButton>
-              <div className={classes.addButton}>
-                <RelatedLists
-                  relatedLists={this.state.relatedLists}
-                  changeList={this.changeList}
-                />
-              </div>              
+              <div className={classes.grow} />       
               <div className={classes.addButton}>
                 <SortAlt
                   currentSort={this.state.currentSort}
@@ -774,7 +763,7 @@ class Main extends Component {
               </div>
               <div className={classes.addButton}>
                 <CategoryFilter
-                  handleCategoryFilterChangee={this.handleCategoryFilterChange}
+                  handleCategoryFilterChange={this.handleCategoryFilterChange}
                   categories={this.state.categories}
                   categoryFilter={this.state.categoryFilter}
                 />
@@ -862,6 +851,19 @@ class Main extends Component {
           {this.state.display !== 'Details' &&
             <AppBar position="fixed" color="primary" className={classes.appBar}>
               <Toolbar>
+              <IconButton
+                edge="start"
+                color="inherit"
+                onClick={() => this.getServerData()}
+                >
+                <RefreshIcon />
+              </IconButton>
+              <div className={classes.addButton}>
+                <RelatedLists
+                  relatedLists={this.state.relatedLists}
+                  changeList={this.changeList}
+                />
+              </div>       
                 <Fab 
                   color="secondary" 
                   aria-label="add" 
