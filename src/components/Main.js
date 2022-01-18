@@ -83,7 +83,7 @@ class Main extends Component {
     filterOption: 'Active',
     categoryFilter: ['All'],
     display: 'Tasks',
-    debugMode: false,
+    debugMode: true,
     relatedLists: [],
     categoryReport: [],
   }
@@ -111,21 +111,22 @@ class Main extends Component {
 
   fixMissingFields = () => {
     const newTasks = this.state.tasks.map((task) => {
-      if (task.weeklyGoal === undefined) {
-        task.weeklyGoal = 0
-      }
-      if (task.hours === undefined) {
-        task.hour = 0
-      }
-      if (task.log === undefined) {
-        task.log = []
-      }
-      if (task.startTime === undefined) {
-        task.startTime = null
-      }
-      if (task.subCategory === undefined) {
-        task.subCategory = ''
-      }
+      // if (task.weeklyGoal === undefined) {
+      //   task.weeklyGoal = 0
+      // }
+      // if (task.hours === undefined) {
+      //   task.hour = 0
+      // }
+      // if (task.log === undefined) {
+      //   task.log = []
+      // }
+      // if (task.startTime === undefined) {
+      //   task.startTime = null
+      // }
+      // if (task.subCategory === undefined) {
+      //   task.subCategory = ''
+      // }
+      task.startTime = '12:00 AM'
       return task;
     })
     this.setState({
@@ -194,7 +195,7 @@ class Main extends Component {
           this.getUniqueValues(this.state.tasks, 'subCategory', 'subcategories')
           this.getUniqueValues(this.state.tasks, 'assigned', 'assignedUsers')
           this.getUniqueValues(this.state.tasks, 'contact', 'contactUsers')
-          // this.fixMissingFields()
+          this.fixMissingFields()
           // this.switchDateFormat()
         })
         }
