@@ -488,7 +488,16 @@ class Main extends Component {
       }
       return null;
     });
-    resArr.sort();
+    if (lowerKeyName === 'startTime'){
+      let startTimeNoNulls = resArr.filter((task) => task !== null);
+      let startTimeDay = startTimeNoNulls.filter((task) => task.includes("AM"));
+      let startTimeNight = startTimeNoNulls.filter((task) => task.includes("PM"));
+      startTimeDay.sort();
+      startTimeNight.sort();
+      resArr = [...startTimeDay, ...startTimeNight, null];
+    } else {
+      resArr.sort();
+    }
     this.setState({
       headers: resArr,
       currentSort: keyName,

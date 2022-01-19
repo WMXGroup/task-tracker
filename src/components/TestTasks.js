@@ -25,6 +25,7 @@ export const tasks = [
     points: 0,
     log:[],
     startTime: "08:00 AM",
+    startTimeValue: 800,
   },
   {
     id: 2,
@@ -52,6 +53,7 @@ export const tasks = [
     points: 0,
     log:[],
     startTime: "08:00 AM",
+    startTimeValue: 800,
   },
   {
     id: 3,
@@ -79,6 +81,7 @@ export const tasks = [
     points: 0,
     log:[],
     startTime: "08:00 AM",
+    startTimeValue: 800,
   },
   {
     id: 4,
@@ -106,6 +109,7 @@ export const tasks = [
     points: 0,
     log:[],
     startTime: "08:30 PM",
+    startTimeValue: 830,
   },
   {
     id: 5,
@@ -133,6 +137,7 @@ export const tasks = [
     points: 0,
     log:[],
     startTime: null,
+    startTimeValue: null,
   },
   {
     id: 6,
@@ -160,6 +165,7 @@ export const tasks = [
     points: 0,
     log:[],
     startTime: null,
+    startTimeValue: null,
   },
   {
     id: 7,
@@ -206,6 +212,7 @@ export const tasks = [
       }
     ],
     startTime: "08:00 AM",
+    startTimeValue: 800,
   },
   {
     id: 8,
@@ -233,6 +240,7 @@ export const tasks = [
     points: 1,
     log:[],
     startTime: "10:00 AM",
+    startTimeValue: 1000,
   },
   {
     id: 9,
@@ -260,6 +268,7 @@ export const tasks = [
     points: 1,
     log:[],
     startTime: "09:00 AM",
+    startTimeValue: 900,
   },
   {
     id: 9,
@@ -287,5 +296,6 @@ export const tasks = [
     points: 1,
     log:[],
     startTime: "08:00 AM",
+    startTimeValue: 800,
   },
 ]
