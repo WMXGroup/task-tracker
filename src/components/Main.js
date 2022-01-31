@@ -83,7 +83,7 @@ class Main extends Component {
     filterOption: 'Active',
     categoryFilter: ['All'],
     display: 'Tasks',
-    debugMode: false,
+    debugMode: true,
     relatedLists: [],
     categoryReport: [],
   }
@@ -369,9 +369,9 @@ class Main extends Component {
           let curActiveDate = task.activeDate === undefined ? moment().format('YYYY-MM-DD') : task.activeDate;
           let newActiveDate = moment(curActiveDate).add(curRecurDays, 'days').format('YYYY-MM-DD');
           task.recurDays = curRecurDays;
-          task.dueDate = moment(curDueDate).add(7, 'days').format('YYYY-MM-DD');
-          task.dueWeek = moment(curDueDate).add(7, 'days').startOf('week').format('YYYY-MM-DD');
-          task.dueMonth = moment(curDueDate).add(7, 'days').format('YYYY-MM');
+          task.dueDate = moment(curDueDate).add(curRecurDays, 'days').format('YYYY-MM-DD');
+          task.dueWeek = moment(curDueDate).add(curRecurDays, 'days').startOf('week').format('YYYY-MM-DD');
+          task.dueMonth = moment(curDueDate).add(curRecurDays, 'days').format('YYYY-MM');
           task.activeDate = newActiveDate;
           task.isActive = moment(newActiveDate).format('YYYY-MM-DD') <= moment().format('YYYY-MM-DD') ? true : false
       }
