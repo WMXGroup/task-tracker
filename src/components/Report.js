@@ -3,6 +3,7 @@ import { withStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import IconButton from '@material-ui/core/IconButton';
 import CloseIcon from '@material-ui/icons/Close';
+import Button from '@material-ui/core/Button';
 
 const styles = theme => ({
   taskContainer: {
@@ -41,7 +42,15 @@ const styles = theme => ({
     display: 'flex',
     flexWrap: 'wrap',
     marginBottom: '70px'
-  }
+  },
+  buttonStyle: {
+    margin: '5px',
+    padding: '5px',
+  },
+  buttonContainer: {
+    display: 'flex',
+    padding: '5px',
+  },
 });
 
 class Report extends Component {
@@ -53,7 +62,9 @@ class Report extends Component {
     const {
       classes,
       categoryReport,
-      toggleDisplay
+      toggleDisplay,
+      updateReportWeek,
+      reportWeek,
     } = this.props;
 
     return (
@@ -73,6 +84,33 @@ class Report extends Component {
             </IconButton>
           </div>
         </div>
+        <div className={classes.headerContainer}> 
+          <div className={classes.headerName}>
+              <Typography variant="h6">
+                  {`Week of ${reportWeek}`}
+              </Typography>
+          </div>
+        </div>
+        <div className={classes.buttonContainer}>
+          <div className={classes.buttonStyle}>
+              <Button 
+                variant="contained"
+                color="primary"
+                onClick={() => updateReportWeek(1)}
+                >
+                +
+              </Button>
+            </div>
+            <div className={classes.buttonStyle}>
+              <Button 
+                variant="contained"
+                color="primary"
+                onClick={() => updateReportWeek(0)}
+                >
+                -
+              </Button>
+            </div>
+          </div>
         <div className={classes.reportContainer}>
           {categoryReport.map ((item, i) => (
             <div className={classes.fieldContainer}>

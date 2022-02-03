@@ -83,9 +83,10 @@ class Main extends Component {
     filterOption: 'Active',
     categoryFilter: ['All'],
     display: 'Tasks',
-    debugMode: false,
+    debugMode: true,
     relatedLists: [],
     categoryReport: [],
+    reportWeek: moment().startOf('week').format('YYYY-MM-DD'),
   }
 
   componentDidMount = () => {
@@ -623,6 +624,7 @@ class Main extends Component {
     const {
       categories,
       tasks,
+      reportWeek,
     } = this.state;
 
     for (let i = 0; i < categories.length; i++) {
@@ -638,8 +640,10 @@ class Main extends Component {
         if (pointsArray[j].category === tasks[i].category) {
           pointsArray[j].weeklyPoints += tasks[i].points * ((tasks[i].recurDays === 0 || tasks[i].recurDays === null || tasks[i].recurDays === '' ) ? 0 : Math.floor(7/tasks[i].recurDays))
           for (let k = 0; k < tasks[i].completedDates.length; k++) {
-            if (moment(tasks[i].completedDates[k]).format('YYYYMMDD') >= moment().startOf('week').format('YYYYMMDD'))
-            pointsArray[j].totalPoints = parseInt(pointsArray[j].totalPoints) + (tasks[i].points === null || tasks[i].points === '' ) ? 0 : tasks[i].points;
+            if (moment(tasks[i].completedDates[k]).format('YYYY-MM-DD') >= reportWeek && moment(tasks[i].completedDates[k]).format('YYYY-MM-DD') < moment(reportWeek).add(7, 'days').format('YYYYMMDD')) {
+              const newPoints = (tasks[i].points === null || tasks[i].points === '') ? 0 : parseInt(tasks[i].points);
+              pointsArray[j].totalPoints = parseInt(pointsArray[j].totalPoints) + newPoints;
+            }
           }
         }
       }
@@ -648,6 +652,18 @@ class Main extends Component {
     this.setState({
       categoryReport: pointsArray,
     })
+  }
+
+  updateReportWeek = async (direction) => {
+    if (direction === 1){
+      this.setState({
+        reportWeek: moment(this.state.reportWeek).add(7, 'days').format('YYYY-MM-DD')
+      }, () => this.calculatePoints())
+    } else {
+      this.setState({
+        reportWeek: moment(this.state.reportWeek).subtract(7, 'days').format('YYYY-MM-DD')
+      }, () => this.calculatePoints())
+    }
   }
 
   launchReport = async () => {
@@ -847,6 +863,8 @@ class Main extends Component {
             <Report
               categoryReport={this.state.categoryReport}
               toggleDisplay={this.toggleDisplay}
+              updateReportWeek={this.updateReportWeek}
+              reportWeek={this.state.reportWeek}
             />
           }
           {this.state.display === 'Log' &&
