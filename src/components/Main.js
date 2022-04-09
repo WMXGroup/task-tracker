@@ -638,7 +638,7 @@ class Main extends Component {
     for (let i = 0; i < tasks.length; i++) {
       for (let j = 0; j < pointsArray.length; j++) {
         if (pointsArray[j].category === tasks[i].category) {
-          pointsArray[j].weeklyPoints += ((tasks[i].weeklyGoal === null || tasks[i].weeklyGoal === '' ) ? 0 : tasks[i].weeklyGoal)
+          pointsArray[j].weeklyPoints = parseInt(pointsArray[j].weeklyPoints) + ((tasks[i].weeklyGoal === null || tasks[i].weeklyGoal === '' ) ? 0 : parseInt(tasks[i].weeklyGoal))
           for (let k = 0; k < tasks[i].completedDates.length; k++) {
             if (moment(tasks[i].completedDates[k]).format('YYYY-MM-DD') >= reportWeek && moment(tasks[i].completedDates[k]).format('YYYY-MM-DD') < moment(reportWeek).add(7, 'days').format('YYYYMMDD')) {
               const newPoints = (tasks[i].points === null || tasks[i].points === '') ? 0 : parseInt(tasks[i].points);
