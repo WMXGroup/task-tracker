@@ -89,30 +89,30 @@ const styles = {
 export default class DetailModal extends Component {
 
   state = {
-    id: this.props.type === 'Edit'? this.props.taskDetails.id : this.props.uuidv4(),
-    description:  this.props.type === 'Edit'? this.props.taskDetails.description : '',
-    category: this.props.type === 'Edit'? this.props.taskDetails.category : '',
-    subCategory: this.props.type === 'Edit'? this.props.taskDetails.subCategory : '',
-    status: this.props.type === 'Edit'? this.props.taskDetails.status : '',
-    dueDate: this.props.type === 'Edit'? this.props.taskDetails.dueDate : moment().format('YYYY-MM-DD'),
-    hours: this.props.type === 'Edit'? this.props.taskDetails.hours : 0,
-    weeklyGoal: this.props.type === 'Edit'? this.props.taskDetails.weeklyGoal : 0,
-    priority: this.props.type === 'Edit'? this.props.taskDetails.priority : '',
-    assigned: this.props.type === 'Edit'? this.props.taskDetails.assigned : '',
-    contact: this.props.type === 'Edit'? this.props.taskDetails.contact : '',
-    isActive: this.props.type === 'Edit'? this.props.taskDetails.isActive : true,
-    activeDate: this.props.type === 'Edit'? this.props.taskDetails.activeDate : moment().format('YYYY-MM-DD'),
-    workTime: this.props.type === 'Edit'? this.props.taskDetails.workTime : [],
-    tags: this.props.type === 'Edit'? this.props.taskDetails.tags : [],
-    completedDates: this.props.type === 'Edit'? this.props.taskDetails.completedDates : [],
-    dueWeek: this.props.type === 'Edit'? this.props.taskDetails.dueweek : moment().startOf('isoweek').format('YYYY-MM-DD'),
-    dueMonth: this.props.type === 'Edit'? this.props.taskDetails.dueMonth : moment().format('YYYY-MM'),
-    notes: this.props.type === 'Edit'? this.props.taskDetails.notes : '',
-    type: this.props.type === 'Edit'? this.props.taskDetails.type : 'One-time',
-    recurDays: this.props.type === 'Edit'? this.props.taskDetails.recurDays : 0,
+    id: this.props.mode === 'Edit'? this.props.taskDetails.id : this.props.uuidv4(),
+    description:  this.props.mode === 'Edit'? this.props.taskDetails.description : '',
+    category: this.props.mode === 'Edit'? this.props.taskDetails.category : '',
+    subCategory: this.props.mode === 'Edit'? this.props.taskDetails.subCategory : '',
+    status: this.props.mode === 'Edit'? this.props.taskDetails.status : '',
+    dueDate: this.props.mode === 'Edit'? this.props.taskDetails.dueDate : moment().format('YYYY-MM-DD'),
+    hours: this.props.mode === 'Edit'? this.props.taskDetails.hours : 0,
+    weeklyGoal: this.props.mode === 'Edit'? this.props.taskDetails.weeklyGoal : 0,
+    priority: this.props.mode === 'Edit'? this.props.taskDetails.priority : '',
+    assigned: this.props.mode === 'Edit'? this.props.taskDetails.assigned : '',
+    contact: this.props.mode === 'Edit'? this.props.taskDetails.contact : '',
+    isActive: this.props.mode === 'Edit'? this.props.taskDetails.isActive : true,
+    activeDate: this.props.mode === 'Edit'? this.props.taskDetails.activeDate : moment().format('YYYY-MM-DD'),
+    workTime: this.props.mode === 'Edit'? this.props.taskDetails.workTime : [],
+    tags: this.props.mode === 'Edit'? this.props.taskDetails.tags : [],
+    completedDates: this.props.mode === 'Edit'? this.props.taskDetails.completedDates : [],
+    dueWeek: this.props.mode === 'Edit'? this.props.taskDetails.dueweek : moment().startOf('isoweek').format('YYYY-MM-DD'),
+    dueMonth: this.props.mode === 'Edit'? this.props.taskDetails.dueMonth : moment().format('YYYY-MM'),
+    notes: this.props.mode === 'Edit'? this.props.taskDetails.notes : '',
+    type: this.props.mode === 'Edit'? this.props.taskDetails.type : 'One-time',
+    recurDays: this.props.mode === 'Edit'? this.props.taskDetails.recurDays : 0,
     isUpdating: false,
-    startTime: this.props.type === 'Edit'? this.props.taskDetails.startTime : '12:00 AM',
-    points: this.props.type === 'Edit'? this.props.taskDetails.points : '',
+    startTime: this.props.mode === 'Edit'? this.props.taskDetails.startTime : '12:00 AM',
+    points: this.props.mode === 'Edit'? this.props.taskDetails.points : '',
   }
 
   componentDidMount() {
@@ -319,7 +319,7 @@ export default class DetailModal extends Component {
 
   render() {
     const {
-      type,
+      mode,
       categories,
       subcategories,
       assignedUsers,
@@ -682,7 +682,7 @@ export default class DetailModal extends Component {
             </div>
         </div>
         <div style={styles.buttonContainer}>
-          {type === 'Add' &&
+          {mode === 'Add' &&
             <div style={styles.buttonStyle}>
               <Button 
                 style={styles.buttonStyle}
@@ -694,7 +694,7 @@ export default class DetailModal extends Component {
               </Button>
             </div>
           }
-          {type === 'Edit' &&
+          {mode === 'Edit' &&
             <React.Fragment>
               <div style={styles.buttonStyle}>
                 <Button 

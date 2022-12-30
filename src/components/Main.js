@@ -71,7 +71,7 @@ class Main extends Component {
     setAnchorEl: false,
     trackerName: '',
     selectedTask: null,
-    detailType: null,
+    mode: null,
     completedForm: null,
     completedDetails: {},
     categories: [],
@@ -285,7 +285,7 @@ class Main extends Component {
   launchDetails = (type, id) => {
     const taskDetail = this.state.tasks.filter((task) => task.id === id)
     this.setState({
-      detailType: type,
+      mode: type,
       taskDetails: taskDetail[0]
     },
     () => this.toggleDisplay('Details'));
@@ -293,7 +293,7 @@ class Main extends Component {
 
   launchNewTask = () => {
     this.setState({
-      detailType: 'Add'
+      mode: 'Add'
     },
     () => this.toggleDisplay('Details'));
   }
@@ -824,7 +824,7 @@ class Main extends Component {
           {this.state.display === 'Details' &&
             <TaskDetails
               toggleDisplay={this.toggleDisplay}
-              type={this.state.detailType}
+              mode={this.state.mode}
               categories={this.state.categories}
               subcategories={this.state.subcategories}
               assignedUsers={this.state.assignedUsers}
