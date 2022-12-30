@@ -69,13 +69,12 @@ const styles = {
   },
 };
 
-export default class LogDetail extends Component {
+export default class CompletedDetail extends Component {
 
   state = {
-    logId: this.props.type === 'Edit'? this.props.logDetails.logId : '',
-    logDate: this.props.type === 'Edit'? this.props.logDetails.logDate : '',
-    logText:  this.props.type === 'Edit'? this.props.logDetails.logText : '',
-    logValue: this.props.type === 'Edit'? this.props.logDetails.logValue : '',
+    completedId: this.props.type === 'Edit'? this.props.completedDetails.completedId : '',
+    completedDate: this.props.type === 'Edit'? this.props.completedDetails.completedDate : '',
+    hours:  this.props.type === 'Edit'? this.props.completedDetails.hours : '',
   }
 
   onChange = (e) => {
@@ -90,7 +89,7 @@ export default class LogDetail extends Component {
 
   dateChange = (e) => {
     this.setState({
-      logDate: moment(e).format('YYYY-MM-DD'),
+      completedDate: moment(e).format('YYYY-MM-DD'),
     })
   }
 
@@ -101,7 +100,7 @@ export default class LogDetail extends Component {
         <div style={styles.headerContainer}> 
           <div style={styles.headerName}>
             <Typography variant="h5">
-                Log Management
+                Completed Date
             </Typography>
           </div>
           <div style={styles.headerClose}>
@@ -115,7 +114,7 @@ export default class LogDetail extends Component {
         </div>
         <div style={styles.fieldContainer}>
           <Typography style={styles.fieldLabel}>
-            Log Date
+            Completed Date
           </Typography>
           <div style={styles.dateContainer}>
             <MuiPickersUtilsProvider utils={DateFnsUtils}>
@@ -124,10 +123,10 @@ export default class LogDetail extends Component {
                 autoOk={true}
                 variant="inline"
                 format="yyyy-MM-dd"
-                value={moment(this.state.logDate).toISOString()}
+                value={moment(this.state.completedDate).toISOString()}
                 onChange={(e) => this.dateChange(e)}
                 KeyboardButtonProps={{
-                  'aria-label': 'change date',
+                  'aria-label': 'completed date',
                 }}
                 inputVariant="outlined"
                 InputProps={{
@@ -139,33 +138,17 @@ export default class LogDetail extends Component {
         </div>
         <div style={styles.fieldContainer}>
           <Typography style={styles.fieldLabel}>
-            Log Text
+            Hours
           </Typography>
           <TextField 
             style={styles.fieldStyle}
-            name='logText'
+            name='hours'
             variant="outlined"
             InputProps={{
               style: styles.inputStyle
             }}
             onChange={this.onChange}
-            value={this.state.logText}
-            multiline
-          />
-        </div>
-        <div style={styles.fieldContainer}>
-          <Typography style={styles.fieldLabel}>
-            Log Value
-          </Typography>
-          <TextField 
-            style={styles.fieldStyle}
-            name='logValue'
-            variant="outlined"
-            InputProps={{
-              style: styles.inputStyle
-            }}
-            onChange={this.onChange}
-            value={this.state.logValue}
+            value={this.state.hours}
             multiline
           />
         </div>
@@ -177,11 +160,10 @@ export default class LogDetail extends Component {
                   style={styles.buttonStyle}
                   variant="contained"
                   color="primary"
-                  onClick={() => this.props.addLog({
-                    logId: this.uuidv4(),
-                    logDate: this.state.logDate,
-                    logText: this.state.logText,
-                    logValue: this.state.logValue,
+                  onClick={() => this.props.addCompleted({
+                    completedId: this.uuidv4(),
+                    completedDate: this.state.completedDate,
+                    hours: this.state.hours,
                   })}
                   >
                   Add
@@ -198,11 +180,10 @@ export default class LogDetail extends Component {
                   style={styles.buttonStyle}
                   variant="contained"
                   color="primary"
-                  onClick={() => this.props.saveLog(this.state.logId, {
-                    logId: this.state.logId,
-                    logDate: this.state.logDate,
-                    logText: this.state.logText,
-                    logValue: this.state.logValue,
+                  onClick={() => this.props.saveCompleted(this.state.completedId, {
+                    completedId: this.state.completedId,
+                    completedDate: this.state.completedDate,
+                    hours: this.state.hours,
                   })}
                   >
                   Save

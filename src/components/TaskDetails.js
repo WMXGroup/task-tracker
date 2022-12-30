@@ -104,7 +104,6 @@ export default class DetailModal extends Component {
     activeDate: this.props.type === 'Edit'? this.props.taskDetails.activeDate : moment().format('YYYY-MM-DD'),
     workTime: this.props.type === 'Edit'? this.props.taskDetails.workTime : [],
     tags: this.props.type === 'Edit'? this.props.taskDetails.tags : [],
-    completedDate: this.props.type === 'Edit'? this.props.taskDetails.completedDate : '',
     completedDates: this.props.type === 'Edit'? this.props.taskDetails.completedDates : [],
     dueWeek: this.props.type === 'Edit'? this.props.taskDetails.dueweek : moment().startOf('isoweek').format('YYYY-MM-DD'),
     dueMonth: this.props.type === 'Edit'? this.props.taskDetails.dueMonth : moment().format('YYYY-MM'),
@@ -114,17 +113,26 @@ export default class DetailModal extends Component {
     isUpdating: false,
     startTime: this.props.type === 'Edit'? this.props.taskDetails.startTime : '12:00 AM',
     points: this.props.type === 'Edit'? this.props.taskDetails.points : '',
-    log: this.props.type === 'Edit'? this.props.taskDetails.log : [],
   }
 
   componentDidMount() {
     window.scrollTo(0, 0);
+    this.sortCompleted();
   }
 
   onChange = (e) => {
     this.setState({
       [e.target.name]: e.target.value
     })
+  }
+
+  sortCompleted = () => {
+    const newCompleted = this.state.completedDates.sort((a, b) => new Date(a.completedDate) - new Date(b.completedDate));
+    console.log('Test', newCompleted);
+    this.setState({
+      completedDates: newCompleted,
+    })
+
   }
 
   dateChange = (e) => {
@@ -179,8 +187,13 @@ export default class DetailModal extends Component {
             dueMonth: moment(curDueDate).add(curRecurDays, 'days').format('YYYY-MM'),
             activeDate: newActiveDate,
             isActive: moment(newActiveDate).format('YYYY-MM-DD') < moment().format('YYYY-MM-DD') ? true : false,
-            completedDate: '',
-            completedDates: [...completedDates, moment(curDueDate).format('YYYY-MM-DD')]
+            completedDates: [...completedDates,
+              {
+              completedId: this.props.uuidv4(),
+              completedDate: moment(curDueDate).format('YYYY-MM-DD'),
+              hours: 0
+              }
+            ],
           }, ()=> {
             this.setState({ 
               isUpdating: false,
@@ -195,8 +208,11 @@ export default class DetailModal extends Component {
             dueMonth: moment(curDueDate).format('YYYY-MM'),
             activeDate: curActiveDate,
             isActive: false,
-            completedDate: moment().format('YYYY-MM-DD'),
-            completedDates: [moment(curDueDate).format('YYYY-MM-DD')],
+            completedDates: [{
+              completedId: this.props.uuidv4(),
+              completedDate: moment(curDueDate).format('YYYY-MM-DD'),
+              hours: 0
+              }],
           }, ()=> {
             this.setState({ 
               isUpdating: false,
@@ -235,7 +251,6 @@ export default class DetailModal extends Component {
       activeDate: this.state.activeDate,
       workTime: this.state.workTime,
       tags: this.state.tags,
-      completedDate: this.state.completedDate,
       completedDates: this.state.completedDates,
       dueWeek: this.state.dueWeek,
       dueMonth: this.state.dueMonth,
@@ -244,7 +259,6 @@ export default class DetailModal extends Component {
       recurDays: this.state.recurDays,
       startTime: this.state.startTime,
       points: this.state.points,
-      log: this.state.log,
     });
     this.props.toggleDisplay('Tasks');
   }
@@ -266,7 +280,6 @@ export default class DetailModal extends Component {
       activeDate: this.state.activeDate,
       workTime: this.state.workTime,
       tags: this.state.tags,
-      completedDate: this.state.completedDate,
       completedDates: this.state.completedDates,
       dueWeek: this.state.dueWeek,
       dueMonth: this.state.dueMonth,
@@ -275,7 +288,6 @@ export default class DetailModal extends Component {
       recurDays: this.state.recurDays,
       startTime: this.state.startTime,
       points: this.state.points,
-      log: this.state.log,
     });
     this.props.toggleDisplay('Tasks');
   }
@@ -285,12 +297,12 @@ export default class DetailModal extends Component {
     this.props.toggleDisplay('Tasks');
   }
 
-  handleDeleteDate = (value) => {
-    const newDates = this.state.completedDates.filter((date) => date !== value)
-    this.setState({
-      completedDates: newDates,
-    });
-  }
+  // handleDeleteDate = (value) => {
+  //   const newDates = this.state.completedDates.filter((date) => date !== value)
+  //   this.setState({
+  //     completedDates: newDates,
+  //   });
+  // }
 
   handleTimeChange = (value) => {
     this.setState({
@@ -298,10 +310,10 @@ export default class DetailModal extends Component {
     })
   };
 
-  handleDeleteLog = (id) => {
-    const newLogs = this.state.log.filter((log) => log.logId !== id)
+  handleDeleteCompleted = (id) => {
+    const newCompleted = this.state.completedDates.filter((item) => item.completedId !== id)
     this.setState({
-      log: newLogs,
+      completedDates: newCompleted,
     });
   }
 
@@ -640,13 +652,16 @@ export default class DetailModal extends Component {
             <List>
               {
                 this.state.completedDates.map((date) => (
-                  <ListItem button>
-                    {date}
+                  <ListItem 
+                  button
+                  onClick={() => this.props.launchEditCompleted(this.state, date)}
+                  >
+                    Date: {date.completedDate}, Hours: {date.hours}
                     <ListItemSecondaryAction>
                       <IconButton 
                         edge="end" 
                         aria-label="delete"
-                        onClick={() => this.handleDeleteDate(date)}>
+                        onClick={() => this.handleDeleteCompleted(date.completedId)}>
                         <CloseIcon />
                       </IconButton>
                     </ListItemSecondaryAction>
@@ -655,58 +670,17 @@ export default class DetailModal extends Component {
               }
             </List>
           </Paper>
-        </div>
-        {type === 'Edit' &&
-          <div style={styles.fieldContainer}>
-            <Typography style={styles.fieldLabel}>
-              Log
-            </Typography>
-            <Paper 
-              variant="outlined" 
-              style={styles.paperContainer}>
-              <List>
-                {
-                  this.state.log.map((item) => (
-                    <ListItem 
-                      button
-                      onClick={() => this.props.launchEditLog(this.state, item)}
-                      >
-                      <div style={{border: '1px solid #ccc'}}>
-                        <div>
-                          {'Date: '}{item.logDate}
-                        </div>
-                        <div>
-                          {'Note: '}{item.logText}
-                        </div>
-                        <div>
-                          {'Value: '}{item.logValue}
-                        </div>
-                      </div>
-                      <ListItemSecondaryAction>
-                        <IconButton 
-                          edge="end" 
-                          aria-label="delete"
-                          onClick={() => this.handleDeleteLog(item.logId)}>
-                          <CloseIcon />
-                        </IconButton>
-                      </ListItemSecondaryAction>
-                    </ListItem>
-                  ))
-                }
-              </List>
-            </Paper>
-            <div style={styles.buttonStyle}>
+          <div style={styles.buttonStyle}>
               <Button 
                 style={styles.buttonStyle}
                 variant="contained"
                 color="primary"
-                onClick={() => this.props.launchNewLog(this.state)}
+                onClick={() => this.props.launchNewCompleted(this.state)}
                 >
                 +
               </Button>
             </div>
-          </div>
-        }
+        </div>
         <div style={styles.buttonContainer}>
           {type === 'Add' &&
             <div style={styles.buttonStyle}>

@@ -14,7 +14,7 @@ import Divider from '@material-ui/core/Divider';
 import { withStyles } from '@material-ui/core/styles';
 import TaskGroup from './TaskGroup';
 import TaskDetails from './TaskDetails';
-import LogDetail from './LogDetail';
+import CompletedDetail from './CompletedDetail';
 import {tasks} from './TestTasks';
 import SortAlt from './SortAlt';
 import RelatedLists from './RelatedLists';
@@ -72,8 +72,8 @@ class Main extends Component {
     trackerName: '',
     selectedTask: null,
     detailType: null,
-    logForm: null,
-    logDetails: {},
+    completedForm: null,
+    completedDetails: {},
     categories: [],
     subcategories: [],
     assignedUsers: [],
@@ -83,17 +83,18 @@ class Main extends Component {
     filterOption: 'Active',
     categoryFilter: ['All'],
     display: 'Tasks',
-    debugMode: false,
+    debugMode: true,
     relatedLists: [],
     categoryReport: [],
     reportWeek: moment().startOf('week').format('YYYY-MM-DD'),
   }
 
   componentDidMount = () => {
+    console.log('componentDidMount');
     if(this.state.debugMode === true){
       this.setState({
-        tasks: tasks
-      })
+        tasks: this.updateData(tasks),
+      });
     } else {
       this.getServerData();
     };
@@ -101,6 +102,7 @@ class Main extends Component {
   }
 
   componentDidUpdate = (prevProps, prevState) => {
+    console.log('componentDidUpdate');
     if (this.state.tasks !== prevState.tasks) {
       this.getSortHeaders(this.state.tasks, this.state.currentSort);
       this.getUniqueValues(this.state.tasks, 'category', 'categories');
@@ -110,66 +112,35 @@ class Main extends Component {
     }
   }
 
-  fixMissingFields = () => {
-    const newTasks = this.state.tasks.map((task) => {
-      // if (task.weeklyGoal === undefined) {
-      //   task.weeklyGoal = 0
-      // }
-      // if (task.hours === undefined) {
-      //   task.hour = 0
-      // }
-      // if (task.log === undefined) {
-      //   task.log = []
-      // }
-      // if (task.startTime === undefined) {
-      //   task.startTime = null
-      // }
-      // if (task.subCategory === undefined) {
-      //   task.subCategory = ''
-      // }
-      task.startTime = '12:00 AM'
+  updateData = (data) => {
+    const newTasks = data.map((task) => {
+      const newCompletedDates = task.completedDates.map((taskDate) => {
+        if (taskDate.hasOwnProperty('completedDate')) {
+          return {
+            completedId: this.uuidv4(),
+            completedDate: taskDate.completedDate,
+            hours: taskDate.hours
+          }
+        } else {
+          return {
+            completedId: this.uuidv4(),
+            completedDate: moment(taskDate).format('YYYY-MM-DD'),
+            hours: 0
+          }
+        }
+      });
+      if (newCompletedDates.length === 0 && task.completedDate !== ''){
+        newCompletedDates.push({
+          completedDate: moment(task.completedDate).format('YYYY-MM-DD'),
+          hours: 0
+        })
+      }
+      task.completedDates = newCompletedDates;
+      delete task.log;
       return task;
     })
-    this.setState({
-      tasks: newTasks,
-    }, () => this.saveData());
+    return newTasks;
   }
-
-  switchDateFormat = () => {
-  const newTasks = this.state.tasks.map((task) => {
-    if (task.activeDate !== undefined) {
-      task.activeDate = moment(task.activeDate).format('YYYY-MM-DD')
-    }
-    if (task.dueDate !== undefined) {
-      task.dueDate = moment(task.dueDate).format('YYYY-MM-DD')
-    }
-    if (task.dueMonth !== undefined) {
-      task.dueMonth = moment(task.dueDate).format('YYYY-MM')
-    }
-    if (task.dueWeek !== undefined) {
-      task.dueWeek = moment(task.dueWeek).format('YYYY-MM-DD')
-    }
-
-    const newCompletedDates = task.completedDates.map((taskDate) => (
-      moment(taskDate).format('YYYY-MM-DD')
-    ));
-    task.completedDates = newCompletedDates;
-
-    const newLogs = task.log.map((curLog) => (
-        {
-        logId: curLog.logId,
-        logDate: (curLog.logDate === undefined || curLog.logDate === null) ? curLog.logDate : moment(curLog.logDate).format('YYYY-MM-DD'),
-        logText: curLog.logText,
-        logValue: curLog.logValue
-        }
-    ));
-    task.log = newLogs;
-    return task;
-  })
-  this.setState({
-    tasks: newTasks,
-  }, () => this.saveData());
-}
 
   getServerData = () => {
     let search = window.location.search;
@@ -184,7 +155,7 @@ class Main extends Component {
         .get(`https://guarded-mesa-76047.herokuapp.com/api/lists/${listId}`)
         .then(res => this.setState({
           trackerName: res.data.listName,
-          tasks: res.data.list,
+          tasks: this.updateData(res.data.list),
           lastSaved: res.data.lastSaved,
           isLoading: false,
           relatedLists: (res.data.relatedLists === undefined || res.data.relatedLists === null) ? [] : res.data.relatedLists,
@@ -340,10 +311,14 @@ class Main extends Component {
           task.dueDate = moment(curDueDate).add(curRecurDays, 'days').format('YYYY-MM-DD');
           task.dueWeek = moment(curDueDate).add(curRecurDays, 'days').startOf('week').format('YYYY-MM-DD');
           task.dueMonth = moment(curDueDate).add(curRecurDays, 'days').format('YYYY-MM');
-          task.activeDate = newActiveDate
+          task.activeDate = newActiveDate;
           task.isActive = moment(newActiveDate).format('YYYY-MM-DD') < moment().format('YYYY-MM-DD') ? true : false
-          task.completedDate = ''
-          task.completedDates = [...task.completedDates, moment(curDueDate).format('YYYY-MM-DD')]
+          task.completedDates = [...task.completedDates, 
+            {
+            completedDate: moment(curDueDate).format('YYYY-MM-DD'),
+            hours: 0
+            }
+          ];
         } else if (task.type === 'One-time') {
           task.status = 'Completed';
           task.dueDate = curDueDate;
@@ -351,8 +326,12 @@ class Main extends Component {
           task.dueMonth = moment(curDueDate).format('YYYY-MM');
           task.activeDate = curActiveDate;
           task.isActive = false;
-          task.completedDate = moment().format('YYYY-MM-DD');
-          task.completedDates = [...task.completedDates, moment(curDueDate).format('YYYY-MM-DD')];
+          task.completedDates = [...task.completedDates, 
+            {
+            completedDate: moment(curDueDate).format('YYYY-MM-DD'),
+            hours: 0
+            }
+          ];
         }
       }
       return task;
@@ -677,37 +656,37 @@ class Main extends Component {
     await this.toggleDisplay('AddRelatedList');
   }
 
-  launchNewLog = (curTaskDetails) => {
+  launchNewCompleted = (curTaskDetails) => {
     this.setState({
-      logForm: 'Add',
+      completedForm: 'Add',
       taskDetails: curTaskDetails
     },
-    () => this.toggleDisplay('Log'));
+    () => this.toggleDisplay('Completed'));
   }
 
-  launchEditLog = (curTaskDetails, logDetails) => {
+  launchEditCompleted = (curTaskDetails, completedDetails) => {
     this.setState({
-      logForm: 'Edit',
-      logDetails: logDetails,
+      completedForm: 'Edit',
+      completedDetails: completedDetails,
       taskDetails: curTaskDetails
     },
-    () => this.toggleDisplay('Log'));
+    () => this.toggleDisplay('Completed'));
   }
 
-  saveLog = (id, log) => {
-    const newLogs = this.state.taskDetails.log.filter((item) => item.logId !== id)
+  saveCompleted = (id, data) => {
+    const newCompleted = this.state.taskDetails.completedDates.filter((item) => item.completedId !== id)
     let newTaskDetails = this.state.taskDetails;
-    newTaskDetails.log = [...newLogs, log];
+    newTaskDetails.completedDates = [...newCompleted, data];
     this.setState({ 
       taskDetails: newTaskDetails,
     },
     () => this.toggleDisplay('Details'));
   }
 
-  addLog = (log) => {
+  addCompleted = (completed) => {
     let newTaskDetails = this.state.taskDetails;
-    const newLogs = [...newTaskDetails.log, log]
-    newTaskDetails.log = newLogs;
+    const newCompleted = [...newTaskDetails.completedDates, completed]
+    newTaskDetails.completedDates = newCompleted;
     this.setState({ 
       taskDetails: newTaskDetails,
     },
@@ -854,8 +833,8 @@ class Main extends Component {
               taskDetails={this.state.taskDetails}
               saveTask={this.saveTask}
               deleteTask={this.deleteTask}
-              launchNewLog={this.launchNewLog}
-              launchEditLog={this.launchEditLog}
+              launchNewCompleted={this.launchNewCompleted}
+              launchEditCompleted={this.launchEditCompleted}
               uuidv4={this.uuidv4}
             />
           }
@@ -867,13 +846,13 @@ class Main extends Component {
               reportWeek={this.state.reportWeek}
             />
           }
-          {this.state.display === 'Log' &&
-            <LogDetail
-              type={this.state.logForm}
+          {this.state.display === 'Completed' &&
+            <CompletedDetail
+              type={this.state.completedForm}
               toggleDisplay={this.toggleDisplay}
-              saveLog={this.saveLog}
-              addLog={this.addLog}
-              logDetails={this.state.logDetails}
+              saveCompleted={this.saveCompleted}
+              addCompleted={this.addCompleted}
+              completedDetails={this.state.completedDetails}
             />
           }
           {this.state.display !== 'Details' &&
