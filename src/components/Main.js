@@ -83,7 +83,7 @@ class Main extends Component {
     filterOption: 'Active',
     categoryFilter: ['All'],
     display: 'Tasks',
-    debugMode: false,
+    debugMode: true,
     relatedLists: [],
     categoryReport: [],
     reportWeek: moment().startOf('week').format('YYYY-MM-DD'),
