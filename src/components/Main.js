@@ -90,7 +90,9 @@ class Main extends Component {
   }
 
   componentDidMount = () => {
-    console.log('componentDidMount');
+    // console.log('componentDidMount');
+    // If needing to update data use this:
+    // tasks: this.updateData(tasks),
     if(this.state.debugMode === true){
       this.setState({
         tasks: this.updateData(tasks),
@@ -102,7 +104,7 @@ class Main extends Component {
   }
 
   componentDidUpdate = (prevProps, prevState) => {
-    console.log('componentDidUpdate');
+    //console.log('componentDidUpdate');
     if (this.state.tasks !== prevState.tasks) {
       this.getSortHeaders(this.state.tasks, this.state.currentSort);
       this.getUniqueValues(this.state.tasks, 'category', 'categories');
@@ -114,31 +116,11 @@ class Main extends Component {
 
   updateData = (data) => {
     const newTasks = data.map((task) => {
-      const newCompletedDates = task.completedDates.map((taskDate) => {
-        if (taskDate.hasOwnProperty('completedDate')) {
-          return {
-            completedId: this.uuidv4(),
-            completedDate: taskDate.completedDate,
-            hours: taskDate.hours
-          }
-        } else {
-          return {
-            completedId: this.uuidv4(),
-            completedDate: moment(taskDate).format('YYYY-MM-DD'),
-            hours: 0
-          }
-        }
-      });
-      if (newCompletedDates.length === 0 && task.completedDate !== ''){
-        newCompletedDates.push({
-          completedId: this.uuidv4(),
-          completedDate: moment(task.completedDate).format('YYYY-MM-DD'),
-          hours: 0
-        })
+      if (task.type === 'Habit' && task.status !== 'Completed') {
+        task.dueDate = moment().format('YYYY-MM-DD');
+        task.dueWeek = moment().startOf('week').format('YYYY-MM-DD');
+        task.dueMonth = moment().format('YYYY-MM');
       }
-      task.completedDates = newCompletedDates;
-      delete task.activeDate;
-      delete task.isActive;
       return task;
     })
     return newTasks;
@@ -148,6 +130,8 @@ class Main extends Component {
     let search = window.location.search;
     let params = new URLSearchParams(search);
     let listId = params.get('query');
+    // If needing to update data structure use this:
+    // tasks: this.updateData(res.data.list),
 
     if(listId !== undefined && listId !== null){
       this.setState({
@@ -168,8 +152,6 @@ class Main extends Component {
           this.getUniqueValues(this.state.tasks, 'subCategory', 'subcategories')
           this.getUniqueValues(this.state.tasks, 'assigned', 'assignedUsers')
           this.getUniqueValues(this.state.tasks, 'contact', 'contactUsers')
-          // this.fixMissingFields()
-          // this.switchDateFormat()
         })
         }
       )
@@ -304,7 +286,7 @@ class Main extends Component {
       if (task.id === id) {
         let curDueDate = task.dueDate === undefined ? moment().format('YYYY-MM-DD') : task.dueDate;
         let curRecurDays = task.recurDays === undefined ? 0 : task.recurDays;
-        if (task.type === 'Recurring') {
+        if (task.type === 'Recurring' || task.type === 'Habit') {
           task.status = 'Not Started';
           task.recurDays = curRecurDays;
           task.dueDate = moment(curDueDate).add(curRecurDays, 'days').format('YYYY-MM-DD');
@@ -343,7 +325,7 @@ class Main extends Component {
       if (task.id === id) {
         let curDueDate = task.dueDate === undefined ? moment().format('YYYY-MM-DD') : task.dueDate;
         let curRecurDays = task.recurDays === undefined ? 0 : task.recurDays;
-        if (task.type === 'Recurring') {
+        if (task.type === 'Recurring' || task.type === 'Habit') {
           task.status = 'Not Started';
           task.recurDays = curRecurDays;
           task.dueDate = moment(curDueDate).add(curRecurDays, 'days').format('YYYY-MM-DD');

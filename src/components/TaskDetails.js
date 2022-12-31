@@ -165,7 +165,7 @@ export default class DetailModal extends Component {
       if (newValue === 'Completed') {
         let curDueDate = dueDate === undefined ? moment().format('YYYY-MM-DD') : dueDate;
         let curRecurDays = recurDays === undefined ? 0 : recurDays;
-        if (type === 'Recurring') {
+        if (type === 'Recurring' || type === 'Habit') {
           this.setState({
             isUpdating: true,
             status: 'Not Started',
