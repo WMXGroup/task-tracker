@@ -40,7 +40,8 @@ class Task extends Component {
       makeCurrent,
       snoozeWeek,
       skipOccurence,
-      launchDetails
+      launchDetails,
+      launchCompleteCompleted,
     } = this.props;
 
     return (
@@ -59,6 +60,7 @@ class Task extends Component {
           skipOccurence={() => skipOccurence(task.id)}
           ignoreTask={() => ignoreTask(task.id)}
           makeCurrent={() => makeCurrent(task.id)}
+          launchCompleteCompleted={() => launchCompleteCompleted(task.id)}
         />
         <TextField
           className={classes.taskStyle}

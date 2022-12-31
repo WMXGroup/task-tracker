@@ -80,7 +80,7 @@ class Main extends Component {
     contactUsers: [],
     taskDetails: {},
     currentSort: 'Due Date',
-    filterOption: 'Active',
+    filterOption: 'Upcoming',
     categoryFilter: ['All'],
     display: 'Tasks',
     debugMode: false,
@@ -131,12 +131,14 @@ class Main extends Component {
       });
       if (newCompletedDates.length === 0 && task.completedDate !== ''){
         newCompletedDates.push({
+          completedId: this.uuidv4(),
           completedDate: moment(task.completedDate).format('YYYY-MM-DD'),
           hours: 0
         })
       }
       task.completedDates = newCompletedDates;
-      delete task.log;
+      delete task.activeDate;
+      delete task.isActive;
       return task;
     })
     return newTasks;
@@ -161,7 +163,6 @@ class Main extends Component {
           relatedLists: (res.data.relatedLists === undefined || res.data.relatedLists === null) ? [] : res.data.relatedLists,
         }))
         .then(() => {
-          this.activateTasks()
           this.getSortHeaders(this.state.tasks, this.state.currentSort)
           this.getUniqueValues(this.state.tasks, 'category', 'categories')
           this.getUniqueValues(this.state.tasks, 'subCategory', 'subcategories')
@@ -303,18 +304,15 @@ class Main extends Component {
       if (task.id === id) {
         let curDueDate = task.dueDate === undefined ? moment().format('YYYY-MM-DD') : task.dueDate;
         let curRecurDays = task.recurDays === undefined ? 0 : task.recurDays;
-        let curActiveDate = task.activeDate === undefined ? moment().format('YYYY-MM-DD') : task.activeDate;
-        let newActiveDate = moment(curActiveDate).add(curRecurDays, 'days').format('YYYY-MM-DD');
         if (task.type === 'Recurring') {
           task.status = 'Not Started';
           task.recurDays = curRecurDays;
           task.dueDate = moment(curDueDate).add(curRecurDays, 'days').format('YYYY-MM-DD');
           task.dueWeek = moment(curDueDate).add(curRecurDays, 'days').startOf('week').format('YYYY-MM-DD');
           task.dueMonth = moment(curDueDate).add(curRecurDays, 'days').format('YYYY-MM');
-          task.activeDate = newActiveDate;
-          task.isActive = moment(newActiveDate).format('YYYY-MM-DD') < moment().format('YYYY-MM-DD') ? true : false
           task.completedDates = [...task.completedDates, 
             {
+            completedId: this.uuidv4(),
             completedDate: moment(curDueDate).format('YYYY-MM-DD'),
             hours: 0
             }
@@ -324,12 +322,50 @@ class Main extends Component {
           task.dueDate = curDueDate;
           task.dueWeek = moment(curDueDate).startOf('week').format('YYYY-MM-DD');
           task.dueMonth = moment(curDueDate).format('YYYY-MM');
-          task.activeDate = curActiveDate;
-          task.isActive = false;
           task.completedDates = [...task.completedDates, 
             {
+            completedId: this.uuidv4(),
             completedDate: moment(curDueDate).format('YYYY-MM-DD'),
             hours: 0
+            }
+          ];
+        }
+      }
+      return task;
+    });
+    this.setState({
+      tasks: newTasks,
+    }, () => this.saveData());
+  }
+
+  completeCompletedTask = (id, completedDate, hours) => {
+    const newTasks = this.state.tasks.map((task) => {
+      if (task.id === id) {
+        let curDueDate = task.dueDate === undefined ? moment().format('YYYY-MM-DD') : task.dueDate;
+        let curRecurDays = task.recurDays === undefined ? 0 : task.recurDays;
+        if (task.type === 'Recurring') {
+          task.status = 'Not Started';
+          task.recurDays = curRecurDays;
+          task.dueDate = moment(curDueDate).add(curRecurDays, 'days').format('YYYY-MM-DD');
+          task.dueWeek = moment(curDueDate).add(curRecurDays, 'days').startOf('week').format('YYYY-MM-DD');
+          task.dueMonth = moment(curDueDate).add(curRecurDays, 'days').format('YYYY-MM');
+          task.completedDates = [...task.completedDates, 
+            {
+            completedId: this.uuidv4(),
+            completedDate: completedDate,
+            hours: hours
+            }
+          ];
+        } else if (task.type === 'One-time') {
+          task.status = 'Completed';
+          task.dueDate = curDueDate;
+          task.dueWeek = moment(curDueDate).startOf('week').format('YYYY-MM-DD');
+          task.dueMonth = moment(curDueDate).format('YYYY-MM');
+          task.completedDates = [...task.completedDates, 
+            {
+            completedId: this.uuidv4(),
+            completedDate: completedDate,
+            hours: hours
             }
           ];
         }
@@ -346,14 +382,10 @@ class Main extends Component {
       if (task.id === id) {
           let curDueDate = task.dueDate === undefined ? moment().format('YYYY-MM-DD') : task.dueDate;
           let curRecurDays = task.recurDays === undefined ? 0 : task.recurDays;
-          let curActiveDate = task.activeDate === undefined ? moment().format('YYYY-MM-DD') : task.activeDate;
-          let newActiveDate = moment(curActiveDate).add(curRecurDays, 'days').format('YYYY-MM-DD');
           task.recurDays = curRecurDays;
           task.dueDate = moment(curDueDate).add(curRecurDays, 'days').format('YYYY-MM-DD');
           task.dueWeek = moment(curDueDate).add(curRecurDays, 'days').startOf('week').format('YYYY-MM-DD');
           task.dueMonth = moment(curDueDate).add(curRecurDays, 'days').format('YYYY-MM');
-          task.activeDate = newActiveDate;
-          task.isActive = moment(newActiveDate).format('YYYY-MM-DD') <= moment().format('YYYY-MM-DD') ? true : false
       }
       return task;
     });
@@ -366,13 +398,9 @@ class Main extends Component {
     const newTasks = this.state.tasks.map((task) => {
       if (task.id === id) {
           let curDueDate = task.dueDate === undefined ? moment().format('YYYY-MM-DD') : task.dueDate;
-          let curActiveDate = task.activeDate === undefined ? moment().format('YYYY-MM-DD') : task.activeDate;
-          let newActiveDate = moment(curActiveDate).add(7, 'days').format('YYYY-MM-DD');
           task.dueDate = moment(curDueDate).add(7, 'days').format('YYYY-MM-DD');
           task.dueWeek = moment(curDueDate).add(7, 'days').startOf('week').format('YYYY-MM-DD');
           task.dueMonth = moment(curDueDate).add(7, 'days').format('YYYY-MM');
-          task.activeDate = newActiveDate
-          task.isActive = moment(newActiveDate).format('YYYY-MM-DD') <= moment().format('YYYY-MM-DD') ? true : false
       }
       return task;
     });
@@ -387,8 +415,6 @@ class Main extends Component {
           task.dueDate = moment(task.dueDate).add(1, 'days').format('YYYY-MM-DD');
           task.dueWeek = moment(task.dueDate).add(1, 'days').startOf('week').format('YYYY-MM-DD');
           task.dueMonth = moment(task.dueDate).add(1, 'days').format('YYYY-MM');
-          task.activeDate = moment(task.activeDate).add(1, 'days').format('YYYY-MM-DD');
-          task.isActive = moment(task.activeDate).format('YYYY-MM-DD') <= moment().format('YYYY-MM-DD') ? true : false
       }
       return task;
     });
@@ -403,8 +429,6 @@ class Main extends Component {
           task.dueDate = moment().format('YYYY-MM-DD');
           task.dueWeek = moment().startOf('week').format('YYYY-MM-DD');
           task.dueMonth = moment().format('YYYY-MM');
-          task.activeDate = moment().format('YYYY-MM-DD');
-          task.isActive = true;
       }
       return task;
     });
@@ -416,12 +440,10 @@ class Main extends Component {
   makeAllActiveCurrent = () => {
     const newTasks = this.state.tasks.map((task) => {
       console.log(task);
-      if (task.dueDate <= moment().format('YYYY-MM-DD') && task.activeDate <= moment().format('YYYY-MM-DD') && task.status !== 'Completed' && task.dueDate !== undefined) {
+      if (task.dueDate <= moment().format('YYYY-MM-DD') && task.status !== 'Completed' && task.dueDate !== undefined) {
           task.dueDate = moment().format('YYYY-MM-DD');
           task.dueWeek = moment().startOf('week').format('YYYY-MM-DD');
           task.dueMonth = moment().format('YYYY-MM');
-          task.activeDate = moment().format('YYYY-MM-DD');
-          task.isActive = true;
       }
       return task;
     });
@@ -430,17 +452,17 @@ class Main extends Component {
     }, () => this.saveData());
   }
 
-  activateTasks = () => {
-    const newTasks = this.state.tasks.map((task) => {
-      if (moment().format('YYYY-MM-DD') >= moment(task.activeDate).format('YYYY-MM-DD') && task.activeDate !== '' && task.status !== 'Completed') {
-        task.isActive = true;
-      }
-      return task;
-    });
-    this.setState({
-      tasks: newTasks,
-    }, () => this.saveData());
-  }
+  // activateTasks = () => {
+  //   const newTasks = this.state.tasks.map((task) => {
+  //     if (moment().format('YYYY-MM-DD') >= moment(task.activeDate).format('YYYY-MM-DD') && task.status !== 'Completed') {
+  //       task.isActive = true;
+  //     }
+  //     return task;
+  //   });
+  //   this.setState({
+  //     tasks: newTasks,
+  //   }, () => this.saveData());
+  // }
 
   saveTask = (id, task) => {
     const newTasks = this.state.tasks.filter((task) => task.id !== id)
@@ -673,6 +695,16 @@ class Main extends Component {
     () => this.toggleDisplay('Completed'));
   }
 
+  launchCompleteCompleted = (id) => {
+    const taskDetail = this.state.tasks.filter((task) => task.id === id)
+    this.setState({
+      mode: 'Edit',
+      completedForm: 'Complete',
+      taskDetails: taskDetail[0]
+    },
+    () => this.toggleDisplay('Completed'));
+  }
+
   saveCompleted = (id, data) => {
     const newCompleted = this.state.taskDetails.completedDates.filter((item) => item.completedId !== id)
     let newTaskDetails = this.state.taskDetails;
@@ -816,6 +848,7 @@ class Main extends Component {
                     currentSort={this.state.currentSort}
                     filterOption={this.state.filterOption}
                     categoryFilter={this.state.categoryFilter}
+                    launchCompleteCompleted={this.launchCompleteCompleted}
                     />
                 ))}
               </div>
@@ -853,6 +886,8 @@ class Main extends Component {
               saveCompleted={this.saveCompleted}
               addCompleted={this.addCompleted}
               completedDetails={this.state.completedDetails}
+              taskDetails={this.state.taskDetails}
+              completeCompletedTask={this.completeCompletedTask}
             />
           }
           {this.state.display !== 'Details' &&

@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import Task from './Task';
+import moment from 'moment';
 
 export default class TaskGroup extends Component {
   render() {
@@ -17,19 +18,18 @@ export default class TaskGroup extends Component {
       getKeyName,
       filterOption,
       categoryFilter,
+      launchCompleteCompleted,
     } = this.props;
 
     const lowercurrentSort = getKeyName(currentSort);
     let groupTasks = [];
 
-    if (filterOption === 'Active') {
-      groupTasks = tasks.filter((task) => (task[lowercurrentSort] === header && task.isActive === true ))
-    } else if(filterOption === 'Inactive') {
-      groupTasks = tasks.filter((task) => (task[lowercurrentSort] === header && task.isActive === false && task.status !== 'Completed' ))
-    }  else if(filterOption === 'Completed') {
+    if (filterOption === 'Upcoming') {
+      groupTasks = tasks.filter((task) => (task[lowercurrentSort] === header && task.status !== 'Completed' && moment(task.dueDate).format('YYYY-MM-DD') < moment().add(7, 'days').format('YYYY-MM-DD')))
+    } else if(filterOption === 'Upcoming Month') {
+      groupTasks = tasks.filter((task) => (task[lowercurrentSort] === header && task.status !== 'Completed' && moment(task.dueDate).format('YYYY-MM-DD') < moment().add(30, 'days').format('YYYY-MM-DD')))
+    } else if(filterOption === 'Completed') {
       groupTasks = tasks.filter((task) => (task[lowercurrentSort] === header && task.status === 'Completed' ))
-    }  else if(filterOption === 'Incomplete') {
-      groupTasks = tasks.filter((task) => (task[lowercurrentSort] === header && task.status !== 'Completed' ))
     } else {
       groupTasks = tasks.filter((task) => task[lowercurrentSort] === header)
     }
@@ -55,6 +55,7 @@ export default class TaskGroup extends Component {
           ignoreTask={ignoreTask}
           makeCurrent={makeCurrent}
           launchDetails={launchDetails}
+          launchCompleteCompleted={launchCompleteCompleted}
           />
         ))}
       </React.Fragment>

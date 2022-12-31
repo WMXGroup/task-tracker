@@ -3,6 +3,7 @@ import IconButton from '@material-ui/core/IconButton';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 import SnoozeIcon from '@material-ui/icons/Snooze';
+import MoreVert from '@material-ui/icons/MoreVert';
 
 export default class ActionMenu extends Component {
 
@@ -34,7 +35,8 @@ export default class ActionMenu extends Component {
       ignoreTask,
       makeCurrent,
       skipOccurence,
-      snoozeWeek
+      snoozeWeek,
+      launchCompleteCompleted,
     } = this.props;
 
     return (
@@ -43,7 +45,7 @@ export default class ActionMenu extends Component {
           size='small'
           onClick={this.handleMenu}
           >
-          <SnoozeIcon />
+          <MoreVert />
         </IconButton>
         <Menu
             id="menu-appbar"
@@ -80,6 +82,11 @@ export default class ActionMenu extends Component {
             onClick={skipOccurence}
             >
             Skip Occurence
+          </MenuItem>
+          <MenuItem
+            onClick={launchCompleteCompleted}
+            >
+            Complete with Hours
           </MenuItem>
           </Menu>
         </React.Fragment>

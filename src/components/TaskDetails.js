@@ -100,8 +100,6 @@ export default class DetailModal extends Component {
     priority: this.props.mode === 'Edit'? this.props.taskDetails.priority : '',
     assigned: this.props.mode === 'Edit'? this.props.taskDetails.assigned : '',
     contact: this.props.mode === 'Edit'? this.props.taskDetails.contact : '',
-    isActive: this.props.mode === 'Edit'? this.props.taskDetails.isActive : true,
-    activeDate: this.props.mode === 'Edit'? this.props.taskDetails.activeDate : moment().format('YYYY-MM-DD'),
     workTime: this.props.mode === 'Edit'? this.props.taskDetails.workTime : [],
     tags: this.props.mode === 'Edit'? this.props.taskDetails.tags : [],
     completedDates: this.props.mode === 'Edit'? this.props.taskDetails.completedDates : [],
@@ -143,13 +141,6 @@ export default class DetailModal extends Component {
     })
   }
 
-  activeDateChange = (e) => {
-    this.setState({
-      activeDate: moment(e).format('YYYY-MM-DD'),
-      isActive: e = '' ? this.state.isActive : moment().format('YYYY-MM-DD') >= moment(e).format('YYYY-MM-DD') ? true : moment(e).format('YYYY-MM-DD')  > moment().format('YYYY-MM-DD') ? false : this.state.isActive
-    })
-  }
-
   startTimeChange = (e) => {
     this.setState(({
       startTime: moment(e)
@@ -166,7 +157,6 @@ export default class DetailModal extends Component {
     const {
       type,
       dueDate,
-      activeDate,
       recurDays,
       isUpdating,
       completedDates
@@ -175,8 +165,6 @@ export default class DetailModal extends Component {
       if (newValue === 'Completed') {
         let curDueDate = dueDate === undefined ? moment().format('YYYY-MM-DD') : dueDate;
         let curRecurDays = recurDays === undefined ? 0 : recurDays;
-        let curActiveDate = activeDate === undefined ? moment().format('YYYY-MM-DD') : activeDate;
-        let newActiveDate = moment(curActiveDate).add(curRecurDays, 'days').format('YYYY-MM-DD');
         if (type === 'Recurring') {
           this.setState({
             isUpdating: true,
@@ -185,8 +173,6 @@ export default class DetailModal extends Component {
             dueDate: moment(curDueDate).add(curRecurDays, 'days').format('YYYY-MM-DD'),
             dueWeek: moment(curDueDate).add(curRecurDays, 'days').startOf('week').format('YYYY-MM-DD'),
             dueMonth: moment(curDueDate).add(curRecurDays, 'days').format('YYYY-MM'),
-            activeDate: newActiveDate,
-            isActive: moment(newActiveDate).format('YYYY-MM-DD') < moment().format('YYYY-MM-DD') ? true : false,
             completedDates: [...completedDates,
               {
               completedId: this.props.uuidv4(),
@@ -206,8 +192,6 @@ export default class DetailModal extends Component {
             dueDate: curDueDate,
             dueWeek: moment(curDueDate).startOf('week').format('YYYY-MM-DD'),
             dueMonth: moment(curDueDate).format('YYYY-MM'),
-            activeDate: curActiveDate,
-            isActive: false,
             completedDates: [{
               completedId: this.props.uuidv4(),
               completedDate: moment(curDueDate).format('YYYY-MM-DD'),
@@ -229,9 +213,9 @@ export default class DetailModal extends Component {
   }
 
   onCheck = () => {
-    this.setState({
-      isActive: !this.state.isActive
-    })
+    // this.setState({
+    //   isActive: !this.state.isActive
+    // })
   }
 
   addTask = () => {
@@ -247,8 +231,6 @@ export default class DetailModal extends Component {
       priority: this.state.priority,
       assigned: this.state.assigned,
       contact: this.state.contact,
-      isActive: this.state.isActive,
-      activeDate: this.state.activeDate,
       workTime: this.state.workTime,
       tags: this.state.tags,
       completedDates: this.state.completedDates,
@@ -276,8 +258,6 @@ export default class DetailModal extends Component {
       priority: this.state.priority,
       assigned: this.state.assigned,
       contact: this.state.contact,
-      isActive: this.state.isActive,
-      activeDate: this.state.activeDate,
       workTime: this.state.workTime,
       tags: this.state.tags,
       completedDates: this.state.completedDates,
@@ -397,7 +377,7 @@ export default class DetailModal extends Component {
             Type
           </Typography>
           <Autocomplete
-            options={['One-time','Recurring']}
+            options={['One-time','Recurring','Habit','Activity','Time-block', 'Event']}
             defaultValue={this.state.type}
             getOptionLabel={(option) => typeof option === 'string' ? option : option.type}
             style={styles.fieldStyle}
@@ -469,30 +449,6 @@ export default class DetailModal extends Component {
                 format="yyyy-MM-dd"
                 value={moment(this.state.dueDate).toISOString()}
                 onChange={(e) => this.dateChange(e)}
-                KeyboardButtonProps={{
-                  'aria-label': 'change date',
-                }}
-                inputVariant="outlined"
-                InputProps={{
-                  style: styles.dateStyle
-                }}
-                />
-            </MuiPickersUtilsProvider>
-          </div>
-        </div>
-        <div style={styles.fieldContainer}>
-          <Typography style={styles.fieldLabel}>
-            Active Date
-          </Typography>
-          <div style={styles.dateContainer}>
-            <MuiPickersUtilsProvider utils={DateFnsUtils}>
-              <KeyboardDatePicker
-                disableToolbar
-                autoOk={true}
-                variant="inline"
-                format="yyyy-MM-dd"
-                value={moment(this.state.activeDate).toISOString()}
-                onChange={(e) => this.activeDateChange(e)}
                 KeyboardButtonProps={{
                   'aria-label': 'change date',
                 }}
@@ -614,7 +570,7 @@ export default class DetailModal extends Component {
             onInputChange={(e, newValue) => this.onAutoChange(e, newValue, 'contact')}
             />
         </div>
-        <div style={styles.fieldContainer}>
+        {/* <div style={styles.fieldContainer}>
           <Typography style={styles.fieldLabel}>
             Active
           </Typography>
@@ -625,7 +581,7 @@ export default class DetailModal extends Component {
             color="primary"
             size='small'
           />
-        </div>
+        </div> */}
         <div style={styles.fieldContainer}>
           <Typography style={styles.fieldLabel}>
             Notes

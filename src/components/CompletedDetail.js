@@ -73,7 +73,7 @@ export default class CompletedDetail extends Component {
 
   state = {
     completedId: this.props.type === 'Edit'? this.props.completedDetails.completedId : '',
-    completedDate: this.props.type === 'Edit'? this.props.completedDetails.completedDate : '',
+    completedDate: this.props.type === 'Edit'? this.props.completedDetails.completedDate : this.props.type === 'Complete' ? moment().format('YYYY-MM-DD') : '',
     hours:  this.props.type === 'Edit'? this.props.completedDetails.hours : '',
   }
 
@@ -93,6 +93,11 @@ export default class CompletedDetail extends Component {
     })
   }
 
+  completeTaskWithHours = () => {
+    this.props.completeCompletedTask(this.props.taskDetails.id, this.state.completedDate, this.state.hours);
+    this.props.toggleDisplay('Tasks');
+  }
+
   render() {
 
     return (
@@ -100,7 +105,7 @@ export default class CompletedDetail extends Component {
         <div style={styles.headerContainer}> 
           <div style={styles.headerName}>
             <Typography variant="h5">
-                Completed Date
+                Completed
             </Typography>
           </div>
           <div style={styles.headerClose}>
@@ -187,6 +192,38 @@ export default class CompletedDetail extends Component {
                   })}
                   >
                   Save
+                </Button>
+              </div>
+            </React.Fragment>
+          </div>
+        }
+        {this.props.type === "Complete" && 
+          <div style={styles.buttonContainer}>
+            <React.Fragment>
+              <div style={styles.buttonStyle}>
+                <Button 
+                  style={styles.buttonStyle}
+                  variant="contained"
+                  color="primary"
+                  onClick={() => this.completeTaskWithHours()}
+                  >
+                  Submit
+                </Button>
+              </div>
+            </React.Fragment>
+          </div>
+        }
+        {this.props.type === "Complete" && 
+          <div style={styles.buttonContainer}>
+            <React.Fragment>
+              <div style={styles.buttonStyle}>
+                <Button 
+                  style={styles.buttonStyle}
+                  variant="contained"
+                  color="primary"
+                  onClick={() => this.props.toggleDisplay('Tasks')}
+                  >
+                  Cancel
                 </Button>
               </div>
             </React.Fragment>
