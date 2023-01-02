@@ -24,12 +24,12 @@ export default class TaskGroup extends Component {
     const lowercurrentSort = getKeyName(currentSort);
     let groupTasks = [];
 
-    if (filterOption === 'Upcoming') {
-      groupTasks = tasks.filter((task) => (task[lowercurrentSort] === header && task.status !== 'Completed' && moment(task.dueDate).format('YYYY-MM-DD') < moment().add(7, 'days').format('YYYY-MM-DD')))
-    } else if(filterOption === 'Upcoming Month') {
-      groupTasks = tasks.filter((task) => (task[lowercurrentSort] === header && task.status !== 'Completed' && moment(task.dueDate).format('YYYY-MM-DD') < moment().add(30, 'days').format('YYYY-MM-DD')))
+    if (filterOption === 'Scheduled') {
+      groupTasks = tasks.filter((task) => (task[lowercurrentSort] === header && task.status !== 'Completed' && moment(task.dueDate).format('YYYY-MM-DD') < moment().add(7, 'days').format('YYYY-MM-DD') && task.dueDate !== 'Invalid date'))
     } else if(filterOption === 'Completed') {
-      groupTasks = tasks.filter((task) => (task[lowercurrentSort] === header && task.status === 'Completed' ))
+      groupTasks = tasks.filter((task) => (task[lowercurrentSort] === header && task.status === 'Completed' && task.dueDate !== 'Invalid date'))
+    } else if(filterOption === 'Unscheduled') {
+      groupTasks = tasks.filter((task) => (task[lowercurrentSort] === header && task.dueDate === 'Invalid date'))
     } else {
       groupTasks = tasks.filter((task) => task[lowercurrentSort] === header)
     }

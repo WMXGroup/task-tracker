@@ -8,9 +8,9 @@ export default class ActiveFilter extends Component {
 
   state = {
     filterOptions: [
-      'Upcoming',
-      'Upcoming Month',
+      'Scheduled',
       'Completed',
+      'Unscheduled',
       'All',
     ],
     anchorEl: null,

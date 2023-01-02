@@ -115,7 +115,7 @@ export const tasks = [
     category:'Fun',
     subCategory: 'Movie',
     status: 'Started',
-    dueDate: '2021-08-09',
+    dueDate: 'Invalid date',
     hours: 2,
     weeklyGoal: 0,
     priority: '1',

@@ -80,10 +80,10 @@ class Main extends Component {
     contactUsers: [],
     taskDetails: {},
     currentSort: 'Due Date',
-    filterOption: 'Upcoming',
+    filterOption: 'Scheduled',
     categoryFilter: ['All'],
     display: 'Tasks',
-    debugMode: false,
+    debugMode: window.location.hostname === "localhost",
     relatedLists: [],
     categoryReport: [],
     reportWeek: moment().startOf('week').format('YYYY-MM-DD'),
@@ -95,7 +95,7 @@ class Main extends Component {
     // tasks: this.updateData(tasks),
     if(this.state.debugMode === true){
       this.setState({
-        tasks: this.updateData(tasks),
+        tasks: tasks,
       });
     } else {
       this.getServerData();
@@ -141,7 +141,7 @@ class Main extends Component {
         .get(`https://guarded-mesa-76047.herokuapp.com/api/lists/${listId}`)
         .then(res => this.setState({
           trackerName: res.data.listName,
-          tasks: this.updateData(res.data.list),
+          tasks: res.data.list,
           lastSaved: res.data.lastSaved,
           isLoading: false,
           relatedLists: (res.data.relatedLists === undefined || res.data.relatedLists === null) ? [] : res.data.relatedLists,
@@ -543,6 +543,11 @@ class Main extends Component {
   };
 
   handleFilterChange = (filterOption) => {
+    if (filterOption === 'Unscheduled'){
+      this.getSortHeaders(this.state.tasks, 'Category')
+    } else {
+      this.getSortHeaders(this.state.tasks, 'Due Date')
+    }
     this.setState({
       filterOption
     })
