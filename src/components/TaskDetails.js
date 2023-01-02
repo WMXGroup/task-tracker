@@ -103,8 +103,6 @@ export default class DetailModal extends Component {
     workTime: this.props.mode === 'Edit'? this.props.taskDetails.workTime : [],
     tags: this.props.mode === 'Edit'? this.props.taskDetails.tags : [],
     completedDates: this.props.mode === 'Edit'? this.props.taskDetails.completedDates : [],
-    dueWeek: this.props.mode === 'Edit'? this.props.taskDetails.dueweek : moment().startOf('isoweek').format('YYYY-MM-DD'),
-    dueMonth: this.props.mode === 'Edit'? this.props.taskDetails.dueMonth : moment().format('YYYY-MM'),
     notes: this.props.mode === 'Edit'? this.props.taskDetails.notes : '',
     type: this.props.mode === 'Edit'? this.props.taskDetails.type : 'One-time',
     recurDays: this.props.mode === 'Edit'? this.props.taskDetails.recurDays : 0,
@@ -136,8 +134,6 @@ export default class DetailModal extends Component {
   dateChange = (e) => {
     this.setState({
       dueDate: moment(e).format('YYYY-MM-DD'),
-      dueWeek: moment(e).startOf('week').format('YYYY-MM-DD'),
-      dueMonth: moment(e).format('YYYY-MM'),
     })
   }
 
@@ -171,8 +167,6 @@ export default class DetailModal extends Component {
             status: 'Not Started',
             recurDays: curRecurDays,
             dueDate: moment(curDueDate).add(curRecurDays, 'days').format('YYYY-MM-DD'),
-            dueWeek: moment(curDueDate).add(curRecurDays, 'days').startOf('week').format('YYYY-MM-DD'),
-            dueMonth: moment(curDueDate).add(curRecurDays, 'days').format('YYYY-MM'),
             completedDates: [...completedDates,
               {
               completedId: this.props.uuidv4(),
@@ -190,8 +184,6 @@ export default class DetailModal extends Component {
             isUpdating: true,
             status: 'Completed',
             dueDate: curDueDate,
-            dueWeek: moment(curDueDate).startOf('week').format('YYYY-MM-DD'),
-            dueMonth: moment(curDueDate).format('YYYY-MM'),
             completedDates: [{
               completedId: this.props.uuidv4(),
               completedDate: moment(curDueDate).format('YYYY-MM-DD'),
@@ -234,8 +226,6 @@ export default class DetailModal extends Component {
       workTime: this.state.workTime,
       tags: this.state.tags,
       completedDates: this.state.completedDates,
-      dueWeek: this.state.dueWeek,
-      dueMonth: this.state.dueMonth,
       notes: this.state.notes,
       type: this.state.type,
       recurDays: this.state.recurDays,
@@ -261,8 +251,6 @@ export default class DetailModal extends Component {
       workTime: this.state.workTime,
       tags: this.state.tags,
       completedDates: this.state.completedDates,
-      dueWeek: this.state.dueWeek,
-      dueMonth: this.state.dueMonth,
       notes: this.state.notes,
       type: this.state.type,
       recurDays: this.state.recurDays,
@@ -276,13 +264,6 @@ export default class DetailModal extends Component {
     this.props.deleteTask(this.state.id);
     this.props.toggleDisplay('Tasks');
   }
-
-  // handleDeleteDate = (value) => {
-  //   const newDates = this.state.completedDates.filter((date) => date !== value)
-  //   this.setState({
-  //     completedDates: newDates,
-  //   });
-  // }
 
   handleTimeChange = (value) => {
     this.setState({

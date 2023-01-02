@@ -118,9 +118,9 @@ class Main extends Component {
     const newTasks = data.map((task) => {
       if (task.type === 'Habit' && task.status !== 'Completed') {
         task.dueDate = moment().format('YYYY-MM-DD');
-        task.dueWeek = moment().startOf('week').format('YYYY-MM-DD');
-        task.dueMonth = moment().format('YYYY-MM');
       }
+      delete task.dueWeek;
+      delete task.dueMonth;
       return task;
     })
     return newTasks;
@@ -290,8 +290,6 @@ class Main extends Component {
           task.status = 'Not Started';
           task.recurDays = curRecurDays;
           task.dueDate = moment(curDueDate).add(curRecurDays, 'days').format('YYYY-MM-DD');
-          task.dueWeek = moment(curDueDate).add(curRecurDays, 'days').startOf('week').format('YYYY-MM-DD');
-          task.dueMonth = moment(curDueDate).add(curRecurDays, 'days').format('YYYY-MM');
           task.completedDates = [...task.completedDates, 
             {
             completedId: this.uuidv4(),
@@ -302,8 +300,6 @@ class Main extends Component {
         } else if (task.type === 'One-time') {
           task.status = 'Completed';
           task.dueDate = curDueDate;
-          task.dueWeek = moment(curDueDate).startOf('week').format('YYYY-MM-DD');
-          task.dueMonth = moment(curDueDate).format('YYYY-MM');
           task.completedDates = [...task.completedDates, 
             {
             completedId: this.uuidv4(),
@@ -329,8 +325,6 @@ class Main extends Component {
           task.status = 'Not Started';
           task.recurDays = curRecurDays;
           task.dueDate = moment(curDueDate).add(curRecurDays, 'days').format('YYYY-MM-DD');
-          task.dueWeek = moment(curDueDate).add(curRecurDays, 'days').startOf('week').format('YYYY-MM-DD');
-          task.dueMonth = moment(curDueDate).add(curRecurDays, 'days').format('YYYY-MM');
           task.completedDates = [...task.completedDates, 
             {
             completedId: this.uuidv4(),
@@ -341,8 +335,6 @@ class Main extends Component {
         } else if (task.type === 'One-time') {
           task.status = 'Completed';
           task.dueDate = curDueDate;
-          task.dueWeek = moment(curDueDate).startOf('week').format('YYYY-MM-DD');
-          task.dueMonth = moment(curDueDate).format('YYYY-MM');
           task.completedDates = [...task.completedDates, 
             {
             completedId: this.uuidv4(),
@@ -366,8 +358,6 @@ class Main extends Component {
           let curRecurDays = task.recurDays === undefined ? 0 : task.recurDays;
           task.recurDays = curRecurDays;
           task.dueDate = moment(curDueDate).add(curRecurDays, 'days').format('YYYY-MM-DD');
-          task.dueWeek = moment(curDueDate).add(curRecurDays, 'days').startOf('week').format('YYYY-MM-DD');
-          task.dueMonth = moment(curDueDate).add(curRecurDays, 'days').format('YYYY-MM');
       }
       return task;
     });
@@ -381,8 +371,6 @@ class Main extends Component {
       if (task.id === id) {
           let curDueDate = task.dueDate === undefined ? moment().format('YYYY-MM-DD') : task.dueDate;
           task.dueDate = moment(curDueDate).add(7, 'days').format('YYYY-MM-DD');
-          task.dueWeek = moment(curDueDate).add(7, 'days').startOf('week').format('YYYY-MM-DD');
-          task.dueMonth = moment(curDueDate).add(7, 'days').format('YYYY-MM');
       }
       return task;
     });
@@ -395,8 +383,6 @@ class Main extends Component {
     const newTasks = this.state.tasks.map((task) => {
       if (task.id === id) {
           task.dueDate = moment(task.dueDate).add(1, 'days').format('YYYY-MM-DD');
-          task.dueWeek = moment(task.dueDate).add(1, 'days').startOf('week').format('YYYY-MM-DD');
-          task.dueMonth = moment(task.dueDate).add(1, 'days').format('YYYY-MM');
       }
       return task;
     });
@@ -409,8 +395,6 @@ class Main extends Component {
     const newTasks = this.state.tasks.map((task) => {
       if (task.id === id) {
           task.dueDate = moment().format('YYYY-MM-DD');
-          task.dueWeek = moment().startOf('week').format('YYYY-MM-DD');
-          task.dueMonth = moment().format('YYYY-MM');
       }
       return task;
     });
@@ -424,8 +408,6 @@ class Main extends Component {
       console.log(task);
       if (task.dueDate <= moment().format('YYYY-MM-DD') && task.status !== 'Completed' && task.dueDate !== undefined) {
           task.dueDate = moment().format('YYYY-MM-DD');
-          task.dueWeek = moment().startOf('week').format('YYYY-MM-DD');
-          task.dueMonth = moment().format('YYYY-MM');
       }
       return task;
     });
@@ -433,18 +415,6 @@ class Main extends Component {
       tasks: newTasks,
     }, () => this.saveData());
   }
-
-  // activateTasks = () => {
-  //   const newTasks = this.state.tasks.map((task) => {
-  //     if (moment().format('YYYY-MM-DD') >= moment(task.activeDate).format('YYYY-MM-DD') && task.status !== 'Completed') {
-  //       task.isActive = true;
-  //     }
-  //     return task;
-  //   });
-  //   this.setState({
-  //     tasks: newTasks,
-  //   }, () => this.saveData());
-  // }
 
   saveTask = (id, task) => {
     const newTasks = this.state.tasks.filter((task) => task.id !== id)

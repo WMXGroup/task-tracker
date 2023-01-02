@@ -79,6 +79,7 @@ class Task extends Component {
           }}
           value={task.description}
           multiline
+          //onClick={() => alert(task.description)}
         />
         <IconButton
         onClick={() => launchDetails('Edit', task.id)} 

@@ -8,17 +8,9 @@ export default class SortAlt extends Component {
 
   state = {
     sortOptions: [
-      'Category',
-      'Sub Category',
-      'Status',
       'Priority',
-      'Hours',
-      'Assigned',
-      'Contact',
       'Start Time',
       'Due Date',
-      'Due Week',
-      'Due Month',
     ],
     anchorEl: null,
     setAnchorEl: false,
