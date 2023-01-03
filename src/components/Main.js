@@ -93,7 +93,7 @@ class Main extends Component {
     // tasks: this.updateData(tasks),
     if(this.state.debugMode === true){
       this.setState({
-        tasks: tasks,
+        tasks: this.updateData(tasks),
       });
     } else {
       this.getServerData();
@@ -117,8 +117,6 @@ class Main extends Component {
       if (task.type === 'Habit' && task.status !== 'Completed') {
         task.dueDate = moment().format('YYYY-MM-DD');
       }
-      delete task.dueWeek;
-      delete task.dueMonth;
       return task;
     })
     return newTasks;
@@ -139,7 +137,7 @@ class Main extends Component {
         .get(`https://guarded-mesa-76047.herokuapp.com/api/lists/${listId}`)
         .then(res => this.setState({
           trackerName: res.data.listName,
-          tasks: res.data.list,
+          tasks: this.updateData(res.data.list),
           lastSaved: res.data.lastSaved,
           isLoading: false,
           relatedLists: (res.data.relatedLists === undefined || res.data.relatedLists === null) ? [] : res.data.relatedLists,
