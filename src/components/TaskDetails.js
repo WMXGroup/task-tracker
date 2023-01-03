@@ -13,6 +13,7 @@ import {
 import moment from 'moment';
 import IconButton from '@material-ui/core/IconButton';
 import CloseIcon from '@material-ui/icons/Close';
+import ArrowBack from '@material-ui/icons/ArrowBack';
 import Paper from '@material-ui/core/Paper';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
@@ -72,14 +73,13 @@ const styles = {
   },
   headerContainer: {
     display: 'flex',
-    justifyContent: 'space-between',
     padding: '10px'
   },
   dialogContainer: {
     marginBottom: '70px'
   },
   paperContainer: {
-    height: '80px',
+    height: '160px',
     padding: 0,
     width: 400,
     overflow: 'auto'
@@ -290,19 +290,19 @@ export default class DetailModal extends Component {
 
     return (
       <div style={styles.dialogContainer}>
-        <div style={styles.headerContainer}> 
+        <div style={styles.headerContainer}>
+          <div style={styles.headerClose}>
+              <IconButton
+                onClick={() => toggleDisplay('Tasks')}
+                size='small'
+                >
+                <ArrowBack />
+              </IconButton>
+            </div> 
           <div style={styles.headerName}>
             <Typography variant="h5">
                 Task Management
             </Typography>
-          </div>
-          <div style={styles.headerClose}>
-            <IconButton
-              onClick={() => toggleDisplay('Tasks')}
-              size='small'
-              >
-              <CloseIcon />
-            </IconButton>
           </div>
         </div>
         <div style={styles.fieldContainer}>
@@ -607,16 +607,18 @@ export default class DetailModal extends Component {
               }
             </List>
           </Paper>
+        </div>
+        <div style={styles.fieldContainer}>
           <div style={styles.buttonStyle}>
-              <Button 
-                style={styles.buttonStyle}
-                variant="contained"
-                color="primary"
-                onClick={() => this.props.launchNewCompleted(this.state)}
-                >
-                +
-              </Button>
-            </div>
+            <Button 
+              style={styles.buttonStyle}
+              variant="contained"
+              color="primary"
+              onClick={() => this.props.launchNewCompleted(this.state)}
+              >
+              Add Completed Date
+            </Button>
+          </div>
         </div>
         <div style={styles.buttonContainer}>
           {mode === 'Add' &&

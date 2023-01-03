@@ -3,6 +3,7 @@ import { withStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import IconButton from '@material-ui/core/IconButton';
 import CloseIcon from '@material-ui/icons/Close';
+import ArrowBack from '@material-ui/icons/ArrowBack';
 import Button from '@material-ui/core/Button';
 
 const styles = theme => ({
@@ -19,7 +20,6 @@ const styles = theme => ({
   },
   headerContainer: {
     display: 'flex',
-    justifyContent: 'space-between',
     padding: '10px',
   },
   fieldLabel: {
@@ -69,19 +69,19 @@ class Report extends Component {
 
     return (
       <React.Fragment>
-        <div className={classes.headerContainer}> 
-          <div className={classes.headerName}>
-            <Typography variant="h5">
-                Weekly Report
-            </Typography>
-          </div>
+        <div className={classes.headerContainer}>
           <div className={classes.headerClose}>
             <IconButton
               onClick={() => toggleDisplay('Tasks')}
               size='small'
               >
-              <CloseIcon />
+              <ArrowBack />
             </IconButton>
+          </div> 
+          <div className={classes.headerName}>
+            <Typography variant="h5">
+                Weekly Report
+            </Typography>
           </div>
         </div>
         <div className={classes.headerContainer}> 

@@ -3,6 +3,7 @@ import Typography from '@material-ui/core/Typography';
 import TextField from '@material-ui/core/TextField';
 import IconButton from '@material-ui/core/IconButton';
 import CloseIcon from '@material-ui/icons/Close';
+import ArrowBack from '@material-ui/icons/ArrowBack';
 import Button from '@material-ui/core/Button';
 import {
   MuiPickersUtilsProvider,
@@ -61,7 +62,6 @@ const styles = {
   },
   headerContainer: {
     display: 'flex',
-    justifyContent: 'space-between',
     padding: '10px'
   },
   dialogContainer: {
@@ -102,19 +102,19 @@ export default class CompletedDetail extends Component {
 
     return (
       <div style={styles.dialogContainer}>
-        <div style={styles.headerContainer}> 
-          <div style={styles.headerName}>
-            <Typography variant="h5">
-                Completed
-            </Typography>
-          </div>
-          <div style={styles.headerClose}>
+        <div style={styles.headerContainer}>
+        <div style={styles.headerClose}>
             <IconButton
               onClick={() => this.props.toggleDisplay('Details')}
               size='small'
               >
-              <CloseIcon />
+              <ArrowBack />
             </IconButton>
+          </div>
+          <div style={styles.headerName}>
+            <Typography variant="h5">
+                Completed
+            </Typography>
           </div>
         </div>
         <div style={styles.fieldContainer}>
