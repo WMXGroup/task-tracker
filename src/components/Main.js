@@ -16,9 +16,8 @@ import TaskGroup from './TaskGroup';
 import TaskDetails from './TaskDetails';
 import CompletedDetail from './CompletedDetail';
 import {tasks} from './TestTasks';
-import SortAlt from './SortAlt';
 import RelatedLists from './RelatedLists';
-import ActiveFilter from './ActiveFilter';
+import ViewSelector from './ViewSelector';
 import CategoryFilter from './CategoryFilter';
 import Report from './Report';
 import AddRelatedList from './AddRelatedList';
@@ -79,8 +78,7 @@ class Main extends Component {
     assignedUsers: [],
     contactUsers: [],
     taskDetails: {},
-    currentSort: 'Due Date',
-    filterOption: 'Scheduled',
+    currentView: 'Scheduled',
     categoryFilter: ['All'],
     display: 'Tasks',
     debugMode: window.location.hostname === "localhost",
@@ -106,7 +104,7 @@ class Main extends Component {
   componentDidUpdate = (prevProps, prevState) => {
     //console.log('componentDidUpdate');
     if (this.state.tasks !== prevState.tasks) {
-      this.getSortHeaders(this.state.tasks, this.state.currentSort);
+      this.getHeaders(this.state.tasks, this.state.currentView);
       this.getUniqueValues(this.state.tasks, 'category', 'categories');
       this.getUniqueValues(this.state.tasks, 'subCategory', 'subcategories')
       this.getUniqueValues(this.state.tasks, 'assigned', 'assignedUsers');
@@ -147,7 +145,7 @@ class Main extends Component {
           relatedLists: (res.data.relatedLists === undefined || res.data.relatedLists === null) ? [] : res.data.relatedLists,
         }))
         .then(() => {
-          this.getSortHeaders(this.state.tasks, this.state.currentSort)
+          this.getHeaders(this.state.tasks, this.state.currentView)
           this.getUniqueValues(this.state.tasks, 'category', 'categories')
           this.getUniqueValues(this.state.tasks, 'subCategory', 'subcategories')
           this.getUniqueValues(this.state.tasks, 'assigned', 'assignedUsers')
@@ -405,7 +403,6 @@ class Main extends Component {
 
   makeAllActiveCurrent = () => {
     const newTasks = this.state.tasks.map((task) => {
-      console.log(task);
       if (task.dueDate <= moment().format('YYYY-MM-DD') && task.status !== 'Completed' && task.dueDate !== undefined) {
           task.dueDate = moment().format('YYYY-MM-DD');
       }
@@ -432,72 +429,48 @@ class Main extends Component {
     }, () => this.saveData());
   }
 
-  getSortHeaders = (data, keyName) => {
-    const lowerKeyName = this.getKeyName(keyName)
+  getHeaders = (tasks, currentView) => {
     let resArr = [];
-    data.filter((item) => {
-      let i = resArr.findIndex(x => x === item[lowerKeyName] );
-      if(i <= -1){
-        resArr.push(item[lowerKeyName]);
-      }
-      return null;
-    });
-    if (lowerKeyName === 'startTime'){
-      let startTimeNoNulls = resArr.filter((task) => task !== null);
-      let startTimeDay = startTimeNoNulls.filter((task) => task.includes("AM"));
-      let startTimeNight = startTimeNoNulls.filter((task) => task.includes("PM"));
-      startTimeDay.sort();
-      startTimeNight.sort();
-      resArr = [...startTimeDay, ...startTimeNight, null];
-    } else {
-      resArr.sort();
-    }
-    this.setState({
-      headers: resArr,
-      currentSort: keyName,
-    })
-  }
+    let uniqArr = []
+    console.log(currentView);
 
-  getKeyName = (sortName) => {
-    let keyName = '';
-    switch (sortName) {
-      case 'Category':
-        keyName = "category";
-        break;
-      case 'Sub Category':
-        keyName = "subCategory";
-        break;
-      case 'Status':
-        keyName = "status";
-        break;
-      case 'Priority':
-        keyName = "priority";
-        break;
-      case 'Hours':
-        keyName = "hours";
-        break;
-      case 'Start Time':
-        keyName = "startTime";
-        break;
-      case 'Assigned':
-        keyName = "assigned";
-        break;
-      case 'Contact':
-        keyName = "contact";
-        break;
-      case 'Due Date':
-        keyName = "dueDate";
-        break;
-      case 'Due Week':
-        keyName = "dueWeek";
-        break;
-      case 'Due Month':
-        keyName = "dueMonth";
-        break;
-      default:
-        keyName = "";
+    if (currentView === 'Scheduled') {
+      // get all headers
+      for (let i = 0; i < tasks.length; i++) {
+        resArr.push(tasks[i].dueDate)
+      }
     }
-    return keyName;
+
+    if (currentView === 'Completed') {
+      // get all headers
+      for (let i = 0; i < tasks.length; i++) {
+        for (let j = 0; j < tasks[i].completedDates.length; j++) {
+          resArr.push(tasks[i].completedDates[j].completedDate)
+        }
+      }
+    }
+
+    if (currentView === 'Unscheduled') {
+      // get all headers
+      for (let i = 0; i < tasks.length; i++) {
+        resArr.push(tasks[i].category)
+      }
+      console.log(resArr);
+    }
+
+    //remove dupes
+    for (let i = 0; i < resArr.length; i++) {
+      if (uniqArr.includes(resArr[i]) === false) {
+        uniqArr.push(resArr[i])
+      }
+    }
+    //sort
+    uniqArr.sort();
+
+    this.setState({
+      headers: uniqArr,
+      currentView: currentView,
+    })
   }
 
   getUniqueValues = (data, fieldName, arrayName) => {
@@ -542,14 +515,10 @@ class Main extends Component {
     this.getSortHeaders(this.state.tasks, sortOption)
   };
 
-  handleFilterChange = (filterOption) => {
-    if (filterOption === 'Unscheduled'){
-      this.getSortHeaders(this.state.tasks, 'Category')
-    } else {
-      this.getSortHeaders(this.state.tasks, 'Due Date')
-    }
+  handleViewChange = (currentView) => {
+    this.getHeaders(this.state.tasks, currentView)
     this.setState({
-      filterOption
+      currentView
     })
   };
 
@@ -744,15 +713,9 @@ class Main extends Component {
               </Typography>
               <div className={classes.grow} />       
               <div className={classes.addButton}>
-                <SortAlt
-                  currentSort={this.state.currentSort}
-                  handleSortChange={this.handleSortChange}
-                />
-              </div>
-              <div className={classes.addButton}>
-                <ActiveFilter
-                  filterOption={this.state.filterOption}
-                  handleFilterChange={this.handleFilterChange}
+                <ViewSelector
+                  currentView={this.state.currentView}
+                  handleViewChange={this.handleViewChange}
                 />
               </div>
               <div className={classes.addButton}>
@@ -801,9 +764,7 @@ class Main extends Component {
                     makeCurrent={this.makeCurrent}
                     snoozeWeek={this.snoozeWeek}
                     skipOccurence={this.skipOccurence}
-                    getKeyName={this.getKeyName}
-                    currentSort={this.state.currentSort}
-                    filterOption={this.state.filterOption}
+                    currentView={this.state.currentView}
                     categoryFilter={this.state.categoryFilter}
                     launchCompleteCompleted={this.launchCompleteCompleted}
                     />

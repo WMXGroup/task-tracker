@@ -8,30 +8,33 @@ export default class TaskGroup extends Component {
     const {
       header,
       tasks,
-      currentSort,
+      currentView,
       completeTask,
       ignoreTask,
       makeCurrent,
       snoozeWeek,
       skipOccurence,
       launchDetails,
-      getKeyName,
-      filterOption,
       categoryFilter,
       launchCompleteCompleted,
     } = this.props;
 
-    const lowercurrentSort = getKeyName(currentSort);
     let groupTasks = [];
 
-    if (filterOption === 'Scheduled') {
-      groupTasks = tasks.filter((task) => (task[lowercurrentSort] === header && task.status !== 'Completed' && moment(task.dueDate).format('YYYY-MM-DD') < moment().add(7, 'days').format('YYYY-MM-DD') && task.dueDate !== 'Invalid date'))
-    } else if(filterOption === 'Completed') {
-      groupTasks = tasks.filter((task) => (task[lowercurrentSort] === header && task.status === 'Completed' && task.dueDate !== 'Invalid date'))
-    } else if(filterOption === 'Unscheduled') {
-      groupTasks = tasks.filter((task) => (task[lowercurrentSort] === header && task.dueDate === 'Invalid date'))
+    if (currentView === 'Scheduled') {
+      groupTasks = tasks.filter((task) => (task['dueDate'] === header && task.status !== 'Completed' && moment(task.dueDate).format('YYYY-MM-DD') < moment().add(7, 'days').format('YYYY-MM-DD') && task.dueDate !== 'Invalid date'))
+    } else if(currentView === 'Completed') {
+      for (let i = 0; i < tasks.length; i++) {
+        for (let j = 0; j < tasks[i].completedDates.length; j++) {
+          if (tasks[i].completedDates[j].completedDate === header) {
+            groupTasks.push(tasks[i])
+          }
+        }
+      }
+    } else if(currentView === 'Unscheduled') {
+      groupTasks = tasks.filter((task) => (task['category'] === header && task.dueDate === 'Invalid date'))
     } else {
-      groupTasks = tasks.filter((task) => task[lowercurrentSort] === header)
+      groupTasks = tasks.filter((task) => task['dueDate'] === header)
     }
 
     // groupTasks.sort((a,b) => (a.priority > b.priority) ? 1 : -1);

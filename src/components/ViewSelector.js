@@ -1,16 +1,17 @@
 import React, { Component } from 'react';
 import IconButton from '@material-ui/core/IconButton';
-import Collections from '@material-ui/icons/Collections';
+import FilterList from '@material-ui/icons/FilterList';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 
-export default class SortAlt extends Component {
+export default class ViewSelector extends Component {
 
   state = {
-    sortOptions: [
-      'Priority',
-      'Start Time',
-      'Due Date',
+    currentViews: [
+      'Scheduled',
+      'Completed',
+      'Unscheduled',
+      'All',
     ],
     anchorEl: null,
     setAnchorEl: false,
@@ -29,8 +30,8 @@ export default class SortAlt extends Component {
     });
   };
 
-  handleClick = (sortOption) => {
-    this.props.handleSortChange(sortOption);
+  handleClick = (currentView) => {
+    this.props.handleViewChange(currentView);
     this.handleClose();
   }
 
@@ -43,7 +44,7 @@ export default class SortAlt extends Component {
           color="inherit"
           onClick={this.handleMenu}
           >
-          <Collections />
+          <FilterList />
         </IconButton>
         <Menu
             id="menu-appbar"
@@ -61,14 +62,14 @@ export default class SortAlt extends Component {
             open={this.state.setAnchorEl}
             onClose={this.handleClose}
           >
-          {this.state.sortOptions.map((sortOption, i) => (
+          {this.state.currentViews.map((currentView, i) => (
             <MenuItem
               key={i}
-              selected={this.props.currentSort === sortOption}
-              value={sortOption}
-              onClick={() => this.handleClick(sortOption)}
+              selected={this.props.currentView === currentView}
+              value={currentView}
+              onClick={() => this.handleClick(currentView)}
               >
-              {sortOption}
+              {currentView}
             </MenuItem>
           ))}
           </Menu>

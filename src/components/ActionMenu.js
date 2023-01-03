@@ -25,8 +25,8 @@ export default class ActionMenu extends Component {
     });
   };
 
-  handleClick = (filterOption) => {
-    this.props.handleFilterChange(filterOption);
+  handleClick = (currentView) => {
+    this.props.handleViewChange(currentView);
     this.handleClose();
   }
 

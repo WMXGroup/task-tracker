@@ -124,7 +124,6 @@ export default class DetailModal extends Component {
 
   sortCompleted = () => {
     const newCompleted = this.state.completedDates.sort((a, b) => new Date(b.completedDate) - new Date(a.completedDate));
-    console.log('Test', newCompleted);
     this.setState({
       completedDates: newCompleted,
     })

@@ -7,14 +7,14 @@ import MenuItem from '@material-ui/core/MenuItem';
 export default class CategoryFilter extends Component {
 
   state = {
-    filterOptions: [],
+    currentViews: [],
     anchorEl: null,
     setAnchorEl: false,
   }
 
   componentWillReceiveProps(nextProps, prevProps) {
     this.setState({
-      filterOptions: [...nextProps.categories, 'All']
+      currentViews: [...nextProps.categories, 'All']
     })
   }
 
@@ -31,8 +31,8 @@ export default class CategoryFilter extends Component {
     });
   };
 
-  handleClick = (filterOption) => {
-    this.props.handleCategoryFilterChange(filterOption);
+  handleClick = (currentView) => {
+    this.props.handleCategoryFilterChange(currentView);
   }
 
   render() {
@@ -62,14 +62,14 @@ export default class CategoryFilter extends Component {
             open={this.state.setAnchorEl}
             onClose={this.handleClose}
           >
-          {this.state.filterOptions.map((filterOption, i) => (
+          {this.state.currentViews.map((currentView, i) => (
             <MenuItem
               key={i}
-              selected={this.props.categoryFilter.includes(filterOption)}
-              value={filterOption}
-              onClick={() => this.handleClick(filterOption)}
+              selected={this.props.categoryFilter.includes(currentView)}
+              value={currentView}
+              onClick={() => this.handleClick(currentView)}
               >
-              {filterOption}
+              {currentView}
             </MenuItem>
           ))}
           </Menu>
