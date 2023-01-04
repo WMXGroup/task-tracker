@@ -34,6 +34,7 @@ class Task extends Component {
   render() {
     const {
       classes,
+      header,
       task,
       completeTask,
       ignoreTask,
@@ -46,15 +47,13 @@ class Task extends Component {
 
     return (
       <div className={classes.taskContainer} key={task.id}>
-        {task.status !== 'Completed' &&
-          <Checkbox
-            checked={task.status === 'Completed' ? true : false}
-            className={classes.checkbox}
-            onChange={() => completeTask(task.id)}
-            color="primary"
-            size='small'
-            />
-        }
+        <Checkbox
+          checked={task.completedDates.map((date) => date.completedDate).includes(header) ? true : false}
+          className={classes.checkbox}
+          onChange={() => completeTask(task.id, header)}
+          color="primary"
+          size='small'
+          />
         <ActionMenu 
           snoozeWeek={() => snoozeWeek(task.id)}
           skipOccurence={() => skipOccurence(task.id)}

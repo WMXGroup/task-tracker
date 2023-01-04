@@ -18,6 +18,7 @@ import CompletedDetail from './CompletedDetail';
 import {tasks} from './TestTasks';
 import RelatedLists from './RelatedLists';
 import ViewSelector from './ViewSelector';
+import TimeframeSelector from './TimeframeSelector';
 import CategoryFilter from './CategoryFilter';
 import Report from './Report';
 import AddRelatedList from './AddRelatedList';
@@ -85,6 +86,7 @@ class Main extends Component {
     relatedLists: [],
     categoryReport: [],
     reportWeek: moment().startOf('week').format('YYYY-MM-DD'),
+    currentTimeframe: '+7',
   }
 
   componentDidMount = () => {
@@ -115,7 +117,9 @@ class Main extends Component {
   updateData = (data) => {
     const newTasks = data.map((task) => {
       if (task.type === 'Habit' && task.status !== 'Completed') {
-        task.dueDate = moment().format('YYYY-MM-DD');
+        if (task.dueDate < moment().format('YYYY-MM-DD')) {
+          task.dueDate = moment().format('YYYY-MM-DD')
+        }
       }
       return task;
     })
@@ -277,32 +281,42 @@ class Main extends Component {
     () => this.toggleDisplay('Details'));
   }
 
-  completeTask = (id) => {
+  completeTask = (id, header) => {
     const newTasks = this.state.tasks.map((task) => {
       if (task.id === id) {
-        let curDueDate = task.dueDate === undefined ? moment().format('YYYY-MM-DD') : task.dueDate;
-        let curRecurDays = task.recurDays === undefined ? 0 : task.recurDays;
-        if (task.type === 'Recurring' || task.type === 'Habit') {
-          task.status = 'Not Started';
-          task.recurDays = curRecurDays;
-          task.dueDate = moment(curDueDate).add(curRecurDays, 'days').format('YYYY-MM-DD');
-          task.completedDates = [...task.completedDates, 
-            {
-            completedId: this.uuidv4(),
-            completedDate: moment(curDueDate).format('YYYY-MM-DD'),
-            hours: 0
+        if (task.completedDates.map((date) => date.completedDate).includes(header)) {
+          let newCompleted = [];
+          for (let i = 0; i < task.completedDates.length; i++) {
+            if (task.completedDates[i].completedDate !== header) {
+              newCompleted.push(task.completedDates[i])
             }
-          ];
-        } else if (task.type === 'One-time') {
-          task.status = 'Completed';
-          task.dueDate = curDueDate;
-          task.completedDates = [...task.completedDates, 
-            {
-            completedId: this.uuidv4(),
-            completedDate: moment(curDueDate).format('YYYY-MM-DD'),
-            hours: 0
-            }
-          ];
+          }
+          task.completedDates = newCompleted
+        } else {
+          let curDueDate = task.dueDate === undefined ? moment().format('YYYY-MM-DD') : task.dueDate;
+          let curRecurDays = task.recurDays === undefined ? 0 : task.recurDays;
+          if (task.type === 'Recurring' || task.type === 'Habit') {
+            task.status = 'Not Started';
+            task.recurDays = curRecurDays;
+            task.dueDate = moment(curDueDate).add(curRecurDays, 'days').format('YYYY-MM-DD');
+            task.completedDates = [...task.completedDates, 
+              {
+              completedId: this.uuidv4(),
+              completedDate: moment(curDueDate).format('YYYY-MM-DD'),
+              hours: 0
+              }
+            ];
+          } else if (task.type === 'One-time') {
+            task.status = 'Completed';
+            task.dueDate = curDueDate;
+            task.completedDates = [...task.completedDates, 
+              {
+              completedId: this.uuidv4(),
+              completedDate: moment(curDueDate).format('YYYY-MM-DD'),
+              hours: 0
+              }
+            ];
+          }
         }
       }
       return task;
@@ -429,8 +443,10 @@ class Main extends Component {
 
   getHeaders = (tasks, currentView) => {
     let resArr = [];
+    let timeArr = [];
     let uniqArr = []
-    console.log(currentView);
+    let timeframeVal = 0;
+    const { currentTimeframe } = this.state;
 
     if (currentView === 'Scheduled') {
       // get all headers
@@ -452,14 +468,54 @@ class Main extends Component {
       // get all headers
       for (let i = 0; i < tasks.length; i++) {
         resArr.push(tasks[i].category)
-      }
-      console.log(resArr);
+      };
     }
 
+    if (currentView === 'All') {
+      // get all headers
+      for (let i = 0; i < tasks.length; i++) {
+        resArr.push(tasks[i].dueDate)
+      }
+      for (let i = 0; i < tasks.length; i++) {
+        for (let j = 0; j < tasks[i].completedDates.length; j++) {
+          resArr.push(tasks[i].completedDates[j].completedDate)
+        }
+      };
+    }
+
+    //remove values outside of timeframe
+    if (currentView === 'Unscheduled'){
+      timeArr = resArr;
+    } else {
+      if (currentTimeframe.includes('+')){
+        timeframeVal = currentTimeframe.replace('+','');
+        for (let i = 0; i < resArr.length; i++) {
+          if (moment(resArr[i]).format('YYYY-MM-DD') < moment().add(timeframeVal, 'days').format('YYYY-MM-DD')){
+            timeArr.push(resArr[i]);
+          }
+        }
+      } else if (currentTimeframe.includes('-')){
+        timeframeVal = currentTimeframe.replace('-','');
+        for (let i = 0; i < resArr.length; i++) {
+          if (moment(resArr[i]).format('YYYY-MM-DD') > moment().subtract(timeframeVal, 'days').format('YYYY-MM-DD')){
+            timeArr.push(resArr[i]);
+          }
+        }
+      } else if (currentTimeframe.includes('<')){
+        timeframeVal = currentTimeframe.replace('<','').replace('>','');
+        for (let i = 0; i < resArr.length; i++) {
+          if (moment(resArr[i]).format('YYYY-MM-DD') < moment().add(timeframeVal, 'days').format('YYYY-MM-DD') && moment(resArr[i]).format('YYYY-MM-DD') > moment().subtract(timeframeVal, 'days').format('YYYY-MM-DD')){
+            timeArr.push(resArr[i]);
+          }
+        }
+      }
+    }
+
+
     //remove dupes
-    for (let i = 0; i < resArr.length; i++) {
-      if (uniqArr.includes(resArr[i]) === false) {
-        uniqArr.push(resArr[i])
+    for (let i = 0; i < timeArr.length; i++) {
+      if (uniqArr.includes(timeArr[i]) === false) {
+        uniqArr.push(timeArr[i])
       }
     }
     //sort
@@ -514,10 +570,17 @@ class Main extends Component {
   };
 
   handleViewChange = (currentView) => {
-    this.getHeaders(this.state.tasks, currentView)
+    const defaultTimeframe = currentView === "Completed" ? "-7" : currentView === "All" ? "<7>" : "+7";
     this.setState({
-      currentView
-    })
+      currentView,
+      currentTimeframe: defaultTimeframe
+    }, () => this.getHeaders(this.state.tasks, currentView))
+  };
+
+  handleTimeframeChange = (timeframe) => {
+    this.setState({
+      currentTimeframe: timeframe
+    }, () => this.getHeaders(this.state.tasks, this.state.currentView))
   };
 
   handleCategoryFilterChange = (category) => {
@@ -710,6 +773,12 @@ class Main extends Component {
                   Task Tracker
               </Typography>
               <div className={classes.grow} />       
+              <div className={classes.addButton}>
+                <TimeframeSelector
+                  currentTimeframe={this.state.currentTimeframe}
+                  handleTimeframeChange={this.handleTimeframeChange}
+                />
+              </div>
               <div className={classes.addButton}>
                 <ViewSelector
                   currentView={this.state.currentView}

@@ -217,6 +217,11 @@ export const tasks = [
         completedId: 3,
         completedDate: '2022-12-03',
         hours: .5
+      },
+      {
+        completedId: 4,
+        completedDate: '2023-01-01',
+        hours: .5
       }
     ],
     points: 1,
