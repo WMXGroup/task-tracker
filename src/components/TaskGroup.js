@@ -22,7 +22,7 @@ export default class TaskGroup extends Component {
     let groupTasks = [];
 
     if (currentView === 'Scheduled') {
-      groupTasks = tasks.filter((task) => (task['dueDate'] === header && task.dueDate !== 'Invalid date'))
+      groupTasks = tasks.filter((task) => (task['dueDate'] === header && task.status !== 'Completed' && task.dueDate !== 'Invalid date'))
     } else if(currentView === 'Completed') {
       for (let i = 0; i < tasks.length; i++) {
         for (let j = 0; j < tasks[i].completedDates.length; j++) {
@@ -35,7 +35,7 @@ export default class TaskGroup extends Component {
       groupTasks = tasks.filter((task) => (task['category'] === header && task.dueDate === 'Invalid date'))
     } else if(currentView === 'All') {
       for (let i = 0; i < tasks.length; i++) {
-        if (tasks[i].dueDate === header && tasks[i].dueDate !== 'Invalid date'){
+        if (tasks[i].dueDate === header && tasks[i].status !== 'Completed' && tasks[i].dueDate !== 'Invalid date'){
           groupTasks.push(tasks[i])
         }
         for (let j = 0; j < tasks[i].completedDates.length; j++) {

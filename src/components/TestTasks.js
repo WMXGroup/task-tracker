@@ -272,4 +272,32 @@ export const tasks = [
     startTime: "08:00 AM",
     startTimeValue: 800,
   },
+  {
+    id: 11,
+    description: 'Watch spiderman',
+    category:'Fun',
+    subCategory: 'Movie',
+    status: 'Completed',
+    dueDate: '2021-01-06',
+    hours: 0,
+    weeklyGoal: 0,
+    priority: '1',
+    assigned: 'Adam',
+    contact: 'Jim',
+    notes: '',
+    workTime: [],
+    tags: [],
+    type: 'One-time',
+    recurDays: 0,
+    completedDates: [
+      {
+        completedId: 1,
+        completedDate: '2021-06-01',
+        hours: 2
+      },
+    ],
+    points: 0,
+    startTime: "08:00 AM",
+    startTimeValue: 800,
+  },
 ]
