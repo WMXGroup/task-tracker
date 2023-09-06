@@ -31,13 +31,6 @@ export default class ActionMenu extends Component {
   }
 
   render() {
-    const {
-      ignoreTask,
-      makeCurrent,
-      skipOccurence,
-      snoozeWeek,
-      launchCompleteCompleted,
-    } = this.props;
 
     return (
       <React.Fragment>
@@ -64,29 +57,8 @@ export default class ActionMenu extends Component {
             onClose={this.handleClose}
           >
           <MenuItem
-            onClick={ignoreTask}
             >
-            Snooze to Next Day
-          </MenuItem>
-          <MenuItem
-            onClick={snoozeWeek}
-            >
-            Snooze to Next Week
-          </MenuItem>
-          <MenuItem
-            onClick={makeCurrent}
-            >
-            Make Current
-          </MenuItem>
-          <MenuItem
-            onClick={skipOccurence}
-            >
-            Skip Occurence
-          </MenuItem>
-          <MenuItem
-            onClick={launchCompleteCompleted}
-            >
-            Complete with Hours
+            Test
           </MenuItem>
           </Menu>
         </React.Fragment>

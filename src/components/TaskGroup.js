@@ -10,45 +10,25 @@ export default class TaskGroup extends Component {
       tasks,
       currentView,
       completeTask,
-      ignoreTask,
-      makeCurrent,
-      snoozeWeek,
-      skipOccurence,
       launchDetails,
       categoryFilter,
-      launchCompleteCompleted,
     } = this.props;
 
     let groupTasks = [];
 
-    if (currentView === 'Scheduled') {
-      groupTasks = tasks.filter((task) => (task['dueDate'] === header && task.status !== 'Completed' && task.dueDate !== 'Invalid date'))
-    } else if(currentView === 'Completed') {
+    // groupTasks = tasks.filter((task) => (task['category'] === header))
+
       for (let i = 0; i < tasks.length; i++) {
-        for (let j = 0; j < tasks[i].completedDates.length; j++) {
-          if (tasks[i].completedDates[j].completedDate === header) {
+        for (let j = 0; j < tasks[i].dates.length; j++) {
+          if (tasks[i].dates[j].date === header) {
             groupTasks.push(tasks[i])
           }
         }
       }
-    } else if(currentView === 'Unscheduled') {
-      groupTasks = tasks.filter((task) => (task['category'] === header && task.dueDate === 'Invalid date'))
-    } else if(currentView === 'All') {
-      for (let i = 0; i < tasks.length; i++) {
-        if (tasks[i].dueDate === header && tasks[i].status !== 'Completed' && tasks[i].dueDate !== 'Invalid date'){
-          groupTasks.push(tasks[i])
-        }
-        for (let j = 0; j < tasks[i].completedDates.length; j++) {
-          if (tasks[i].completedDates[j].completedDate === header) {
-            groupTasks.push(tasks[i])
-          }
-        }
-      }
-    }
+    
+    //groupTasks.sort((a,b) => (a.priority > b.priority) ? 1 : -1);
 
-    // groupTasks.sort((a,b) => (a.priority > b.priority) ? 1 : -1);
-
-    groupTasks.sort((a,b) => (new Date('1970/01/01 ' + a.startTime) - new Date('1970/01/01 ' + b.startTime)));
+    // groupTasks.sort((a,b) => (new Date('1970/01/01 ' + a.startTime) - new Date('1970/01/01 ' + b.startTime)));
 
     groupTasks = groupTasks.filter((task) => (categoryFilter.includes(task.category) || categoryFilter.includes('All')))
 
@@ -62,13 +42,8 @@ export default class TaskGroup extends Component {
           header={header}
           task={task}
           key={i}
-          snoozeWeek={snoozeWeek}
-          skipOccurence={skipOccurence}
           completeTask={completeTask}
-          ignoreTask={ignoreTask}
-          makeCurrent={makeCurrent}
           launchDetails={launchDetails}
-          launchCompleteCompleted={launchCompleteCompleted}
           />
         ))}
       </React.Fragment>

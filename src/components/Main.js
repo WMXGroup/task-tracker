@@ -14,13 +14,11 @@ import Divider from '@material-ui/core/Divider';
 import { withStyles } from '@material-ui/core/styles';
 import TaskGroup from './TaskGroup';
 import TaskDetails from './TaskDetails';
-import CompletedDetail from './CompletedDetail';
 import {tasks} from './TestTasks';
 import RelatedLists from './RelatedLists';
 import ViewSelector from './ViewSelector';
 import TimeframeSelector from './TimeframeSelector';
 import CategoryFilter from './CategoryFilter';
-import Report from './Report';
 import AddRelatedList from './AddRelatedList';
 import moment from 'moment';
 import axios from 'axios';
@@ -72,21 +70,15 @@ class Main extends Component {
     trackerName: '',
     selectedTask: null,
     mode: null,
-    completedForm: null,
-    completedDetails: {},
     categories: [],
-    subcategories: [],
-    assignedUsers: [],
-    contactUsers: [],
     taskDetails: {},
     currentView: 'Scheduled',
     categoryFilter: ['All'],
     display: 'Tasks',
     debugMode: window.location.hostname === "localhost",
     relatedLists: [],
-    categoryReport: [],
-    reportWeek: moment().startOf('week').format('YYYY-MM-DD'),
-    currentTimeframe: '+7',
+    startDate:moment().format('YYYY-MM-DD'),
+    endDate: moment().add(7,'days').format('YYYY-MM-DD'),
   }
 
   componentDidMount = () => {
@@ -95,7 +87,7 @@ class Main extends Component {
     // tasks: this.updateData(tasks),
     if(this.state.debugMode === true){
       this.setState({
-        tasks: this.updateData(tasks),
+        tasks: tasks,
       });
     } else {
       this.getServerData();
@@ -106,25 +98,11 @@ class Main extends Component {
   componentDidUpdate = (prevProps, prevState) => {
     //console.log('componentDidUpdate');
     if (this.state.tasks !== prevState.tasks) {
-      this.getHeaders(this.state.tasks, this.state.currentView);
+      this.getHeaders(this.state.tasks, this.state.currentView, this.state.startDate, this.state.endDate);
       this.getUniqueValues(this.state.tasks, 'category', 'categories');
-      this.getUniqueValues(this.state.tasks, 'subCategory', 'subcategories')
-      this.getUniqueValues(this.state.tasks, 'assigned', 'assignedUsers');
-      this.getUniqueValues(this.state.tasks, 'contact', 'contactUsers');
     }
   }
 
-  updateData = (data) => {
-    const newTasks = data.map((task) => {
-      if (task.type === 'Habit' && task.status !== 'Completed') {
-        if (task.dueDate < moment().format('YYYY-MM-DD')) {
-          task.dueDate = moment().format('YYYY-MM-DD')
-        }
-      }
-      return task;
-    })
-    return newTasks;
-  }
 
   getServerData = () => {
     let search = window.location.search;
@@ -147,11 +125,8 @@ class Main extends Component {
           relatedLists: (res.data.relatedLists === undefined || res.data.relatedLists === null) ? [] : res.data.relatedLists,
         }))
         .then(() => {
-          this.getHeaders(this.state.tasks, this.state.currentView)
+          this.getHeaders(this.state.tasks, this.state.currentView, this.state.startDate, this.state.endDate)
           this.getUniqueValues(this.state.tasks, 'category', 'categories')
-          this.getUniqueValues(this.state.tasks, 'subCategory', 'subcategories')
-          this.getUniqueValues(this.state.tasks, 'assigned', 'assignedUsers')
-          this.getUniqueValues(this.state.tasks, 'contact', 'contactUsers')
         })
         }
       )
@@ -226,6 +201,38 @@ class Main extends Component {
     this.downloadFile(JSON.stringify(this.state.tasks), "data.json", "text/plain");
   }
 
+  exportCSV = () => {
+    this.handleClose();
+
+    let newData = []
+    for (let i = 0; i < tasks.length; i++) {
+      for (let j = 0; j < tasks[i].completedDates.length; j++) {
+        let curRow = [tasks.description, tasks[i].completedDates[j].completedDate]
+        newData.push(curRow)
+      }
+    }
+
+    let csvContent = newData.map(e => e.join(",")).join("\n");
+    
+    this.downloadFile(csvContent, "data.csv", "text/plain");
+  }
+
+  exportCSVnew = () => {
+    this.handleClose();
+
+    let newData = []
+    for (let i = 0; i < tasks.length; i++) {
+      for (let j = 0; j < tasks[i].dates.length; j++) {
+        let curRow = [tasks[i].description, tasks[i].dates[j].date]
+        newData.push(curRow)
+      }
+    }
+
+    let csvContent = newData.map(e => e.join(",")).join("\n");
+    
+    this.downloadFile(csvContent, "data.csv", "text/plain");
+  }
+
   getFile = (e) => {
     this.handleClose();
     let files = e.target.files;
@@ -281,142 +288,18 @@ class Main extends Component {
     () => this.toggleDisplay('Details'));
   }
 
-  completeTask = (id, header) => {
+  completeTask = (id, date) => {
     const newTasks = this.state.tasks.map((task) => {
       if (task.id === id) {
-        if (task.completedDates.map((date) => date.completedDate).includes(header)) {
-          let newCompleted = [];
-          for (let i = 0; i < task.completedDates.length; i++) {
-            if (task.completedDates[i].completedDate !== header) {
-              newCompleted.push(task.completedDates[i])
-            }
+        const newDates = task.dates.map((idate) => {
+          if (idate.date === date && idate.state === 'closed') {
+            idate.state = 'open'
+          } else if (idate.date === date && idate.state === 'open') {
+            idate.state = 'closed'
           }
-          task.completedDates = newCompleted
-        } else {
-          let curDueDate = task.dueDate === undefined ? moment().format('YYYY-MM-DD') : task.dueDate;
-          let curRecurDays = task.recurDays === undefined ? 0 : task.recurDays;
-          if (task.type === 'Recurring' || task.type === 'Habit') {
-            task.status = 'Not Started';
-            task.recurDays = curRecurDays;
-            task.dueDate = moment(curDueDate).add(curRecurDays, 'days').format('YYYY-MM-DD');
-            task.completedDates = [...task.completedDates, 
-              {
-              completedId: this.uuidv4(),
-              completedDate: moment(curDueDate).format('YYYY-MM-DD'),
-              hours: 0
-              }
-            ];
-          } else if (task.type === 'One-time') {
-            task.status = 'Completed';
-            task.dueDate = curDueDate;
-            task.completedDates = [...task.completedDates, 
-              {
-              completedId: this.uuidv4(),
-              completedDate: moment(curDueDate).format('YYYY-MM-DD'),
-              hours: 0
-              }
-            ];
-          }
-        }
-      }
-      return task;
-    });
-    this.setState({
-      tasks: newTasks,
-    }, () => this.saveData());
-  }
-
-  completeCompletedTask = (id, completedDate, hours) => {
-    const newTasks = this.state.tasks.map((task) => {
-      if (task.id === id) {
-        let curDueDate = task.dueDate === undefined ? moment().format('YYYY-MM-DD') : task.dueDate;
-        let curRecurDays = task.recurDays === undefined ? 0 : task.recurDays;
-        if (task.type === 'Recurring' || task.type === 'Habit') {
-          task.status = 'Not Started';
-          task.recurDays = curRecurDays;
-          task.dueDate = moment(curDueDate).add(curRecurDays, 'days').format('YYYY-MM-DD');
-          task.completedDates = [...task.completedDates, 
-            {
-            completedId: this.uuidv4(),
-            completedDate: completedDate,
-            hours: hours
-            }
-          ];
-        } else if (task.type === 'One-time') {
-          task.status = 'Completed';
-          task.dueDate = curDueDate;
-          task.completedDates = [...task.completedDates, 
-            {
-            completedId: this.uuidv4(),
-            completedDate: completedDate,
-            hours: hours
-            }
-          ];
-        }
-      }
-      return task;
-    });
-    this.setState({
-      tasks: newTasks,
-    }, () => this.saveData());
-  }
-
-  skipOccurence = (id) => {
-    const newTasks = this.state.tasks.map((task) => {
-      if (task.id === id) {
-          let curDueDate = task.dueDate === undefined ? moment().format('YYYY-MM-DD') : task.dueDate;
-          let curRecurDays = task.recurDays === undefined ? 0 : task.recurDays;
-          task.recurDays = curRecurDays;
-          task.dueDate = moment(curDueDate).add(curRecurDays, 'days').format('YYYY-MM-DD');
-      }
-      return task;
-    });
-    this.setState({
-      tasks: newTasks,
-    }, () => this.saveData());
-  }
-
-  snoozeWeek = (id) => {
-    const newTasks = this.state.tasks.map((task) => {
-      if (task.id === id) {
-          let curDueDate = task.dueDate === undefined ? moment().format('YYYY-MM-DD') : task.dueDate;
-          task.dueDate = moment(curDueDate).add(7, 'days').format('YYYY-MM-DD');
-      }
-      return task;
-    });
-    this.setState({
-      tasks: newTasks,
-    }, () => this.saveData());
-  }
-
-  ignoreTask = (id) => {
-    const newTasks = this.state.tasks.map((task) => {
-      if (task.id === id) {
-          task.dueDate = moment(task.dueDate).add(1, 'days').format('YYYY-MM-DD');
-      }
-      return task;
-    });
-    this.setState({
-      tasks: newTasks,
-    }, () => this.saveData());
-  }
-
-  makeCurrent = (id) => {
-    const newTasks = this.state.tasks.map((task) => {
-      if (task.id === id) {
-          task.dueDate = moment().format('YYYY-MM-DD');
-      }
-      return task;
-    });
-    this.setState({
-      tasks: newTasks,
-    }, () => this.saveData());
-  }
-
-  makeAllActiveCurrent = () => {
-    const newTasks = this.state.tasks.map((task) => {
-      if (task.dueDate <= moment().format('YYYY-MM-DD') && task.status !== 'Completed' && task.dueDate !== undefined) {
-          task.dueDate = moment().format('YYYY-MM-DD');
+          return idate;
+        })
+        task.dates = newDates
       }
       return task;
     });
@@ -428,8 +311,8 @@ class Main extends Component {
   saveTask = (id, task) => {
     const newTasks = this.state.tasks.filter((task) => task.id !== id)
     this.setState(
-      { tasks: [...newTasks, task],
-        completedTasks : task.status === 'completed' ? [...this.state.completedTasks, task] : this.state.completedTasks
+      { 
+        tasks: [...newTasks, task],
       }, () => this.saveData()
       );
   }
@@ -441,84 +324,33 @@ class Main extends Component {
     }, () => this.saveData());
   }
 
-  getHeaders = (tasks, currentView) => {
+  getHeaders = (tasks, currentView, startDate, endDate) => {
     let resArr = [];
-    let timeArr = [];
     let uniqArr = []
-    let timeframeVal = 0;
-    const { currentTimeframe } = this.state;
 
-    if (currentView === 'Scheduled') {
-      // get all headers
+    // get day headers
       for (let i = 0; i < tasks.length; i++) {
-        resArr.push(tasks[i].dueDate)
-      }
-    }
-
-    if (currentView === 'Completed') {
-      // get all headers
-      for (let i = 0; i < tasks.length; i++) {
-        for (let j = 0; j < tasks[i].completedDates.length; j++) {
-          resArr.push(tasks[i].completedDates[j].completedDate)
-        }
-      }
-    }
-
-    if (currentView === 'Unscheduled') {
-      // get all headers
-      for (let i = 0; i < tasks.length; i++) {
-        resArr.push(tasks[i].category)
-      };
-    }
-
-    if (currentView === 'All') {
-      // get all headers
-      for (let i = 0; i < tasks.length; i++) {
-        resArr.push(tasks[i].dueDate)
-      }
-      for (let i = 0; i < tasks.length; i++) {
-        for (let j = 0; j < tasks[i].completedDates.length; j++) {
-          resArr.push(tasks[i].completedDates[j].completedDate)
-        }
-      };
-    }
-
-    //remove values outside of timeframe
-    if (currentView === 'Unscheduled'){
-      timeArr = resArr;
-    } else {
-      if (currentTimeframe.includes('+')){
-        timeframeVal = currentTimeframe.replace('+','');
-        for (let i = 0; i < resArr.length; i++) {
-          if (moment(resArr[i]).format('YYYY-MM-DD') < moment().add(timeframeVal, 'days').format('YYYY-MM-DD')){
-            timeArr.push(resArr[i]);
+        for (let j = 0; j < tasks[i].dates.length; j++) {
+          if (startDate === 'Invalid date' && tasks[i].dates[j].date <= moment(endDate).format('YYYY-MM-DD')){
+            resArr.push(tasks[i].dates[j].date)
           }
-        }
-      } else if (currentTimeframe.includes('-')){
-        timeframeVal = currentTimeframe.replace('-','');
-        for (let i = 0; i < resArr.length; i++) {
-          if (moment(resArr[i]).format('YYYY-MM-DD') > moment().subtract(timeframeVal, 'days').format('YYYY-MM-DD')){
-            timeArr.push(resArr[i]);
+          if (endDate === 'Invalid date' && tasks[i].dates[j].date >= moment(startDate).format('YYYY-MM-DD')){
+            resArr.push(tasks[i].dates[j].date)
           }
-        }
-      } else if (currentTimeframe.includes('<')){
-        timeframeVal = currentTimeframe.replace('<','').replace('>','');
-        for (let i = 0; i < resArr.length; i++) {
-          if (moment(resArr[i]).format('YYYY-MM-DD') < moment().add(timeframeVal, 'days').format('YYYY-MM-DD') && moment(resArr[i]).format('YYYY-MM-DD') > moment().subtract(timeframeVal, 'days').format('YYYY-MM-DD')){
-            timeArr.push(resArr[i]);
+          if (tasks[i].dates[j].date >= moment(startDate).format('YYYY-MM-DD') && tasks[i].dates[j].date <= moment(endDate).format('YYYY-MM-DD')) {
+            resArr.push(tasks[i].dates[j].date)
           }
         }
       }
-    }
-
 
     //remove dupes
-    for (let i = 0; i < timeArr.length; i++) {
-      if (uniqArr.includes(timeArr[i]) === false) {
-        uniqArr.push(timeArr[i])
+    for (let i = 0; i < resArr.length; i++) {
+      if (uniqArr.includes(resArr[i]) === false) {
+        uniqArr.push(resArr[i])
       }
     }
-    //sort
+
+    // //sort
     uniqArr.sort();
 
     this.setState({
@@ -569,18 +401,15 @@ class Main extends Component {
     this.getSortHeaders(this.state.tasks, sortOption)
   };
 
-  handleViewChange = (currentView) => {
-    const defaultTimeframe = currentView === "Completed" ? "-7" : currentView === "All" ? "<7>" : "+7";
-    this.setState({
-      currentView,
-      currentTimeframe: defaultTimeframe
-    }, () => this.getHeaders(this.state.tasks, currentView))
-  };
+  // handleViewChange = (currentView) => {
+  //   const defaultTimeframe = currentView === "Completed" ? "-7" : currentView === "All" ? "<7>" : "+7";
+  //   this.setState({
+  //     currentView,
+  //   }, () => this.getHeaders(this.state.tasks, currentView, this.state.startDate, this.state.endDate))
+  // };
 
-  handleTimeframeChange = (timeframe) => {
-    this.setState({
-      currentTimeframe: timeframe
-    }, () => this.getHeaders(this.state.tasks, this.state.currentView))
+  handleTimeframeChange = () => {
+    this.getHeaders(this.state.tasks, this.state.currentView, this.state.startDate, this.state.endDate)
   };
 
   handleCategoryFilterChange = (category) => {
@@ -607,109 +436,23 @@ class Main extends Component {
     })
   }
 
-  calculatePoints = () => {
-    let pointsArray = [];
-    const {
-      categories,
-      tasks,
-      reportWeek,
-    } = this.state;
-
-    for (let i = 0; i < categories.length; i++) {
-      pointsArray.push({
-        category: categories[i],
-        totalPoints: 0,
-        weeklyPoints: 0,
-      })
-    }
-
-    for (let i = 0; i < tasks.length; i++) {
-      for (let j = 0; j < pointsArray.length; j++) {
-        if (pointsArray[j].category === tasks[i].category) {
-          pointsArray[j].weeklyPoints = parseInt(pointsArray[j].weeklyPoints) + ((tasks[i].weeklyGoal === null || tasks[i].weeklyGoal === '' ) ? 0 : parseInt(tasks[i].weeklyGoal))
-          for (let k = 0; k < tasks[i].completedDates.length; k++) {
-            if (moment(tasks[i].completedDates[k]).format('YYYY-MM-DD') >= reportWeek && moment(tasks[i].completedDates[k]).format('YYYY-MM-DD') < moment(reportWeek).add(7, 'days').format('YYYYMMDD')) {
-              const newPoints = (tasks[i].points === null || tasks[i].points === '') ? 0 : parseInt(tasks[i].points);
-              pointsArray[j].totalPoints = parseInt(pointsArray[j].totalPoints) + newPoints;
-            }
-          }
-        }
-      }
-    }
-
-    this.setState({
-      categoryReport: pointsArray,
-    })
-  }
-
-  updateReportWeek = async (direction) => {
-    if (direction === 1){
-      this.setState({
-        reportWeek: moment(this.state.reportWeek).add(7, 'days').format('YYYY-MM-DD')
-      }, () => this.calculatePoints())
-    } else {
-      this.setState({
-        reportWeek: moment(this.state.reportWeek).subtract(7, 'days').format('YYYY-MM-DD')
-      }, () => this.calculatePoints())
-    }
-  }
-
-  launchReport = async () => {
-    await this.handleClose();
-    await this.calculatePoints();
-    await this.toggleDisplay('Report');
-  }
-
   launchAddList = async () => {
     await this.handleClose();
     await this.toggleDisplay('AddRelatedList');
   }
 
-  launchNewCompleted = (curTaskDetails) => {
-    this.setState({
-      completedForm: 'Add',
-      taskDetails: curTaskDetails
-    },
-    () => this.toggleDisplay('Completed'));
-  }
 
-  launchEditCompleted = (curTaskDetails, completedDetails) => {
-    this.setState({
-      completedForm: 'Edit',
-      completedDetails: completedDetails,
-      taskDetails: curTaskDetails
-    },
-    () => this.toggleDisplay('Completed'));
-  }
-
-  launchCompleteCompleted = (id) => {
-    const taskDetail = this.state.tasks.filter((task) => task.id === id)
-    this.setState({
-      mode: 'Edit',
-      completedForm: 'Complete',
-      taskDetails: taskDetail[0]
-    },
-    () => this.toggleDisplay('Completed'));
-  }
-
-  saveCompleted = (id, data) => {
-    const newCompleted = this.state.taskDetails.completedDates.filter((item) => item.completedId !== id)
-    let newTaskDetails = this.state.taskDetails;
-    newTaskDetails.completedDates = [...newCompleted, data];
-    this.setState({ 
-      taskDetails: newTaskDetails,
-    },
-    () => this.toggleDisplay('Details'));
-  }
-
-  addCompleted = (completed) => {
-    let newTaskDetails = this.state.taskDetails;
-    const newCompleted = [...newTaskDetails.completedDates, completed]
-    newTaskDetails.completedDates = newCompleted;
-    this.setState({ 
-      taskDetails: newTaskDetails,
-    },
-    () => this.toggleDisplay('Details'));
+  dateChange = (e, type) => {
+    if (type === 'startDate') {
+      this.setState({
+        startDate: moment(e).format('YYYY-MM-DD'),
+      })
+    }
+    if (type === 'endDate') {
+      this.setState({
+        endDate: moment(e).format('YYYY-MM-DD'),
+      })
+    }
   }
 
   render() {
@@ -764,9 +507,9 @@ class Main extends Component {
                     <MenuItem onClick={() => this.getFile()}>Import JSON</MenuItem>
                   </label>
                   <MenuItem onClick={() => this.exportJSON()}>Export Data</MenuItem>
+                  <MenuItem onClick={() => this.exportCSV()}>Export CSV Old</MenuItem>
+                  <MenuItem onClick={() => this.exportCSVnew()}>Export CSV New</MenuItem>
                   <MenuItem onClick={() => this.createNew()}>Create New</MenuItem>
-                  <MenuItem onClick={() => this.launchReport()}>Show Report</MenuItem>
-                  <MenuItem onClick={() => this.makeAllActiveCurrent()}>Make Tasks Current</MenuItem>
                   <MenuItem onClick={() => this.launchAddList()}>Add Related List</MenuItem>
                 </Menu>
               <Typography variant="h6">
@@ -775,8 +518,10 @@ class Main extends Component {
               <div className={classes.grow} />       
               <div className={classes.addButton}>
                 <TimeframeSelector
-                  currentTimeframe={this.state.currentTimeframe}
                   handleTimeframeChange={this.handleTimeframeChange}
+                  dateChange={this.dateChange}
+                  startDate={this.state.startDate}
+                  endDate={this.state.endDate}
                 />
               </div>
               <div className={classes.addButton}>
@@ -827,13 +572,8 @@ class Main extends Component {
                     key={i}
                     completeTask={this.completeTask}
                     launchDetails={this.launchDetails}
-                    ignoreTask={this.ignoreTask}
-                    makeCurrent={this.makeCurrent}
-                    snoozeWeek={this.snoozeWeek}
-                    skipOccurence={this.skipOccurence}
                     currentView={this.state.currentView}
                     categoryFilter={this.state.categoryFilter}
-                    launchCompleteCompleted={this.launchCompleteCompleted}
                     />
                 ))}
               </div>
@@ -844,35 +584,12 @@ class Main extends Component {
               toggleDisplay={this.toggleDisplay}
               mode={this.state.mode}
               categories={this.state.categories}
-              subcategories={this.state.subcategories}
-              assignedUsers={this.state.assignedUsers}
-              contactUsers={this.state.contactUsers}
               createTask={this.createTask}
               taskDetails={this.state.taskDetails}
               saveTask={this.saveTask}
               deleteTask={this.deleteTask}
-              launchNewCompleted={this.launchNewCompleted}
-              launchEditCompleted={this.launchEditCompleted}
+              launchNewDate={this.launchNewDate}
               uuidv4={this.uuidv4}
-            />
-          }
-          {this.state.display === 'Report' &&
-            <Report
-              categoryReport={this.state.categoryReport}
-              toggleDisplay={this.toggleDisplay}
-              updateReportWeek={this.updateReportWeek}
-              reportWeek={this.state.reportWeek}
-            />
-          }
-          {this.state.display === 'Completed' &&
-            <CompletedDetail
-              type={this.state.completedForm}
-              toggleDisplay={this.toggleDisplay}
-              saveCompleted={this.saveCompleted}
-              addCompleted={this.addCompleted}
-              completedDetails={this.state.completedDetails}
-              taskDetails={this.state.taskDetails}
-              completeCompletedTask={this.completeCompletedTask}
             />
           }
           {this.state.display !== 'Details' &&

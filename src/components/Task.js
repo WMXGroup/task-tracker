@@ -37,34 +37,32 @@ class Task extends Component {
       header,
       task,
       completeTask,
-      ignoreTask,
-      makeCurrent,
-      snoozeWeek,
-      skipOccurence,
       launchDetails,
-      launchCompleteCompleted,
     } = this.props;
+
+    let isChecked = false
+    const { dates } = task
+    for (let i = 0; i < dates.length; i++) {
+      if (dates[i].date === header && dates[i].state === 'closed') {
+        isChecked = true
+      }
+    }
 
     return (
       <div className={classes.taskContainer} key={task.id}>
         <Checkbox
-          checked={task.completedDates.map((date) => date.completedDate).includes(header) ? true : false}
+          checked={isChecked}
           className={classes.checkbox}
           onChange={() => completeTask(task.id, header)}
           color="primary"
           size='small'
           />
-        <ActionMenu 
-          snoozeWeek={() => snoozeWeek(task.id)}
-          skipOccurence={() => skipOccurence(task.id)}
-          ignoreTask={() => ignoreTask(task.id)}
-          makeCurrent={() => makeCurrent(task.id)}
-          launchCompleteCompleted={() => launchCompleteCompleted(task.id)}
-        />
+        <ActionMenu/>
         <TextField
           className={classes.taskStyle}
           style={{
             borderColor: this.props.task.dueDate === 'Invalid date' ? 'red' : '#ccc',
+            textDecoration: isChecked ? 'line-through' : '',
           }}
           disabled
           InputProps={{
