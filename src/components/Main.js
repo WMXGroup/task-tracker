@@ -202,23 +202,6 @@ class Main extends Component {
     let curTasks = this.state.tasks;
     let newData = []
     for (let i = 0; i < curTasks.length; i++) {
-      for (let j = 0; j < curTasks[i].completedDates.length; j++) {
-        let curRow = [curTasks[i].description, curTasks[i].completedDates[j].completedDate, curTasks[i].category]
-        newData.push(curRow)
-      }
-    }
-
-    let csvContent = newData.map(e => e.join(",")).join("\n");
-    
-    this.downloadFile(csvContent, "data.csv", "text/plain");
-  }
-
-  exportCSVnew = () => {
-    this.handleClose();
-
-    let curTasks = this.state.tasks;
-    let newData = []
-    for (let i = 0; i < curTasks.length; i++) {
       for (let j = 0; j < curTasks[i].dates.length; j++) {
         let curRow = [curTasks[i].description, curTasks[i].dates[j].date, curTasks[i].category]
         newData.push(curRow)
@@ -504,8 +487,7 @@ class Main extends Component {
                     <MenuItem onClick={() => this.getFile()}>Import JSON</MenuItem>
                   </label>
                   <MenuItem onClick={() => this.exportJSON()}>Export Data</MenuItem>
-                  <MenuItem onClick={() => this.exportCSV()}>Export CSV Old</MenuItem>
-                  <MenuItem onClick={() => this.exportCSVnew()}>Export CSV New</MenuItem>
+                  <MenuItem onClick={() => this.exportCSV()}>Export CSV New</MenuItem>
                   <MenuItem onClick={() => this.createNew()}>Create New</MenuItem>
                   <MenuItem onClick={() => this.launchAddList()}>Add Related List</MenuItem>
                 </Menu>
