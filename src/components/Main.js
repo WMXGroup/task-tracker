@@ -203,7 +203,7 @@ class Main extends Component {
     let newData = []
     for (let i = 0; i < tasks.length; i++) {
       for (let j = 0; j < tasks[i].completedDates.length; j++) {
-        let curRow = [tasks.description, tasks[i].completedDates[j].completedDate]
+        let curRow = [tasks[i].description, tasks[i].completedDates[j].completedDate]
         newData.push(curRow)
       }
     }
