@@ -203,7 +203,7 @@ class Main extends Component {
     let newData = []
     for (let i = 0; i < curTasks.length; i++) {
       for (let j = 0; j < curTasks[i].completedDates.length; j++) {
-        let curRow = [curTasks[i].description, curTasks[i].completedDates[j].completedDate]
+        let curRow = [curTasks[i].description, curTasks[i].completedDates[j].completedDate, curTasks[i].category]
         newData.push(curRow)
       }
     }
@@ -220,7 +220,7 @@ class Main extends Component {
     let newData = []
     for (let i = 0; i < curTasks.length; i++) {
       for (let j = 0; j < curTasks[i].dates.length; j++) {
-        let curRow = [curTasks[i].description, curTasks[i].dates[j].date]
+        let curRow = [curTasks[i].description, curTasks[i].dates[j].date, curTasks[i].category]
         newData.push(curRow)
       }
     }
