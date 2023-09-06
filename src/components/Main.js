@@ -98,7 +98,6 @@ class Main extends Component {
       this.getHeaders(this.state.tasks, this.state.currentView, this.state.startDate, this.state.endDate);
       this.getUniqueValues(this.state.tasks, 'category', 'categories');
     }
-    console.log(this.state.tasks)
   }
 
 
