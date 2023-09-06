@@ -95,8 +95,8 @@ class Main extends Component {
   componentDidUpdate = (prevProps, prevState) => {
     //console.log('componentDidUpdate');
     if (this.state.tasks !== prevState.tasks) {
-      // this.getHeaders(this.state.tasks, this.state.currentView, this.state.startDate, this.state.endDate);
-      // this.getUniqueValues(this.state.tasks, 'category', 'categories');
+      this.getHeaders(this.state.tasks, this.state.currentView, this.state.startDate, this.state.endDate);
+      this.getUniqueValues(this.state.tasks, 'category', 'categories');
     }
   }
 
@@ -120,8 +120,8 @@ class Main extends Component {
           relatedLists: (res.data.relatedLists === undefined || res.data.relatedLists === null) ? [] : res.data.relatedLists,
         }))
         .then(() => {
-          // this.getHeaders(this.state.tasks, this.state.currentView, this.state.startDate, this.state.endDate)
-          // this.getUniqueValues(this.state.tasks, 'category', 'categories')
+          this.getHeaders(this.state.tasks, this.state.currentView, this.state.startDate, this.state.endDate)
+          this.getUniqueValues(this.state.tasks, 'category', 'categories')
         })
         }
       )
