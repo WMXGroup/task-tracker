@@ -209,7 +209,7 @@ export default class DetailModal extends Component {
         state: 'open',
       })
     } else {
-      finalDatess = this.state.dates
+      finalDates = this.state.dates
     }
 
     this.props.saveTask(this.state.id, {
