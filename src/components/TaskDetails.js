@@ -142,12 +142,39 @@ export default class DetailModal extends Component {
   }
 
   addTask = () => {
+    const { taskDetails } = this.props
+    let iDate = this.state.recurStart
+    let newDates = []
+    let finalDates = []
+    if (taskDetails.recurDays !== this.state.recurDays || taskDetails.recurStart !== this.state.recurStart || taskDetails.recurEnd !== this.state.recurEnd) {
+      // remove future data
+      const oldDates = taskDetails.dates.filter((item) => moment(item.date).format('YYYY-MM-DD') < moment().format('YYYY-MM-DD'));
+      // create new dates
+      do {
+        newDates.push({
+          date: iDate,
+          state: 'open',
+        })
+        iDate = moment(iDate).add(this.state.recurDays,'days').format('YYYY-MM-DD')
+      } while (iDate < this.state.recurEnd);
+      // merge
+      finalDates = [...oldDates,...newDates]
+
+    } else if (this.state.dates.length === 0){
+      finalDates.push({
+        date: '2000-01-01',
+        state: 'open',
+      })
+    } else {
+      finalDates = this.state.dates
+    }
+
     this.props.createTask({
       id: this.state.id,
       description: this.state.description,
       category: this.state.category,
       priority: this.state.priority,
-      dates: this.state.dates.length === 0 ? [{date: '2000-01-01',state: 'open',},] : this.state.dates,
+      dates: finalDates,
       notes: this.state.notes,
       type: this.state.type,
       recurDays: this.state.recurDays,
@@ -161,6 +188,7 @@ export default class DetailModal extends Component {
     const { taskDetails } = this.props
     let iDate = this.state.recurStart
     let newDates = []
+    let finalDates = []
     if (taskDetails.recurDays !== this.state.recurDays || taskDetails.recurStart !== this.state.recurStart || taskDetails.recurEnd !== this.state.recurEnd) {
       // remove future data
       const oldDates = taskDetails.dates.filter((item) => moment(item.date).format('YYYY-MM-DD') < moment().format('YYYY-MM-DD'));
@@ -173,13 +201,15 @@ export default class DetailModal extends Component {
         iDate = moment(iDate).add(this.state.recurDays,'days').format('YYYY-MM-DD')
       } while (iDate < this.state.recurEnd);
       // merge
+      finalDates = [...oldDates,...newDates]
+
     } else if (this.state.dates.length === 0){
-      newDates.push({
+      finalDates.push({
         date: '2000-01-01',
         state: 'open',
       })
     } else {
-      newDates = this.state.dates
+      finalDatess = this.state.dates
     }
 
     this.props.saveTask(this.state.id, {
@@ -187,7 +217,7 @@ export default class DetailModal extends Component {
       description: this.state.description,
       category: this.state.category,
       priority: this.state.priority,
-      dates: newDates,
+      dates: finalDates,
       notes: this.state.notes,
       type: this.state.type,
       recurDays: this.state.recurDays,
