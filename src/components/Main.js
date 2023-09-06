@@ -98,6 +98,7 @@ class Main extends Component {
       //this.getHeaders(this.state.tasks, this.state.currentView, this.state.startDate, this.state.endDate);
       //this.getUniqueValues(this.state.tasks, 'category', 'categories');
     }
+    console.log(this.state.tasks)
   }
 
 
@@ -119,11 +120,10 @@ class Main extends Component {
           isLoading: false,
           relatedLists: (res.data.relatedLists === undefined || res.data.relatedLists === null) ? [] : res.data.relatedLists,
         }))
-        .then(() => {
-          console.log(res.data.list)
+        // .then(() => {
           // this.getHeaders(this.state.tasks, this.state.currentView, this.state.startDate, this.state.endDate)
           // this.getUniqueValues(this.state.tasks, 'category', 'categories')
-        })
+        // })
         }
       )
     }
