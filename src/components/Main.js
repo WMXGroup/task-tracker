@@ -75,7 +75,7 @@ class Main extends Component {
     currentView: 'Scheduled',
     categoryFilter: ['All'],
     display: 'Tasks',
-    debugMode: false, //window.location.hostname === "localhost"
+    debugMode: window.location.hostname === "localhost",
     relatedLists: [],
     startDate:moment().format('YYYY-MM-DD'),
     endDate: moment().add(7,'days').format('YYYY-MM-DD'),
@@ -95,8 +95,8 @@ class Main extends Component {
   componentDidUpdate = (prevProps, prevState) => {
     //console.log('componentDidUpdate');
     if (this.state.tasks !== prevState.tasks) {
-      //this.getHeaders(this.state.tasks, this.state.currentView, this.state.startDate, this.state.endDate);
-      //this.getUniqueValues(this.state.tasks, 'category', 'categories');
+      this.getHeaders(this.state.tasks, this.state.currentView, this.state.startDate, this.state.endDate);
+      this.getUniqueValues(this.state.tasks, 'category', 'categories');
     }
     console.log(this.state.tasks)
   }
@@ -120,10 +120,10 @@ class Main extends Component {
           isLoading: false,
           relatedLists: (res.data.relatedLists === undefined || res.data.relatedLists === null) ? [] : res.data.relatedLists,
         }))
-        // .then(() => {
-          // this.getHeaders(this.state.tasks, this.state.currentView, this.state.startDate, this.state.endDate)
-          // this.getUniqueValues(this.state.tasks, 'category', 'categories')
-        // })
+        .then(() => {
+          this.getHeaders(this.state.tasks, this.state.currentView, this.state.startDate, this.state.endDate)
+          this.getUniqueValues(this.state.tasks, 'category', 'categories')
+        })
         }
       )
     }
@@ -200,10 +200,11 @@ class Main extends Component {
   exportCSV = () => {
     this.handleClose();
 
+    let curTasks = this.state.tasks;
     let newData = []
-    for (let i = 0; i < tasks.length; i++) {
-      for (let j = 0; j < tasks[i].completedDates.length; j++) {
-        let curRow = [tasks[i].description, tasks[i].completedDates[j].completedDate]
+    for (let i = 0; i < curTasks.length; i++) {
+      for (let j = 0; j < curTasks[i].completedDates.length; j++) {
+        let curRow = [curTasks[i].description, curTasks[i].completedDates[j].completedDate]
         newData.push(curRow)
       }
     }
@@ -216,10 +217,11 @@ class Main extends Component {
   exportCSVnew = () => {
     this.handleClose();
 
+    let curTasks = this.state.tasks;
     let newData = []
-    for (let i = 0; i < tasks.length; i++) {
-      for (let j = 0; j < tasks[i].dates.length; j++) {
-        let curRow = [tasks[i].description, tasks[i].dates[j].date]
+    for (let i = 0; i < curTasks.length; i++) {
+      for (let j = 0; j < curTasks[i].dates.length; j++) {
+        let curRow = [curTasks[i].description, curTasks[i].dates[j].date]
         newData.push(curRow)
       }
     }
