@@ -120,8 +120,9 @@ class Main extends Component {
           relatedLists: (res.data.relatedLists === undefined || res.data.relatedLists === null) ? [] : res.data.relatedLists,
         }))
         .then(() => {
-          this.getHeaders(this.state.tasks, this.state.currentView, this.state.startDate, this.state.endDate)
-          this.getUniqueValues(this.state.tasks, 'category', 'categories')
+          console.log(res.data.list)
+          // this.getHeaders(this.state.tasks, this.state.currentView, this.state.startDate, this.state.endDate)
+          // this.getUniqueValues(this.state.tasks, 'category', 'categories')
         })
         }
       )
