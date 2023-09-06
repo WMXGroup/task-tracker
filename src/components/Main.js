@@ -75,7 +75,7 @@ class Main extends Component {
     currentView: 'Scheduled',
     categoryFilter: ['All'],
     display: 'Tasks',
-    debugMode: window.location.hostname === "localhost",
+    debugMode: false, //window.location.hostname === "localhost"
     relatedLists: [],
     startDate:moment().format('YYYY-MM-DD'),
     endDate: moment().add(7,'days').format('YYYY-MM-DD'),
