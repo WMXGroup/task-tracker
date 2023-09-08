@@ -2,8 +2,8 @@ export const tasks = [
   {
     id: 1,
     type: 'Recurring',
-    description: 'Fix the door',
-    category:'House',
+    description: 'Exercise',
+    category:'Health',
     dates: [
       {
         date: '2023-08-27',
@@ -14,11 +14,11 @@ export const tasks = [
         state: 'open',
       },
       {
-        date: '2023-09-03',
+        date: '2023-09-09',
         state: 'open',
       },
       {
-        date: '2023-09-04',
+        date: '2023-09-10',
         state: 'open',
       },
     ], 
@@ -35,7 +35,7 @@ export const tasks = [
     category:'Tasks',
     dates: [
       {
-        date: '2023-09-02',
+        date: '2023-09-08',
         state: 'open',
       },
     ], 
@@ -52,7 +52,7 @@ export const tasks = [
     category:'Movies',
     dates: [
       {
-        date: '2023-09-01',
+        date: '2023-09-07',
         state: 'open',
       },
     ], 

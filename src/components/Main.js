@@ -272,9 +272,9 @@ class Main extends Component {
     const newTasks = this.state.tasks.map((task) => {
       if (task.id === id) {
         const newDates = task.dates.map((idate) => {
-          if (idate.date === date && idate.state === 'closed') {
+          if (idate.date === date && idate.state !== 'open') {
             idate.state = 'open'
-          } else if (idate.date === date && idate.state === 'open') {
+          } else if (idate.date === date && idate.state !== 'closed') {
             idate.state = 'closed'
           }
           return idate;
@@ -435,6 +435,79 @@ class Main extends Component {
     }
   }
 
+  snoozeDay = (id, date) => {
+    const newTasks = this.state.tasks.map((task) => {
+      if (task.id === id) {
+        const newDates = task.dates.map((idate) => {
+          if (idate.date === date) {
+            idate.date = moment(date).add(1, 'days').format('YYYY-MM-DD')
+          }
+          return idate;
+        })
+        task.dates = newDates
+      }
+      return task;
+    });
+    this.setState({
+      tasks: newTasks,
+    }, () => this.saveData());
+  }
+
+  makeCurrent = (id, date) => {
+    const newTasks = this.state.tasks.map((task) => {
+      if (task.id === id) {
+        const newDates = task.dates.map((idate) => {
+          if (idate.date === date) {
+            idate.date = moment().format('YYYY-MM-DD')
+          }
+          return idate;
+        })
+        task.dates = newDates
+      }
+      return task;
+    });
+    this.setState({
+      tasks: newTasks,
+    }, () => this.saveData());
+  }
+
+  ignoreTask = (id, date) => {
+    const newTasks = this.state.tasks.map((task) => {
+      if (task.id === id) {
+        const newDates = task.dates.map((idate) => {
+          if (idate.date === date) {
+            idate.state = 'ignored'
+          }
+          return idate;
+        })
+        task.dates = newDates
+      }
+      return task;
+    });
+    this.setState({
+      tasks: newTasks,
+    }, () => this.saveData());
+  }
+
+  deleteOccurence = (id, date) => {
+    const newTasks = this.state.tasks.map((task) => {
+      if (task.id === id) {
+        const newDates = task.dates.filter((value) => value.date !== date)
+        task.dates = newDates
+        if (task.dates.length === 0){
+          task.dates.push({
+            date: '2000-01-01',
+            state: 'open',
+          })
+        }
+      }
+      return task;
+    });
+    this.setState({
+      tasks: newTasks,
+    }, () => this.saveData());
+  }
+
   render() {
 
     if(this.state.debugMode === true){
@@ -553,6 +626,10 @@ class Main extends Component {
                     launchDetails={this.launchDetails}
                     currentView={this.state.currentView}
                     categoryFilter={this.state.categoryFilter}
+                    snoozeDay={this.snoozeDay}
+                    makeCurrent={this.makeCurrent}
+                    ignoreTask={this.ignoreTask}
+                    deleteOccurence={this.deleteOccurence}
                     />
                 ))}
               </div>

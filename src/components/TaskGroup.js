@@ -12,6 +12,10 @@ export default class TaskGroup extends Component {
       completeTask,
       launchDetails,
       categoryFilter,
+      snoozeDay,
+      makeCurrent,
+      ignoreTask,
+      deleteOccurence,
     } = this.props;
 
     let groupTasks = [];
@@ -44,6 +48,10 @@ export default class TaskGroup extends Component {
           key={i}
           completeTask={completeTask}
           launchDetails={launchDetails}
+          snoozeDay={snoozeDay}
+          makeCurrent={makeCurrent}
+          ignoreTask={ignoreTask}
+          deleteOccurence={deleteOccurence}
           />
         ))}
       </React.Fragment>

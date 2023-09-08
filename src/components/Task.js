@@ -38,13 +38,20 @@ class Task extends Component {
       task,
       completeTask,
       launchDetails,
+      snoozeDay,
+      makeCurrent,
+      ignoreTask,
+      deleteOccurence,
     } = this.props;
 
     let isChecked = false
+    let isIgnored = false
     const { dates } = task
     for (let i = 0; i < dates.length; i++) {
       if (dates[i].date === header && dates[i].state === 'closed') {
         isChecked = true
+      } else if (dates[i].date === header && dates[i].state === 'ignored') {
+        isIgnored = true
       }
     }
 
@@ -57,11 +64,16 @@ class Task extends Component {
           color="primary"
           size='small'
           />
-        <ActionMenu/>
+        <ActionMenu
+          snoozeDay={() => snoozeDay(task.id, header)}
+          makeCurrent={() => makeCurrent(task.id, header)}
+          ignoreTask={() => ignoreTask(task.id, header)}
+          deleteOccurence={() => deleteOccurence(task.id, header)}
+        />
         <TextField
           className={classes.taskStyle}
           style={{
-            borderColor: this.props.task.dueDate === 'Invalid date' ? 'red' : '#ccc',
+            borderColor: isIgnored === true ? '#ccc' : 'black',
             textDecoration: isChecked ? 'line-through' : '',
           }}
           disabled
@@ -74,6 +86,7 @@ class Task extends Component {
               disabled: classes.blackColor
             },
           }}
+          inputProps={{ style: { color: isIgnored === true ? '#ccc' : 'black' } }}
           value={task.description}
           multiline
           //onClick={() => alert(task.description)}
