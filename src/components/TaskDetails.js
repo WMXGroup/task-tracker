@@ -148,7 +148,7 @@ export default class DetailModal extends Component {
     let finalDates = []
     if (this.state.recurDays !== 0 && this.state.recurStart !== '' && taskDetails.recurEnd !== '') {
       // remove future data
-      const oldDates = taskDetails.dates.filter((item) => moment(item.date).format('YYYY-MM-DD') < moment().format('YYYY-MM-DD'));
+      const oldDates = this.state.dates.filter((item) => moment(item.date).format('YYYY-MM-DD') < moment().format('YYYY-MM-DD'));
       // create new dates
       do {
         newDates.push({
