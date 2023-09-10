@@ -30,7 +30,7 @@ export default class TaskGroup extends Component {
         }
       }
     
-    //groupTasks.sort((a,b) => (a.priority > b.priority) ? 1 : -1);
+    groupTasks.sort((a,b) => (a.priority > b.priority) ? 1 : -1);
 
     // groupTasks.sort((a,b) => (new Date('1970/01/01 ' + a.startTime) - new Date('1970/01/01 ' + b.startTime)));
 
