@@ -2,6 +2,7 @@ export const tasks = [
   {
     id: 1,
     type: 'Recurring',
+    frequency: 'Recurring',
     description: 'Exercise',
     category:'Health',
     dates: [
@@ -14,11 +15,11 @@ export const tasks = [
         state: 'open',
       },
       {
-        date: '2023-09-09',
+        date: '2023-09-11',
         state: 'open',
       },
       {
-        date: '2023-09-10',
+        date: '2023-09-12',
         state: 'open',
       },
     ], 
@@ -31,6 +32,7 @@ export const tasks = [
   {
     id: 2,
     type: 'One-time',
+    frequency: 'One-time',
     description: 'Pay a medical bill',
     category:'Tasks',
     dates: [
@@ -48,11 +50,12 @@ export const tasks = [
   {
     id: 3,
     type: 'One-time',
+    requency: 'One-time',
     description: 'Watch Antman movie',
     category:'Movies',
     dates: [
       {
-        date: '2023-09-07',
+        date: '2023-09-12',
         state: 'open',
       },
     ], 

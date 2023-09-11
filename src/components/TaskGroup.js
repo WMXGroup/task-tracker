@@ -39,7 +39,12 @@ export default class TaskGroup extends Component {
     return (
       <React.Fragment>
         {groupTasks.length !== 0 &&
-        <h2>{header}</h2>
+        <h2
+          style={{
+          color: header < moment().format('YYYY-MM-DD') ? 'red' : 'black',
+          }}>
+          {header}
+        </h2>
         }
         {groupTasks.map ((task, i) => (
           <Task

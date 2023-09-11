@@ -95,7 +95,8 @@ export default class DetailModal extends Component {
     priority: this.props.mode === 'Edit'? this.props.taskDetails.priority : '',
     dates: this.props.mode === 'Edit'? this.props.taskDetails.dates : [],
     notes: this.props.mode === 'Edit'? this.props.taskDetails.notes : '',
-    type: this.props.mode === 'Edit'? this.props.taskDetails.type : 'One-time',
+    type: this.props.mode === 'Edit'? this.props.taskDetails.type : '',
+    frequency: this.props.mode === 'Edit'? this.props.taskDetails.frequency : 'One-time',
     recurDays: this.props.mode === 'Edit'? this.props.taskDetails.recurDays : 0,
     recurStart: this.props.mode === 'Edit'? this.props.taskDetails.recurStart : '',
     recurEnd:this.props.mode === 'Edit'? this.props.taskDetails.recurEnd : '',
@@ -177,6 +178,7 @@ export default class DetailModal extends Component {
       dates: finalDates,
       notes: this.state.notes,
       type: this.state.type,
+      frequency: this.state.frequency,
       recurDays: this.state.recurDays,
       recurStart: this.state.recurStart,
       recurEnd: this.state.recurEnd,
@@ -220,6 +222,7 @@ export default class DetailModal extends Component {
       dates: finalDates,
       notes: this.state.notes,
       type: this.state.type,
+      frequency: this.state.frequency,
       recurDays: this.state.recurDays,
       recurStart: this.state.recurStart,
       recurEnd: this.state.recurEnd,
@@ -346,7 +349,7 @@ export default class DetailModal extends Component {
             Type
           </Typography>
           <Autocomplete
-            options={['One-time','Recurring','Habit','Activity','Time-block', 'Event']}
+            options={['Activity','Chore','Errand','Event','Habit','Media','Task']}
             defaultValue={this.state.type}
             getOptionLabel={(option) => typeof option === 'string' ? option : option.type}
             style={styles.fieldStyle}
@@ -356,7 +359,22 @@ export default class DetailModal extends Component {
             onInputChange={(e, newValue) => this.onAutoChange(e, newValue, 'type')}
             />
         </ div>
-        {this.state.type === 'Recurring' &&
+        <div style={styles.fieldContainer}>
+          <Typography style={styles.fieldLabel}>
+            Frequency
+          </Typography>
+          <Autocomplete
+            options={['One-time','Recurring']}
+            defaultValue={this.state.frequency}
+            getOptionLabel={(option) => typeof option === 'string' ? option : option.frequency}
+            style={styles.fieldStyle}
+            size='small'
+            renderInput={(params) => <TextField {...params} variant="outlined" />}
+            inputValue={this.state.frequency}
+            onInputChange={(e, newValue) => this.onAutoChange(e, newValue, 'frequency')}
+            />
+        </ div>
+        {this.state.frequency === 'Recurring' &&
           <div>
             <div style={styles.fieldContainer}>
               <Typography style={styles.fieldLabel}>

@@ -82,6 +82,11 @@ class Main extends Component {
   }
 
   componentDidMount = () => {
+    // If needing to update data use this:
+      // tasks: this.updateData(tasks)
+    // otherwise:
+      // tasks: tasks
+
     if(this.state.debugMode === true){
       this.setState({
         tasks: tasks,
@@ -100,11 +105,35 @@ class Main extends Component {
     }
   }
 
+  updateData = (data) => {
+    const newTasks = data.map((task) => {
+      // if (task.type === 'Habit' && task.status !== 'Completed') {
+      //   if (task.dueDate < moment().format('YYYY-MM-DD')) {
+      //     task.dueDate = moment().format('YYYY-MM-DD')
+      //   }
+      // }
+      //
+      if (task.type === 'Recurring') {
+        task.frequency = 'Recurring'
+      }
+      if (task.type === 'One-time') {
+        task.frequency = 'One-time'
+      }
+
+      return task;
+    })
+    return newTasks;
+  }
+
 
   getServerData = () => {
     let search = window.location.search;
     let params = new URLSearchParams(search);
     let listId = params.get('query');
+    // If needing to update data structure use this:
+      // tasks: this.updateData(res.data.list),
+    // otherwise:
+      // tasks: this.res.data.list
 
     if(listId !== undefined && listId !== null){
       this.setState({
@@ -114,7 +143,7 @@ class Main extends Component {
         .get(`https://guarded-mesa-76047.herokuapp.com/api/lists/${listId}`)
         .then(res => this.setState({
           trackerName: res.data.listName,
-          tasks: res.data.list,
+          tasks: this.updateData(res.data.list),
           lastSaved: res.data.lastSaved,
           isLoading: false,
           relatedLists: (res.data.relatedLists === undefined || res.data.relatedLists === null) ? [] : res.data.relatedLists,
@@ -318,6 +347,9 @@ class Main extends Component {
             resArr.push(tasks[i].dates[j].date)
           }
           if (tasks[i].dates[j].date >= moment(startDate).format('YYYY-MM-DD') && tasks[i].dates[j].date <= moment(endDate).format('YYYY-MM-DD')) {
+            resArr.push(tasks[i].dates[j].date)
+          }
+          if (tasks[i].dates[j].date <= moment(endDate).format('YYYY-MM-DD') && tasks[i].dates[j].state === 'open') {
             resArr.push(tasks[i].dates[j].date)
           }
         }
