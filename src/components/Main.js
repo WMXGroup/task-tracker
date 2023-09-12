@@ -528,7 +528,7 @@ class Main extends Component {
         task.dates = newDates
         if (task.dates.length === 0){
           task.dates.push({
-            date: '2000-01-01',
+            date: '2099-01-01',
             state: 'open',
           })
         }

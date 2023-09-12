@@ -163,7 +163,7 @@ export default class DetailModal extends Component {
 
     } else if (this.state.dates.length === 0){
       finalDates.push({
-        date: '2000-01-01',
+        date: '2099-01-01',
         state: 'open',
       })
     } else {
@@ -207,7 +207,7 @@ export default class DetailModal extends Component {
 
     } else if (this.state.dates.length === 0){
       finalDates.push({
-        date: '2000-01-01',
+        date: '2099-01-01',
         state: 'open',
       })
     } else {
