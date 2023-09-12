@@ -338,7 +338,7 @@ class Main extends Component {
     let uniqArr = []
 
     // get day headers
-    if (currentView = 'Scheduled') {
+    if (currentView === 'Scheduled') {
       for (let i = 0; i < tasks.length; i++) {
         for (let j = 0; j < tasks[i].dates.length; j++) {
           if (startDate === 'Invalid date' && tasks[i].dates[j].date <= moment(endDate).format('YYYY-MM-DD')){
@@ -355,7 +355,7 @@ class Main extends Component {
           }
         }
       }
-    } else if (currentView = 'Unscheduled') {
+    } else if (currentView === 'Unscheduled') {
         for (let i = 0; i < tasks.length; i++) {
           resArr.push(tasks[i].category)
         };
