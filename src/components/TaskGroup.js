@@ -30,9 +30,7 @@ export default class TaskGroup extends Component {
       }
     } else if (currentView === 'Unscheduled') {
       for (let i = 0; i < tasks.length; i++) {
-        if (tasks[i].dates.length === 0) {
-          groupTasks.push(tasks[i])
-        }
+        groupTasks = tasks.filter((task) => (task['category'] === header && task.dates.length === 0))
       }
     }
     
