@@ -1,10 +1,10 @@
 {
   "files": {
-    "main.js": "/task-tracker/static/js/main.2dcce3cb.js",
+    "main.js": "/task-tracker/static/js/main.07aa3401.js",
     "index.html": "/task-tracker/index.html",
-    "main.2dcce3cb.js.map": "/task-tracker/static/js/main.2dcce3cb.js.map"
+    "main.07aa3401.js.map": "/task-tracker/static/js/main.07aa3401.js.map"
   },
   "entrypoints": [
-    "static/js/main.2dcce3cb.js"
+    "static/js/main.07aa3401.js"
   ]
 }
