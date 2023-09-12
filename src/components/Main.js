@@ -355,7 +355,7 @@ class Main extends Component {
           }
         }
       }
-    } else if (currenView = 'Unscheduled') {
+    } else if (currentView = 'Unscheduled') {
         for (let i = 0; i < tasks.length; i++) {
           resArr.push(tasks[i].category)
         };
