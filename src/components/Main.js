@@ -526,12 +526,6 @@ class Main extends Component {
       if (task.id === id) {
         const newDates = task.dates.filter((value) => value.date !== date)
         task.dates = newDates
-        if (task.dates.length === 0){
-          task.dates.push({
-            date: '2099-01-01',
-            state: 'open',
-          })
-        }
       }
       return task;
     });

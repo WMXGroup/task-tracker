@@ -20,8 +20,7 @@ export default class TaskGroup extends Component {
 
     let groupTasks = [];
 
-    // groupTasks = tasks.filter((task) => (task['category'] === header))
-
+    if (currentView === 'Scheduled') {
       for (let i = 0; i < tasks.length; i++) {
         for (let j = 0; j < tasks[i].dates.length; j++) {
           if (tasks[i].dates[j].date === header) {
@@ -29,6 +28,13 @@ export default class TaskGroup extends Component {
           }
         }
       }
+    } else if (currentView === 'Unscheduled') {
+      for (let i = 0; i < tasks.length; i++) {
+        if (tasks[i].dates.length === 0) {
+          groupTasks.push(tasks[i])
+        }
+      }
+    }
     
     groupTasks.sort((a,b) => (a.priority > b.priority) ? 1 : -1);
 

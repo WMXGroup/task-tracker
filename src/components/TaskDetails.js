@@ -161,11 +161,6 @@ export default class DetailModal extends Component {
       // merge
       finalDates = [...oldDates,...newDates]
 
-    } else if (this.state.dates.length === 0){
-      finalDates.push({
-        date: '2099-01-01',
-        state: 'open',
-      })
     } else {
       finalDates = this.state.dates
     }
@@ -205,11 +200,6 @@ export default class DetailModal extends Component {
       // merge
       finalDates = [...oldDates,...newDates]
 
-    } else if (this.state.dates.length === 0){
-      finalDates.push({
-        date: '2099-01-01',
-        state: 'open',
-      })
     } else {
       finalDates = this.state.dates
     }
