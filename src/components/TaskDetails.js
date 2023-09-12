@@ -364,7 +364,7 @@ export default class DetailModal extends Component {
             Frequency
           </Typography>
           <Autocomplete
-            options={['One-time','Recurring']}
+            options={['One-time','Ongoing','Recurring']}
             defaultValue={this.state.frequency}
             getOptionLabel={(option) => typeof option === 'string' ? option : option.frequency}
             style={styles.fieldStyle}
