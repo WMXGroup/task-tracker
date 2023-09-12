@@ -413,12 +413,11 @@ class Main extends Component {
     this.getSortHeaders(this.state.tasks, sortOption)
   };
 
-  // handleViewChange = (currentView) => {
-  //   const defaultTimeframe = currentView === "Completed" ? "-7" : currentView === "All" ? "<7>" : "+7";
-  //   this.setState({
-  //     currentView,
-  //   }, () => this.getHeaders(this.state.tasks, currentView, this.state.startDate, this.state.endDate))
-  // };
+  handleViewChange = (currentView) => {
+    this.setState({
+      currentView,
+    }, () => this.getHeaders(this.state.tasks, currentView, this.state.startDate, this.state.endDate))
+  };
 
   handleTimeframeChange = () => {
     this.getHeaders(this.state.tasks, this.state.currentView, this.state.startDate, this.state.endDate)
