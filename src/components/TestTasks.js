@@ -1,7 +1,7 @@
 export const tasks = [
   {
     id: 1,
-    type: 'Recurring',
+    type: 'Habit',
     frequency: 'Recurring',
     description: 'Exercise',
     category:'Health',
@@ -31,7 +31,7 @@ export const tasks = [
   },
   {
     id: 2,
-    type: 'One-time',
+    type: 'Task',
     frequency: 'One-time',
     description: 'Pay a medical bill',
     category:'Tasks',
@@ -49,7 +49,7 @@ export const tasks = [
   },
   {
     id: 3,
-    type: 'One-time',
+    type: 'Media',
     requency: 'One-time',
     description: 'Watch Antman movie',
     category:'Movies',

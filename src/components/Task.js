@@ -2,7 +2,16 @@ import React, { Component } from 'react';
 import Checkbox from '@material-ui/core/Checkbox';
 import TextField from '@material-ui/core/TextField';
 import IconButton from '@material-ui/core/IconButton';
+
+import ExtensionIcon from '@material-ui/icons/Extension';
+import ShoppingCartIcon from '@material-ui/icons/ShoppingCart';
+import DirectionsCarIcon from '@material-ui/icons/DirectionsCar';
+import TodayIcon from '@material-ui/icons/Today';
+import TimerIcon from '@material-ui/icons/Timer';
+import TheatersIcon from '@material-ui/icons/Theaters';
+import BuildIcon from '@material-ui/icons/Build';
 import EditIcon from '@material-ui/icons/Edit';
+import { indigo } from '@material-ui/core/colors';
 import { withStyles } from '@material-ui/core/styles';
 import ActionMenu from './ActionMenu';
 
@@ -70,10 +79,45 @@ class Task extends Component {
           ignoreTask={() => ignoreTask(task.id, header)}
           deleteOccurence={() => deleteOccurence(task.id, header)}
         />
+        {task.type === 'Activity' &&
+        <IconButton size='small'>
+          <ExtensionIcon style={{color:indigo[500]}}/>
+        </IconButton>
+        }
+        {task.type === 'Chore' &&
+        <IconButton size='small'>
+          <ShoppingCartIcon style={{color:indigo[500]}}/>
+        </IconButton>
+        }
+        {task.type === 'Errand' &&
+        <IconButton size='small'>
+          <DirectionsCarIcon style={{color:indigo[500]}}/>
+        </IconButton>
+        }
+        {task.type === 'Event' &&
+        <IconButton size='small'>
+          <TodayIcon style={{color:indigo[500]}}/>
+        </IconButton>
+        }
+        {task.type === 'Habit' &&
+        <IconButton size='small'>
+          <TimerIcon style={{color:indigo[500]}}/>
+        </IconButton>
+        }
+        {task.type === 'Media' &&
+        <IconButton size='small'>
+          <TheatersIcon style={{color:indigo[500]}}/>
+        </IconButton>
+        }
+        {task.type === 'Task' &&
+        <IconButton size='small'>
+          <BuildIcon style={{color:indigo[500]}}/>
+        </IconButton>
+        }
         <TextField
           className={classes.taskStyle}
           style={{
-            borderColor: isIgnored === true ? '#ccc' : 'black',
+            borderColor: isIgnored === true ? '#aaa' : 'black',
             textDecoration: isChecked ? 'line-through' : '',
           }}
           disabled
@@ -86,7 +130,7 @@ class Task extends Component {
               disabled: classes.blackColor
             },
           }}
-          inputProps={{ style: { color: isIgnored === true ? '#ccc' : 'black' } }}
+          inputProps={{ style: { color: isIgnored === true ? '#aaa' : 'black' } }}
           value={task.description}
           multiline
           //onClick={() => alert(task.description)}
@@ -95,9 +139,7 @@ class Task extends Component {
         onClick={() => launchDetails('Edit', task.id)} 
         size='small'
         >
-          <EditIcon
-            className={classes.moveButtons}
-          />
+          <EditIcon/>
         </IconButton>
       </div>
     )
