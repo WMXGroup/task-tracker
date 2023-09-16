@@ -143,7 +143,7 @@ class Main extends Component {
         .get(`https://guarded-mesa-76047.herokuapp.com/api/lists/${listId}`)
         .then(res => this.setState({
           trackerName: res.data.listName,
-          tasks: this.updateData(res.data.list),
+          tasks: res.data.list,
           lastSaved: res.data.lastSaved,
           isLoading: false,
           relatedLists: (res.data.relatedLists === undefined || res.data.relatedLists === null) ? [] : res.data.relatedLists,
