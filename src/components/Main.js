@@ -527,6 +527,24 @@ class Main extends Component {
     }, () => this.saveData());
   }
 
+  ignoreOld = () => {
+    const newTasks = this.state.tasks.map((task) => {
+      if (task.frequency === 'Recurring') {
+      const newDates = task.dates.map((idate) => {
+        if (idate.date < moment().format('YYYY-MM-DD') && idate.state === 'open') {
+          idate.state = 'ignored'
+        }
+        return idate;
+      })
+      task.dates = newDates
+      }
+      return task;
+    });
+    this.setState({
+      tasks: newTasks,
+    }, () => this.saveData());
+  }
+
   deleteOccurence = (id, date) => {
     const newTasks = this.state.tasks.map((task) => {
       if (task.id === id) {
@@ -595,6 +613,7 @@ class Main extends Component {
                   <MenuItem onClick={() => this.exportCSV()}>Export CSV New</MenuItem>
                   <MenuItem onClick={() => this.createNew()}>Create New</MenuItem>
                   <MenuItem onClick={() => this.launchAddList()}>Add Related List</MenuItem>
+                  <MenuItem onClick={() => this.ignoreOld()}>Ignore Old Recurring</MenuItem>
                 </Menu>
               <Typography variant="h6">
                   Task Tracker
