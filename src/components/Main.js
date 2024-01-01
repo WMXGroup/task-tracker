@@ -359,7 +359,11 @@ class Main extends Component {
         for (let i = 0; i < tasks.length; i++) {
           resArr.push(tasks[i].category)
         };
-    }
+    } else if (currentView === 'All Tasks') {
+      for (let i = 0; i < tasks.length; i++) {
+        resArr.push(tasks[i].category)
+      };
+  }
     
 
     //remove dupes
