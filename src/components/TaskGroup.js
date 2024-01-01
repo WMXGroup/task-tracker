@@ -28,13 +28,18 @@ export default class TaskGroup extends Component {
           }
         }
       }
+      groupTasks.sort((a,b) => (a.priority > b.priority) ? 1 : -1);
     } else if (currentView === 'Unscheduled') {
       for (let i = 0; i < tasks.length; i++) {
         groupTasks = tasks.filter((task) => (task['category'] === header && (task.dates.length === 0 || task.frequency === 'Ongoing')))
       }
+      groupTasks.sort((a,b) => (a.description > b.description) ? 1 : -1);
+    } else if (currentView === 'All Tasks') {
+      for (let i = 0; i < tasks.length; i++) {
+        groupTasks = tasks.filter((task) => (task['category'] === header))
+      }
+      groupTasks.sort((a,b) => (a.description > b.description) ? 1 : -1);
     }
-    
-    groupTasks.sort((a,b) => (a.priority > b.priority) ? 1 : -1);
 
     // groupTasks.sort((a,b) => (new Date('1970/01/01 ' + a.startTime) - new Date('1970/01/01 ' + b.startTime)));
 

@@ -8,6 +8,7 @@ export default class ViewSelector extends Component {
 
   state = {
     currentViews: [
+      'All Tasks',
       'Scheduled',
       'Unscheduled',
     ],
