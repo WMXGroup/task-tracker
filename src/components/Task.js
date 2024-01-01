@@ -117,7 +117,7 @@ class Task extends Component {
         <TextField
           className={classes.taskStyle}
           style={{
-            borderColor: isIgnored === true ? '#aaa' : 'black',
+            borderColor: isIgnored === true ? 'gray' : 'black',
             textDecoration: isChecked ? 'line-through' : '',
           }}
           disabled
@@ -130,7 +130,7 @@ class Task extends Component {
               disabled: classes.blackColor
             },
           }}
-          inputProps={{ style: { color: isIgnored === true ? '#aaa' : 'black' } }}
+          inputProps={{ style: { color: isIgnored === true ? 'gray' : 'black' } }}
           value={task.description}
           multiline
           //onClick={() => alert(task.description)}
