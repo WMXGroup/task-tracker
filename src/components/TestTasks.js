@@ -50,13 +50,30 @@ export const tasks = [
   {
     id: 3,
     type: 'Media',
-    requency: 'One-time',
+    frequency: 'One-time',
     description: 'Watch Antman movie',
     category:'Movies',
     dates: [
       {
         date: '2023-09-12',
         state: 'open',
+      },
+    ], 
+    priority: '1',
+    recurDays: 0,
+    recurStart: '',
+    recurEnd: '',
+  },
+  {
+    id: 4,
+    type: 'Media',
+    frequency: 'Ongoing',
+    description: 'Watch show, season 1',
+    category:'Shows',
+    dates: [
+      {
+        date: '2023-09-12',
+        state: 'closed',
       },
     ], 
     priority: '1',

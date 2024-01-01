@@ -30,7 +30,7 @@ export default class TaskGroup extends Component {
       }
     } else if (currentView === 'Unscheduled') {
       for (let i = 0; i < tasks.length; i++) {
-        groupTasks = tasks.filter((task) => (task['category'] === header && task.dates.length === 0))
+        groupTasks = tasks.filter((task) => (task['category'] === header && (task.dates.length === 0 || task.frequency === 'Ongoing')))
       }
     }
     
