@@ -9,9 +9,7 @@ export default class ViewSelector extends Component {
   state = {
     currentViews: [
       'Scheduled',
-      'Completed',
       'Unscheduled',
-      'All',
     ],
     anchorEl: null,
     setAnchorEl: false,
