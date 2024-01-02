@@ -52,7 +52,7 @@ export default class TaskGroup extends Component {
           style={{
           color: header < moment().format('YYYY-MM-DD') ? 'red' : 'black',
           }}>
-          {header}
+          {header}{' '}{currentView === 'Scheduled' && moment(header).format('dddd')}
         </h2>
         }
         {groupTasks.map ((task, i) => (
