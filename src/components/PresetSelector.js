@@ -57,7 +57,7 @@ export default class PresetSelector extends Component {
     } else if (currentPreset ===  'Next Year') {
 
     } else if (currentPreset ===  'All Past') {
-        newStart = null
+        newStart = ''
         newEnd = moment().format('YYYY-MM-DD')
     } else if (currentPreset ===  'All Future') {
 
