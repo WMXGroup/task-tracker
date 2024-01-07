@@ -81,4 +81,22 @@ export const tasks = [
     recurStart: '',
     recurEnd: '',
   },
+  {
+    id: 5,
+    type: 'Task',
+    frequency: 'One-time',
+    description: 'Watch the Matrix',
+    category:'Media',
+    dates: [
+      {
+        date: '2001-09-08',
+        state: 'closed',
+      },
+    ], 
+    priority: '1',
+    notes: '',
+    recurDays: 0,
+    recurStart: '',
+    recurEnd: '',
+  },
 ]
