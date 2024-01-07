@@ -18,6 +18,7 @@ import {tasks} from './TestTasks';
 import RelatedLists from './RelatedLists';
 import ViewSelector from './ViewSelector';
 import TimeframeSelector from './TimeframeSelector';
+import PresetSelector from './PresetSelector';
 import CategoryFilter from './CategoryFilter';
 import AddRelatedList from './AddRelatedList';
 import moment from 'moment';
@@ -79,11 +80,12 @@ class Main extends Component {
     relatedLists: [],
     startDate:moment().format('YYYY-MM-DD'),
     endDate: moment().add(7,'days').format('YYYY-MM-DD'),
+    currentPreset: 'Next 7 Days'
   }
 
   componentDidMount = () => {
     // If needing to update data use this:
-      // tasks: this.updateData(tasks)
+      // tasks: this.updateDataStructure(tasks)
     // otherwise:
       // tasks: tasks
 
@@ -105,7 +107,7 @@ class Main extends Component {
     }
   }
 
-  updateData = (data) => {
+  updateDataStructure = (data) => {
     const newTasks = data.map((task) => {
       // if (task.type === 'Habit' && task.status !== 'Completed') {
       //   if (task.dueDate < moment().format('YYYY-MM-DD')) {
@@ -131,7 +133,7 @@ class Main extends Component {
     let params = new URLSearchParams(search);
     let listId = params.get('query');
     // If needing to update data structure use this:
-      // tasks: this.updateData(res.data.list),
+      // tasks: this.updateDataStructure(res.data.list),
     // otherwise:
       // tasks: this.res.data.list
 
@@ -430,6 +432,14 @@ class Main extends Component {
     }, () => this.getHeaders(this.state.tasks, currentView, this.state.startDate, this.state.endDate))
   };
 
+  handlePresetChange = (currentPreset, startDate, endDate) => {
+    this.setState({
+      currentPreset,
+      startDate,
+      endDate
+    }, () => this.getHeaders(this.state.tasks, this.state.currentView, this.state.startDate, this.state.endDate))
+  };
+
   handleTimeframeChange = () => {
     this.getHeaders(this.state.tasks, this.state.currentView, this.state.startDate, this.state.endDate)
   };
@@ -622,7 +632,12 @@ class Main extends Component {
               <Typography variant="h6">
                   Task Tracker
               </Typography>
-              <div className={classes.grow} />       
+              <div className={classes.grow} />
+              <div className={classes.addButton}>
+                <PresetSelector
+                  handlePresetChange={this.handlePresetChange}
+                />
+              </div>       
               <div className={classes.addButton}>
                 <TimeframeSelector
                   handleTimeframeChange={this.handleTimeframeChange}
