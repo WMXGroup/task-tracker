@@ -12,6 +12,7 @@ import TheatersIcon from '@material-ui/icons/Theaters';
 import BuildIcon from '@material-ui/icons/Build';
 import EditIcon from '@material-ui/icons/Edit';
 import { indigo } from '@material-ui/core/colors';
+import { red } from '@material-ui/core/colors';
 import { withStyles } from '@material-ui/core/styles';
 import ActionMenu from './ActionMenu';
 
@@ -31,7 +32,7 @@ const styles = (theme) => ({
   },
   blackColor: {
     color: 'black'
-  }
+  },
 });
 
 class Task extends Component {
@@ -84,7 +85,12 @@ class Task extends Component {
           <ExtensionIcon style={{color:indigo[500]}}/>
         </IconButton>
         }
-        {task.type === 'Chore' &&
+        {(task.type === 'Chore' && task.frequency === 'Daily') &&
+        <IconButton size='small'>
+          <ShoppingCartIcon style={{color:red[500]}}/>
+        </IconButton>
+        }
+        {(task.type === 'Chore' && task.frequency !== 'Daily') &&
         <IconButton size='small'>
           <ShoppingCartIcon style={{color:indigo[500]}}/>
         </IconButton>
