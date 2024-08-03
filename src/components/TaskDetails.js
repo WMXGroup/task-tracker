@@ -354,7 +354,7 @@ export default class DetailModal extends Component {
             Frequency
           </Typography>
           <Autocomplete
-            options={['One-time','Daily','Ongoing','Recurring']}
+            options={['One-time','Daily','Weekly','Ongoing','Recurring']}
             defaultValue={this.state.frequency}
             getOptionLabel={(option) => typeof option === 'string' ? option : option.frequency}
             style={styles.fieldStyle}
@@ -364,7 +364,7 @@ export default class DetailModal extends Component {
             onInputChange={(e, newValue) => this.onAutoChange(e, newValue, 'frequency')}
             />
         </ div>
-        {(this.state.frequency === 'Recurring' || this.state.frequency === 'Daily') &&
+        {(this.state.frequency === 'Recurring' || this.state.frequency === 'Daily' || this.state.frequency === 'Weekly') &&
           <div>
             <div style={styles.fieldContainer}>
               <Typography style={styles.fieldLabel}>

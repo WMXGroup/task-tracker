@@ -577,6 +577,24 @@ class Main extends Component {
     }, () => this.saveData());
   }
 
+  ignoreOldWeeklies  = () => {
+    const newTasks = this.state.tasks.map((task) => {
+      if (task.frequency === 'Weekly') {
+      const newDates = task.dates.map((idate) => {
+        if (idate.date < moment().format('YYYY-MM-DD') && idate.state === 'open') {
+          idate.state = 'ignored'
+        }
+        return idate;
+      })
+      task.dates = newDates
+      }
+      return task;
+    });
+    this.setState({
+      tasks: newTasks,
+    }, () => this.saveData());
+  }
+
   deleteOccurence = (id, date) => {
     const newTasks = this.state.tasks.map((task) => {
       if (task.id === id) {
@@ -647,6 +665,7 @@ class Main extends Component {
                   <MenuItem onClick={() => this.launchAddList()}>Add Related List</MenuItem>
                   <MenuItem onClick={() => this.ignoreOld()}>Ignore Old Recurring</MenuItem>
                   <MenuItem onClick={() => this.ignoreOldDailies()}>Ignore Old Dailies</MenuItem>
+                  <MenuItem onClick={() => this.ignoreOldDWeeklies()}>Ignore Old Weeklies</MenuItem>
                 </Menu>
               <Typography variant="h6">
                   Task Tracker

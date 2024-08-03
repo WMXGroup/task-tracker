@@ -2,17 +2,8 @@ import React, { Component } from 'react';
 import Checkbox from '@material-ui/core/Checkbox';
 import TextField from '@material-ui/core/TextField';
 import IconButton from '@material-ui/core/IconButton';
-
-import ExtensionIcon from '@material-ui/icons/Extension';
-import ShoppingCartIcon from '@material-ui/icons/ShoppingCart';
-import DirectionsCarIcon from '@material-ui/icons/DirectionsCar';
-import TodayIcon from '@material-ui/icons/Today';
-import TimerIcon from '@material-ui/icons/Timer';
-import TheatersIcon from '@material-ui/icons/Theaters';
-import BuildIcon from '@material-ui/icons/Build';
+import Typography from '@material-ui/core/Typography';
 import EditIcon from '@material-ui/icons/Edit';
-import { indigo } from '@material-ui/core/colors';
-import { red } from '@material-ui/core/colors';
 import { withStyles } from '@material-ui/core/styles';
 import ActionMenu from './ActionMenu';
 
@@ -32,6 +23,11 @@ const styles = (theme) => ({
   },
   blackColor: {
     color: 'black'
+  },
+  fieldLabel: {
+    marginTop: '5px',
+    marginRight: '5px',
+    alignContent: 'center',
   },
 });
 
@@ -79,47 +75,12 @@ class Task extends Component {
           makeCurrent={() => makeCurrent(task.id, header)}
           ignoreTask={() => ignoreTask(task.id, header)}
           deleteOccurence={() => deleteOccurence(task.id, header)}
+          type={task.type}
+          frequency={task.frequency}
         />
-        {task.type === 'Activity' &&
-        <IconButton size='small'>
-          <ExtensionIcon style={{color:indigo[500]}}/>
-        </IconButton>
-        }
-        {(task.type === 'Chore' && task.frequency === 'Daily') &&
-        <IconButton size='small'>
-          <ShoppingCartIcon style={{color:red[500]}}/>
-        </IconButton>
-        }
-        {(task.type === 'Chore' && task.frequency !== 'Daily') &&
-        <IconButton size='small'>
-          <ShoppingCartIcon style={{color:indigo[500]}}/>
-        </IconButton>
-        }
-        {task.type === 'Errand' &&
-        <IconButton size='small'>
-          <DirectionsCarIcon style={{color:indigo[500]}}/>
-        </IconButton>
-        }
-        {task.type === 'Event' &&
-        <IconButton size='small'>
-          <TodayIcon style={{color:indigo[500]}}/>
-        </IconButton>
-        }
-        {task.type === 'Habit' &&
-        <IconButton size='small'>
-          <TimerIcon style={{color:indigo[500]}}/>
-        </IconButton>
-        }
-        {task.type === 'Media' &&
-        <IconButton size='small'>
-          <TheatersIcon style={{color:indigo[500]}}/>
-        </IconButton>
-        }
-        {task.type === 'Task' &&
-        <IconButton size='small'>
-          <BuildIcon style={{color:indigo[500]}}/>
-        </IconButton>
-        }
+        <Typography className={classes.fieldLabel}>
+            {task.priority}
+        </Typography>
         <TextField
           className={classes.taskStyle}
           style={{
