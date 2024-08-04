@@ -35,6 +35,7 @@ class Task extends Component {
 
   state = {
     showDetails: false,
+    isIgnored: false,
   }
 
   render() {
@@ -60,7 +61,6 @@ class Task extends Component {
         isIgnored = true
       }
     }
-
     return (
       <div className={classes.taskContainer} key={task.id}>
         <Checkbox
@@ -85,6 +85,7 @@ class Task extends Component {
           className={classes.taskStyle}
           style={{
             borderColor: isIgnored === true ? 'gray' : 'black',
+            backgroundColor: isIgnored === true ? 'lightgray' : null,
             textDecoration: isChecked ? 'line-through' : '',
           }}
           disabled
