@@ -1,25 +1,25 @@
 export const tasks = [
   {
     id: 1,
-    type: 'Habit',
-    frequency: 'Recurring',
+    type: 'Chore',
+    frequency: 'Daily',
     description: 'Exercise',
     category:'Health',
     dates: [
       {
-        date: '2023-08-27',
+        date: '2024-07-01',
         state: 'closed',
       },
       {
-        date: '2023-08-28',
+        date: '2024-08-01',
         state: 'open',
       },
       {
-        date: '2023-09-11',
+        date: '2024-08-09',
         state: 'open',
       },
       {
-        date: '2023-09-12',
+        date: '2024-08-12',
         state: 'open',
       },
     ], 

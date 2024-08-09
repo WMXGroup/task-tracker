@@ -23,7 +23,7 @@ export default class TaskGroup extends Component {
     if (currentView === 'Scheduled') {
       for (let i = 0; i < tasks.length; i++) {
         for (let j = 0; j < tasks[i].dates.length; j++) {
-          if (tasks[i].dates[j].date === header) {
+          if (tasks[i].dates[j].date === header && (tasks[i].type === 'Chore' && tasks[i].dates[j].date > moment().format('YYYY-MM-DD') && tasks[i].frequency === 'Daily') === false) {
             groupTasks.push(tasks[i])
           }
         }
