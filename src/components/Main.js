@@ -665,7 +665,7 @@ class Main extends Component {
                   <MenuItem onClick={() => this.launchAddList()}>Add Related List</MenuItem>
                   <MenuItem onClick={() => this.ignoreOld()}>Ignore Old Recurring</MenuItem>
                   <MenuItem onClick={() => this.ignoreOldDailies()}>Ignore Old Dailies</MenuItem>
-                  <MenuItem onClick={() => this.ignoreOldDWeeklies()}>Ignore Old Weeklies</MenuItem>
+                  <MenuItem onClick={() => this.ignoreOldWeeklies()}>Ignore Old Weeklies</MenuItem>
                 </Menu>
               <Typography variant="h6">
                   Task Tracker
