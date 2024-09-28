@@ -16,6 +16,8 @@ export default class PresetSelector extends Component {
     //   'Last Year',
     //   'This Year',
     //   'Next Year',
+      'Movies Watched',
+      'Movies To Watch',
       'All Past',
     //   'All Future',
     ],
@@ -39,6 +41,8 @@ export default class PresetSelector extends Component {
   handleClick = (currentPreset) => {
     let newStart = '';
     let newEnd = '';
+    let newCategoryFilter = this.props.categoryFilter;
+    let newView = this.props.currentView;
 
     if (currentPreset ===  'Next 7 days') {
         newStart = moment().format('YYYY-MM-DD')
@@ -54,8 +58,16 @@ export default class PresetSelector extends Component {
 
     } else if (currentPreset ===  'This Year') {
 
-    } else if (currentPreset ===  'Next Year') {
-
+    } else if (currentPreset ===  'Movies Watched') {
+      categoryFilter = ['Movies']
+      newStart = 'Invalid date'
+      newEnd = moment().format('YYYY-MM-DD')
+      newView = 'Scheduled'
+    } else if (currentPreset ===  'Movies To Watch') {
+      categoryFilter = ['Movies']
+      newView = 'Unscheduled'
+      newStart = 'Invalid date'
+      newEnd = moment().format('YYYY-MM-DD')
     } else if (currentPreset ===  'All Past') {
         newStart = 'Invalid date'
         newEnd = moment().format('YYYY-MM-DD')
@@ -63,7 +75,7 @@ export default class PresetSelector extends Component {
 
     } 
     // moment(this.props.startDate).toISOString()
-    this.props.handlePresetChange(currentPreset, newStart, newEnd);
+    this.props.handlePresetChange(currentPreset, newStart, newEnd,newCategoryFilter,newView);
     this.handleClose();
   }
 

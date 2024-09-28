@@ -432,11 +432,13 @@ class Main extends Component {
     }, () => this.getHeaders(this.state.tasks, currentView, this.state.startDate, this.state.endDate))
   };
 
-  handlePresetChange = (currentPreset, startDate, endDate) => {
+  handlePresetChange = (currentPreset, startDate, endDate, categoryFilter, currentView) => {
     this.setState({
       currentPreset,
       startDate,
-      endDate
+      endDate,
+      categoryFilter,
+      currentView
     }, () => this.getHeaders(this.state.tasks, this.state.currentView, this.state.startDate, this.state.endDate))
   };
 
@@ -674,6 +676,8 @@ class Main extends Component {
               <div className={classes.addButton}>
                 <PresetSelector
                   handlePresetChange={this.handlePresetChange}
+                  currentView={this.state.currentView}
+                  categoryFilter={this.state.categoryFilter}
                 />
               </div>       
               <div className={classes.addButton}>
