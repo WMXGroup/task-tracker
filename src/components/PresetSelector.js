@@ -59,12 +59,12 @@ export default class PresetSelector extends Component {
     } else if (currentPreset ===  'This Year') {
 
     } else if (currentPreset ===  'Movies Watched') {
-      categoryFilter = ['Movies']
+      newCategoryFilter = ['Movies']
       newStart = 'Invalid date'
       newEnd = moment().format('YYYY-MM-DD')
       newView = 'Scheduled'
     } else if (currentPreset ===  'Movies To Watch') {
-      categoryFilter = ['Movies']
+      newCategoryFilter = ['Movies']
       newView = 'Unscheduled'
       newStart = 'Invalid date'
       newEnd = moment().format('YYYY-MM-DD')
@@ -75,7 +75,7 @@ export default class PresetSelector extends Component {
 
     } 
     // moment(this.props.startDate).toISOString()
-    this.props.handlePresetChange(currentPreset, newStart, newEnd,newCategoryFilter,newView);
+    this.props.handlePresetChange(currentPreset, newStart, newEnd, newCategoryFilter, newView);
     this.handleClose();
   }
 
