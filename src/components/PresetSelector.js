@@ -18,7 +18,11 @@ export default class PresetSelector extends Component {
     //   'Next Year',
       'Movies Watched',
       'Movies To Watch',
-      'All Past',
+      'Past Events',
+      'Upcoming Events',
+      'Past Activities',
+      'Upcoming Events'
+    //   'All Past',
     //   'All Future',
     ],
     anchorEl: null,
@@ -47,17 +51,34 @@ export default class PresetSelector extends Component {
     if (currentPreset ===  'Next 7 days') {
         newStart = moment().format('YYYY-MM-DD')
         newEnd = moment().add(7,'days').format('YYYY-MM-DD')
+        newView = 'Scheduled'
+        newCategoryFilter = ['All']
     } else if (currentPreset ===  'Last Week') {
 
 
     } else if (currentPreset ===  'This Week') {
 
     } else if (currentPreset ===  'Next Week') {
-
-    } else if (currentPreset ===  'Last Year') {
-
-    } else if (currentPreset ===  'This Year') {
-
+    } else if (currentPreset ===  'Past Activities') {
+      newCategoryFilter = ['Fun']
+      newStart = 'Invalid date'
+      newEnd = moment().format('YYYY-MM-DD')
+      newView = 'Scheduled'
+    } else if (currentPreset ===  'Upcoming Activities') {
+      newCategoryFilter = ['Fun']
+      newView = 'Unscheduled'
+      newStart = 'Invalid date'
+      newEnd = moment().format('YYYY-MM-DD')
+    } else if (currentPreset ===  'Past Events') {
+      newCategoryFilter = ['Events']
+      newStart = 'Invalid date'
+      newEnd = moment().format('YYYY-MM-DD')
+      newView = 'Scheduled'
+    } else if (currentPreset ===  'Upcoming Events') {
+      newCategoryFilter = ['Events']
+      newView = 'Unscheduled'
+      newStart = 'Invalid date'
+      newEnd = moment().format('YYYY-MM-DD')
     } else if (currentPreset ===  'Movies Watched') {
       newCategoryFilter = ['Movies']
       newStart = 'Invalid date'
