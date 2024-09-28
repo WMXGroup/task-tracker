@@ -21,7 +21,7 @@ export default class PresetSelector extends Component {
       'Past Events',
       'Upcoming Events',
       'Past Activities',
-      'Upcoming Events'
+      'Upcoming Activities'
     //   'All Past',
     //   'All Future',
     ],
@@ -70,12 +70,12 @@ export default class PresetSelector extends Component {
       newStart = 'Invalid date'
       newEnd = moment().format('YYYY-MM-DD')
     } else if (currentPreset ===  'Past Events') {
-      newCategoryFilter = ['Events']
+      newCategoryFilter = ['Event']
       newStart = 'Invalid date'
       newEnd = moment().format('YYYY-MM-DD')
       newView = 'Scheduled'
     } else if (currentPreset ===  'Upcoming Events') {
-      newCategoryFilter = ['Events']
+      newCategoryFilter = ['Event']
       newView = 'Unscheduled'
       newStart = 'Invalid date'
       newEnd = moment().format('YYYY-MM-DD')
