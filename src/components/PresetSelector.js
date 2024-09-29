@@ -53,22 +53,29 @@ export default class PresetSelector extends Component {
         newStart = moment().format('YYYY-MM-DD')
         newEnd = moment().add(7,'days').format('YYYY-MM-DD')
         newView = 'Scheduled'
-        newCategoryFilter = ['Activity','Chore','Event','Finance','Health','House','Pets','Task']
+        newCategoryFilter = ['Chore','Event','Finance','Health','Pets','Task']
     } else if (currentPreset ===  'Cleaning') {
       newStart = moment().format('YYYY-MM-DD')
       newEnd = moment().add(7,'days').format('YYYY-MM-DD')
       newView = 'Scheduled'
       newCategoryFilter = ['Cleaning']
-    } else if (currentPreset ===  'This Week') {
-
-    } else if (currentPreset ===  'Next Week') {
+    } else if (currentPreset ===  'Past House') {
+      newCategoryFilter = ['House']
+      newStart = 'Invalid date'
+      newEnd = moment().format('YYYY-MM-DD')
+      newView = 'Scheduled'
+    } else if (currentPreset ===  'Upcoming House') {
+      newCategoryFilter = ['House']
+      newView = 'Unscheduled'
+      newStart = 'Invalid date'
+      newEnd = moment().format('YYYY-MM-DD')
     } else if (currentPreset ===  'Past Activities') {
-      newCategoryFilter = ['Fun']
+      newCategoryFilter = ['Activity']
       newStart = 'Invalid date'
       newEnd = moment().format('YYYY-MM-DD')
       newView = 'Scheduled'
     } else if (currentPreset ===  'Upcoming Activities') {
-      newCategoryFilter = ['Fun']
+      newCategoryFilter = ['Activity']
       newView = 'Unscheduled'
       newStart = 'Invalid date'
       newEnd = moment().format('YYYY-MM-DD')
