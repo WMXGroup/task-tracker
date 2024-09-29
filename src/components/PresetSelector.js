@@ -22,7 +22,9 @@ export default class PresetSelector extends Component {
       'Upcoming Events',
       'Past Activities',
       'Upcoming Activities',
-      'Cleaning'
+      'Cleaning',
+      'Past House',
+      'Upcoming House'
     //   'All Past',
     //   'All Future',
     ],
@@ -53,7 +55,7 @@ export default class PresetSelector extends Component {
         newStart = moment().format('YYYY-MM-DD')
         newEnd = moment().add(7,'days').format('YYYY-MM-DD')
         newView = 'Scheduled'
-        newCategoryFilter = ['Chore','Event','Finance','Health','Pets','Task']
+        newCategoryFilter = ['Activity','Chore','Event','Finance','House','Health','Pets','Task']
     } else if (currentPreset ===  'Cleaning') {
       newStart = moment().format('YYYY-MM-DD')
       newEnd = moment().add(7,'days').format('YYYY-MM-DD')
