@@ -338,21 +338,22 @@ class Main extends Component {
   getHeaders = (tasks, currentView, startDate, endDate) => {
     let resArr = [];
     let uniqArr = []
+    const { categoryFilter } = this.state;
 
     // get day headers
     if (currentView === 'Scheduled') {
       for (let i = 0; i < tasks.length; i++) {
         for (let j = 0; j < tasks[i].dates.length; j++) {
-          if (startDate === 'Invalid date' && tasks[i].dates[j].date <= moment(endDate).format('YYYY-MM-DD')){
+          if (startDate === 'Invalid date' && tasks[i].dates[j].date <= moment(endDate).format('YYYY-MM-DD') && categoryFilter.includes(tasks[i].category)){
             resArr.push(tasks[i].dates[j].date)
           }
-          if (endDate === 'Invalid date' && tasks[i].dates[j].date >= moment(startDate).format('YYYY-MM-DD')){
+          if (endDate === 'Invalid date' && tasks[i].dates[j].date >= moment(startDate).format('YYYY-MM-DD') && categoryFilter.includes(tasks[i].category)){
             resArr.push(tasks[i].dates[j].date)
           }
-          if (tasks[i].dates[j].date >= moment(startDate).format('YYYY-MM-DD') && tasks[i].dates[j].date <= moment(endDate).format('YYYY-MM-DD')) {
+          if (tasks[i].dates[j].date >= moment(startDate).format('YYYY-MM-DD') && tasks[i].dates[j].date <= moment(endDate).format('YYYY-MM-DD') && categoryFilter.includes(tasks[i].category)) {
             resArr.push(tasks[i].dates[j].date)
           }
-          if (tasks[i].dates[j].date <= moment(endDate).format('YYYY-MM-DD') && tasks[i].dates[j].state === 'open') {
+          if (tasks[i].dates[j].date <= moment(endDate).format('YYYY-MM-DD') && tasks[i].dates[j].state === 'open' && categoryFilter.includes(tasks[i].category)) {
             resArr.push(tasks[i].dates[j].date)
           }
         }
