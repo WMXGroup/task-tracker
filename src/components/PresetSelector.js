@@ -21,7 +21,8 @@ export default class PresetSelector extends Component {
       'Past Events',
       'Upcoming Events',
       'Past Activities',
-      'Upcoming Activities'
+      'Upcoming Activities',
+      'Cleaning'
     //   'All Past',
     //   'All Future',
     ],
@@ -52,10 +53,12 @@ export default class PresetSelector extends Component {
         newStart = moment().format('YYYY-MM-DD')
         newEnd = moment().add(7,'days').format('YYYY-MM-DD')
         newView = 'Scheduled'
-        newCategoryFilter = ['All']
-    } else if (currentPreset ===  'Last Week') {
-
-
+        newCategoryFilter = ['Activity','Chore','Event','Finance','Health','House','Pets','Task']
+    } else if (currentPreset ===  'Cleaning') {
+      newStart = moment().format('YYYY-MM-DD')
+      newEnd = moment().add(7,'days').format('YYYY-MM-DD')
+      newView = 'Scheduled'
+      newCategoryFilter = ['Cleaning']
     } else if (currentPreset ===  'This Week') {
 
     } else if (currentPreset ===  'Next Week') {
@@ -76,7 +79,7 @@ export default class PresetSelector extends Component {
       newView = 'Scheduled'
     } else if (currentPreset ===  'Upcoming Events') {
       newCategoryFilter = ['Event']
-      newView = 'Unscheduled'
+      newView = 'Scheduled'
       newStart = 'Invalid date'
       newEnd = moment().format('YYYY-MM-DD')
     } else if (currentPreset ===  'Movies Watched') {

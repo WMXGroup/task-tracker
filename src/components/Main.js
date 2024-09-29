@@ -74,7 +74,7 @@ class Main extends Component {
     categories: [],
     taskDetails: {},
     currentView: 'Scheduled',
-    categoryFilter: ['All'],
+    categoryFilter: ['Activity','Chore','Event','Finance','Health','House','Pets','Task'],
     display: 'Tasks',
     debugMode: window.location.hostname === "localhost",
     relatedLists: [],
