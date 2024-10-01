@@ -18,13 +18,13 @@ export default class PresetSelector extends Component {
     //   'Next Year',
       'Movies Watched',
       'Movies To Watch',
-      'Past Events',
-      'Upcoming Events',
-      'Past Activities',
-      'Upcoming Activities',
+      'Events Completed',
+      'Events Upcoming ',
+      'Activities Completed',
+      'Activities To Do',
       'Cleaning',
-      'Past House',
-      'Upcoming House'
+      'House Completed',
+      'House To Do'
     //   'All Past',
     //   'All Future',
     ],
@@ -52,50 +52,50 @@ export default class PresetSelector extends Component {
     let newView = this.props.currentView;
 
     if (currentPreset ===  'Next 7 days') {
-        newStart = moment().format('YYYY-MM-DD')
-        newEnd = moment().add(7,'days').format('YYYY-MM-DD')
-        newView = 'Scheduled'
-        newCategoryFilter = ['Activity','Chore','Event','Finance','House','Health','Pets','Task']
-    } else if (currentPreset ===  'Cleaning') {
+      newCategoryFilter = ['Activity','Chore','Event','Finance','House','Health','Pets','Task']
+      newView = 'Scheduled'
       newStart = moment().format('YYYY-MM-DD')
       newEnd = moment().add(7,'days').format('YYYY-MM-DD')
-      newView = 'Scheduled'
+    } else if (currentPreset ===  'Cleaning') {
       newCategoryFilter = ['Cleaning']
-    } else if (currentPreset ===  'Past House') {
+      newView = 'Scheduled'
+      newStart = moment().format('YYYY-MM-DD')
+      newEnd = moment().add(7,'days').format('YYYY-MM-DD')
+    } else if (currentPreset ===  'House Completed') {
       newCategoryFilter = ['House']
+      newView = 'Scheduled'
       newStart = 'Invalid date'
       newEnd = moment().format('YYYY-MM-DD')
-      newView = 'Scheduled'
-    } else if (currentPreset ===  'Upcoming House') {
+    } else if (currentPreset ===  'House To Do') {
       newCategoryFilter = ['House']
       newView = 'Unscheduled'
       newStart = 'Invalid date'
       newEnd = moment().format('YYYY-MM-DD')
-    } else if (currentPreset ===  'Past Activities') {
+    } else if (currentPreset ===  'Activities Completed') {
       newCategoryFilter = ['Activity']
+      newView = 'Scheduled'
       newStart = 'Invalid date'
       newEnd = moment().format('YYYY-MM-DD')
-      newView = 'Scheduled'
-    } else if (currentPreset ===  'Upcoming Activities') {
+    } else if (currentPreset ===  'Activities To Do') {
       newCategoryFilter = ['Activity']
       newView = 'Unscheduled'
       newStart = 'Invalid date'
       newEnd = moment().format('YYYY-MM-DD')
-    } else if (currentPreset ===  'Past Events') {
+    } else if (currentPreset ===  'Events Completed') {
       newCategoryFilter = ['Event']
+      newView = 'Scheduled'
       newStart = 'Invalid date'
       newEnd = moment().format('YYYY-MM-DD')
-      newView = 'Scheduled'
-    } else if (currentPreset ===  'Upcoming Events') {
+    } else if (currentPreset ===  'Events Upcoming') {
       newCategoryFilter = ['Event']
-      newView = 'Scheduled'
+      newView = 'Unscheduled'
       newStart = 'Invalid date'
       newEnd = moment().format('YYYY-MM-DD')
     } else if (currentPreset ===  'Movies Watched') {
       newCategoryFilter = ['Movies']
+      newView = 'Scheduled'
       newStart = 'Invalid date'
       newEnd = moment().format('YYYY-MM-DD')
-      newView = 'Scheduled'
     } else if (currentPreset ===  'Movies To Watch') {
       newCategoryFilter = ['Movies']
       newView = 'Unscheduled'
