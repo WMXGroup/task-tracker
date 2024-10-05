@@ -76,7 +76,9 @@ class Task extends Component {
           ignoreTask={() => ignoreTask(task.id, header)}
           deleteOccurence={() => deleteOccurence(task.id, header)}
           type={task.type}
+          category={task.category}
           frequency={task.frequency}
+          recurDays={task.recurDays}
         />
         <Typography className={classes.fieldLabel}>
             {task.priority}

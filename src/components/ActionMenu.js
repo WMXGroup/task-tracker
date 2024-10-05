@@ -2,19 +2,16 @@ import React, { Component } from 'react';
 import IconButton from '@material-ui/core/IconButton';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
-import SnoozeIcon from '@material-ui/icons/Snooze';
-import MoreVert from '@material-ui/icons/MoreVert';
 
-import ExtensionIcon from '@material-ui/icons/Extension';
-import ShoppingCartIcon from '@material-ui/icons/ShoppingCart';
 import DirectionsCarIcon from '@material-ui/icons/DirectionsCar';
 import TodayIcon from '@material-ui/icons/Today';
-import TimerIcon from '@material-ui/icons/Timer';
-import TheatersIcon from '@material-ui/icons/Theaters';
+import LoopIcon from '@material-ui/icons/Loop';
 import BuildIcon from '@material-ui/icons/Build';
-import EditIcon from '@material-ui/icons/Edit';
-import { indigo } from '@material-ui/core/colors';
-import { red } from '@material-ui/core/colors';
+import AlarmIcon from '@material-ui/icons/Alarm';
+import BeachAccessIcon from '@material-ui/icons/BeachAccess';
+import LowPriorityIcon from '@material-ui/icons/LowPriority';
+
+import { red, orange, yellow, green, blue, purple } from '@material-ui/core/colors';
 
 export default class ActionMenu extends Component {
 
@@ -53,6 +50,7 @@ export default class ActionMenu extends Component {
       ignoreTask,
       deleteOccurence,
       type,
+      recurDays,
       frequency
     } = this.props;
 
@@ -64,44 +62,39 @@ export default class ActionMenu extends Component {
           >
           <MoreVert />
         </IconButton> */}
-        {type === 'Activity' &&
+        {type === 'Deadline' &&
         <IconButton size='small' onClick={this.handleMenu}>
-          <ExtensionIcon style={{color:indigo[500]}}/>
+          <AlarmIcon style={{color:red[500]}}/>
         </IconButton>
         }
-        {(type === 'Chore' && frequency === 'Daily') &&
+        {(type === 'Tracking' && recurDays === 1) &&
         <IconButton size='small' onClick={this.handleMenu}>
-          <ShoppingCartIcon style={{color:red[500]}}/>
+          <LoopIcon style={{color:yellow[500]}}/>
         </IconButton>
         }
-        {(type === 'Chore' && frequency !== 'Daily') &&
+        {(type === 'Tracking' && recurDays !== 1) &&
         <IconButton size='small' onClick={this.handleMenu}>
-          <ShoppingCartIcon style={{color:indigo[500]}}/>
+          <LoopIcon style={{color:orange[500]}}/>
         </IconButton>
         }
-        {type === 'Errand' &&
+        {type === 'Periodic' &&
         <IconButton size='small' onClick={this.handleMenu}>
-          <DirectionsCarIcon style={{color:indigo[500]}}/>
+          <LowPriorityIcon style={{color:green[500]}}/>
         </IconButton>
         }
         {type === 'Event' &&
         <IconButton size='small' onClick={this.handleMenu}>
-          <TodayIcon style={{color:indigo[500]}}/>
+          <TodayIcon style={{color:blue[500]}}/>
         </IconButton>
         }
-        {type === 'Habit' &&
+        {type === 'Floating' &&
         <IconButton size='small' onClick={this.handleMenu}>
-          <TimerIcon style={{color:indigo[500]}}/>
+          <BeachAccessIcon style={{color:purple[500]}}/>
         </IconButton>
         }
-        {type === 'Media' &&
+        {type === '' &&
         <IconButton size='small' onClick={this.handleMenu}>
-          <TheatersIcon style={{color:indigo[500]}}/>
-        </IconButton>
-        }
-        {type === 'Task' &&
-        <IconButton size='small' onClick={this.handleMenu}>
-          <BuildIcon style={{color:indigo[500]}}/>
+          <BuildIcon />
         </IconButton>
         }
         <Menu

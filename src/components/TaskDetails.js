@@ -339,7 +339,7 @@ export default class DetailModal extends Component {
             Type
           </Typography>
           <Autocomplete
-            options={['Activity','Chore','Errand','Event','Habit','Media','Task']}
+            options={['Deadline','Event','Floating','Periodic','Tracking']}
             defaultValue={this.state.type}
             getOptionLabel={(option) => typeof option === 'string' ? option : option.type}
             style={styles.fieldStyle}

@@ -1,43 +1,43 @@
 export const tasks = [
   {
     id: 1,
-    type: 'Chore',
+    type: 'Tracking',
     frequency: 'Daily',
     description: 'Exercise',
     category:'Health',
     dates: [
       {
-        date: '2024-07-01',
+        date: '2024-10-01',
         state: 'closed',
       },
       {
-        date: '2024-08-01',
+        date: '2024-10-02',
         state: 'open',
       },
       {
-        date: '2024-08-09',
+        date: '2024-10-09',
         state: 'open',
       },
       {
-        date: '2024-08-12',
+        date: '2024-10-12',
         state: 'open',
       },
     ], 
     priority: '1',
     notes: '',
-    recurDays: 0,
+    recurDays: 1,
     recurStart: '',
     recurEnd: '',
   },
   {
     id: 2,
-    type: 'Task',
+    type: 'Deadline',
     frequency: 'One-time',
     description: 'Pay a medical bill',
     category:'Tasks',
     dates: [
       {
-        date: '2023-09-08',
+        date: '2023-10-08',
         state: 'open',
       },
     ], 
@@ -49,13 +49,13 @@ export const tasks = [
   },
   {
     id: 3,
-    type: 'Media',
+    type: 'Floating',
     frequency: 'One-time',
     description: 'Watch Antman movie',
     category:'Movies',
     dates: [
       {
-        date: '2023-09-12',
+        date: '2023-10-12',
         state: 'open',
       },
     ], 
@@ -66,13 +66,13 @@ export const tasks = [
   },
   {
     id: 4,
-    type: 'Media',
+    type: 'Floating',
     frequency: 'Ongoing',
     description: 'Watch show, season 1',
     category:'Shows',
     dates: [
       {
-        date: '2023-09-12',
+        date: '2023-10-12',
         state: 'closed',
       },
     ], 
@@ -83,14 +83,104 @@ export const tasks = [
   },
   {
     id: 5,
-    type: 'Task',
+    type: 'Floating',
     frequency: 'One-time',
     description: 'Watch the Matrix',
-    category:'Media',
+    category:'Movies',
     dates: [
       {
-        date: '2001-09-08',
+        date: '2001-10-08',
         state: 'closed',
+      },
+    ], 
+    priority: '1',
+    notes: '',
+    recurDays: 0,
+    recurStart: '',
+    recurEnd: '',
+  },
+  {
+    id: 6,
+    type: 'Deadline',
+    frequency: 'Recurring',
+    description: 'Pay Bills',
+    category:'Finance',
+    dates: [
+      {
+        date: '2024-09-08',
+        state: 'open',
+      },
+    ], 
+    priority: '1',
+    notes: '',
+    recurDays: 0,
+    recurStart: '',
+    recurEnd: '',
+  },
+  {
+    id: 7,
+    type: 'Deadline',
+    frequency: 'Recurring',
+    description: 'Pay Insurance',
+    category:'Finance',
+    dates: [
+      {
+        date: '2024-09-08',
+        state: 'closed',
+      },
+    ], 
+    priority: '1',
+    notes: '',
+    recurDays: 0,
+    recurStart: '',
+    recurEnd: '',
+  },
+  {
+    id: 8,
+    type: 'Periodic',
+    frequency: 'One-time',
+    description: 'Clean House',
+    category:'Cleaning',
+    dates: [
+      {
+        date: '2023-10-08',
+        state: 'open',
+      },
+    ], 
+    priority: '1',
+    notes: '',
+    recurDays: 0,
+    recurStart: '',
+    recurEnd: '',
+  },
+  {
+    id: 9,
+    type: 'Tracking',
+    frequency: 'Recurring',
+    description: 'Mow the Lawn',
+    category:'Chore',
+    dates: [
+      {
+        date: '2024-10-08',
+        state: 'open',
+      },
+    ], 
+    priority: '1',
+    notes: '',
+    recurDays: 7,
+    recurStart: '',
+    recurEnd: '',
+  },
+  {
+    id: 10,
+    type: 'Event',
+    frequency: 'One-time',
+    description: 'Birthday',
+    category:'Event',
+    dates: [
+      {
+        date: '2024-10-09',
+        state: 'open',
       },
     ], 
     priority: '1',
