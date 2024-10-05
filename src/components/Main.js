@@ -353,7 +353,7 @@ class Main extends Component {
           if (tasks[i].dates[j].date >= moment(startDate).format('YYYY-MM-DD') && tasks[i].dates[j].date <= moment(endDate).format('YYYY-MM-DD') && categoryFilter.includes(tasks[i].category)) {
             resArr.push(tasks[i].dates[j].date)
           }
-          if (tasks[i].dates[j].date <= moment(endDate).format('YYYY-MM-DD') && tasks[i].dates[j].state === 'open' && categoryFilter.includes(tasks[i].category)) {
+          if (tasks[i].dates[j].date <= moment(endDate).format('YYYY-MM-DD') && tasks[i].dates[j].state === 'open' && categoryFilter.includes(tasks[i].category) && tasks[i].type === 'Deadline') {
             resArr.push(tasks[i].dates[j].date)
           }
         }
