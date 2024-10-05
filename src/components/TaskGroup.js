@@ -23,7 +23,7 @@ export default class TaskGroup extends Component {
     if (currentView === 'Scheduled') {
       for (let i = 0; i < tasks.length; i++) {
         for (let j = 0; j < tasks[i].dates.length; j++) {
-          if (tasks[i].dates[j].date === header && (tasks[i].type === 'Tracking' && tasks[i].dates[j].date > moment().format('YYYY-MM-DD') && tasks[i].recurdays === 1) === false) {
+          if (tasks[i].dates[j].date === header && (tasks[i].dates[j].date >= moment().format('YYYY-MM-DD') || (tasks[i].type === 'Deadline' && tasks[i].dates[j].state === 'open'))){
             groupTasks.push(tasks[i])
           }
         }
