@@ -743,8 +743,8 @@ class Main extends Component {
                     makeCurrent={this.makeCurrent}
                     ignoreTask={this.ignoreTask}
                     deleteOccurence={this.deleteOccurence}
-                    startDate={this.startDate}
-                    endDate={this.endDate}
+                    startDate={this.state.startDate}
+                    endDate={this.state.endDate}
                     />
                 ))}
               </div>

@@ -67,12 +67,12 @@ export default class ActionMenu extends Component {
           <AlarmIcon style={{color:red[500]}}/>
         </IconButton>
         }
-        {(type === 'Tracking' && recurDays === "1") &&
+        {(type === 'Tracking' && recurDays === '1') &&
         <IconButton size='small' onClick={this.handleMenu}>
           <LoopIcon style={{color:yellow[500]}}/>
         </IconButton>
         }
-        {(type === 'Tracking' && recurDays !== "1") &&
+        {(type === 'Tracking' && recurDays !== '1') &&
         <IconButton size='small' onClick={this.handleMenu}>
           <LoopIcon style={{color:orange[500]}}/>
         </IconButton>
