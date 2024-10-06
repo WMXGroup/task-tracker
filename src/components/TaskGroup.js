@@ -34,7 +34,7 @@ export default class TaskGroup extends Component {
           if (tasks[i].dates[j].date === header && tasks[i].dates[j].date >= moment(startDate).format('YYYY-MM-DD') && tasks[i].type === 'Tracking' & parseInt(tasks[i].recurDays,10) > 1){
             groupTasks.push(tasks[i])
           }
-          if (tasks[i].dates[j].date === header && tasks[i].dates[j].date === moment(startDate).format('YYYY-MM-DD') && tasks[i].type === 'Tracking' & parseInt(tasks[i].recurDays,10) === 1){
+          if (tasks[i].dates[j].date === header && tasks[i].dates[j].date >= moment(startDate).format('YYYY-MM-DD') && tasks[i].dates[j].date <= moment().format('YYYY-MM-DD') && tasks[i].type === 'Tracking' & parseInt(tasks[i].recurDays,10) === 1){
             groupTasks.push(tasks[i])
           }
         }  
