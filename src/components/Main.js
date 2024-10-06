@@ -714,6 +714,15 @@ class Main extends Component {
                 }}>
                   {this.state.lastSaved === null ? 'Not Saved' : 'Last Saved: ' + this.state.lastSaved}
               </div>
+              <div
+                style={{
+                  fontStyle:'italic',
+                  color:'#bbb',
+                }}>
+                <Typography variant="caption">
+                  v20241006.1
+                </Typography>
+              </div>
               <TextField
                 InputProps={{
                   disableUnderline: true,

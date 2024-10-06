@@ -64,45 +64,45 @@ export default class PresetSelector extends Component {
     } else if (currentPreset ===  'House Completed') {
       newCategoryFilter = ['House']
       newView = 'Scheduled'
-      newStart = 'Invalid date'
+      newStart = '1901-01-01'
       newEnd = moment().format('YYYY-MM-DD')
     } else if (currentPreset ===  'House To Do') {
       newCategoryFilter = ['House']
       newView = 'Unscheduled'
-      newStart = 'Invalid date'
+      newStart = '1901-01-01'
       newEnd = moment().format('YYYY-MM-DD')
     } else if (currentPreset ===  'Activities Completed') {
       newCategoryFilter = ['Activity']
       newView = 'Scheduled'
-      newStart = 'Invalid date'
+      newStart = '1901-01-01'
       newEnd = moment().format('YYYY-MM-DD')
     } else if (currentPreset ===  'Activities To Do') {
       newCategoryFilter = ['Activity']
       newView = 'Unscheduled'
-      newStart = 'Invalid date'
+      newStart = '1901-01-01'
       newEnd = moment().format('YYYY-MM-DD')
     } else if (currentPreset ===  'Events Completed') {
       newCategoryFilter = ['Event']
       newView = 'Scheduled'
-      newStart = 'Invalid date'
+      newStart = '1901-01-01'
       newEnd = moment().format('YYYY-MM-DD')
     } else if (currentPreset ===  'Events Upcoming') {
       newCategoryFilter = ['Event']
       newView = 'Unscheduled'
-      newStart = 'Invalid date'
+      newStart = '1901-01-01'
       newEnd = moment().format('YYYY-MM-DD')
     } else if (currentPreset ===  'Movies Watched') {
       newCategoryFilter = ['Movies']
       newView = 'Scheduled'
-      newStart = 'Invalid date'
+      newStart = '1901-01-01'
       newEnd = moment().format('YYYY-MM-DD')
     } else if (currentPreset ===  'Movies To Watch') {
       newCategoryFilter = ['Movies']
       newView = 'Unscheduled'
-      newStart = 'Invalid date'
+      newStart = '1901-01-01'
       newEnd = moment().format('YYYY-MM-DD')
     } else if (currentPreset ===  'All Past') {
-        newStart = 'Invalid date'
+        newStart = '1901-01-01'
         newEnd = moment().format('YYYY-MM-DD')
     } else if (currentPreset ===  'All Future') {
 
