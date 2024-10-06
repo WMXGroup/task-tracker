@@ -16,6 +16,8 @@ export default class TaskGroup extends Component {
       makeCurrent,
       ignoreTask,
       deleteOccurence,
+      startDate,
+      endDate
     } = this.props;
 
     let groupTasks = [];
@@ -23,7 +25,7 @@ export default class TaskGroup extends Component {
     if (currentView === 'Scheduled') {
       for (let i = 0; i < tasks.length; i++) {
         for (let j = 0; j < tasks[i].dates.length; j++) {
-          if (tasks[i].dates[j].date === header && (tasks[i].dates[j].date >= moment().format('YYYY-MM-DD') || (tasks[i].dates[j].state === 'open'  && (tasks[i].type === 'Deadline' || tasks[i].type === 'Periodic')))){
+          if (tasks[i].dates[j].date === header && (tasks[i].dates[j].date >= moment(startDate).format('YYYY-MM-DD') || (tasks[i].dates[j].state === 'open'  && (tasks[i].type === 'Deadline' || tasks[i].type === 'Periodic')))){
             groupTasks.push(tasks[i])
           }
         }
