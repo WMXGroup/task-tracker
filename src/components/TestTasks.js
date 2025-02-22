@@ -7,20 +7,28 @@ export const tasks = [
     category:'Health',
     dates: [
       {
-        date: '2024-10-01',
+        date: '2025-02-22',
         state: 'closed',
       },
       {
-        date: '2024-10-02',
-        state: 'open',
+        date: '2025-02-21',
+        state: 'closed',
       },
       {
-        date: '2024-10-09',
+        date: '2025-02-20',
         state: 'open',
       },
       {
         date: '2024-10-12',
         state: 'open',
+      },
+      {
+        date: '2025-02-14',
+        state: 'closed',
+      },
+      {
+        date: '2025-02-05',
+        state: 'closed',
       },
     ], 
     priority: '1',

@@ -20,6 +20,7 @@ import ViewSelector from './ViewSelector';
 import TimeframeSelector from './TimeframeSelector';
 import PresetSelector from './PresetSelector';
 import CategoryFilter from './CategoryFilter';
+import Report from './Report';
 import AddRelatedList from './AddRelatedList';
 import moment from 'moment';
 import axios from 'axios';
@@ -80,7 +81,9 @@ class Main extends Component {
     relatedLists: [],
     startDate:moment().format('YYYY-MM-DD'),
     endDate: moment().add(7,'days').format('YYYY-MM-DD'),
-    currentPreset: 'Next 7 Days'
+    currentPreset: 'Next 7 Days',
+    categoryReport: [],
+    reportWeek: moment().startOf('week').format('YYYY-MM-DD'),
   }
 
   componentDidMount = () => {
@@ -471,6 +474,70 @@ class Main extends Component {
     })
   }
 
+  calculatePoints = () => {
+    let pointsArray = [];
+    const {
+      tasks,
+      reportWeek,
+    } = this.state;
+
+    for (let i = 0; i < tasks.length; i++) {
+      if (tasks[i].frequency === 'Daily') {
+          let runningTotal = 0;
+          for (let k = 0; k < tasks[i].dates.length; k++) {
+            // console.log(moment(tasks[i].dates[k].date).format('YYYY-MM-DD') + ' : ' + tasks[i].dates[k].state + ' : ' + reportWeek + ' : ' + moment(reportWeek).add(7, 'days').format('YYYY-MM-DD'))
+            if (moment(tasks[i].dates[k].date).format('YYYY-MM-DD') >= reportWeek && moment(tasks[i].dates[k].date).format('YYYY-MM-DD') < moment(reportWeek).add(7, 'days').format('YYYY-MM-DD')) {
+              if (tasks[i].dates[k].state === 'closed') {
+                runningTotal += 1
+              }
+            }
+          }
+          pointsArray.push({
+          taskName:tasks[i].description,
+          category: tasks[i].category,
+          totalPoints: runningTotal,
+          weeklyPoints: 7,
+        })
+      }
+    }
+
+    // for (let i = 0; i < tasks.length; i++) {
+    //   for (let j = 0; j < pointsArray.length; j++) {
+    //     if (pointsArray[j].category === tasks[i].category) {
+    //       pointsArray[j].weeklyPoints = parseInt(pointsArray[j].weeklyPoints) + ((tasks[i].weeklyGoal === null || tasks[i].weeklyGoal === '' ) ? 0 : parseInt(tasks[i].weeklyGoal))
+    //       for (let k = 0; k < tasks[i].completedDates.length; k++) {
+    //         if (moment(tasks[i].completedDates[k]).format('YYYY-MM-DD') >= reportWeek && moment(tasks[i].completedDates[k]).format('YYYY-MM-DD') < moment(reportWeek).add(7, 'days').format('YYYYMMDD')) {
+    //           const newPoints = (tasks[i].points === null || tasks[i].points === '') ? 0 : parseInt(tasks[i].points);
+    //           pointsArray[j].totalPoints = parseInt(pointsArray[j].totalPoints) + newPoints;
+    //         }
+    //       }
+    //     }
+    //   }
+    // }
+
+    this.setState({
+      categoryReport: pointsArray,
+    })
+  }
+
+  updateReportWeek = async (direction) => {
+    if (direction === 1){
+      this.setState({
+        reportWeek: moment(this.state.reportWeek).add(7, 'days').format('YYYY-MM-DD')
+      }, () => this.calculatePoints())
+    } else {
+      this.setState({
+        reportWeek: moment(this.state.reportWeek).subtract(7, 'days').format('YYYY-MM-DD')
+      }, () => this.calculatePoints())
+    }
+  }
+
+  launchReport = async () => {
+    await this.handleClose();
+    await this.calculatePoints();
+    await this.toggleDisplay('Report');
+  }
+
   launchAddList = async () => {
     await this.handleClose();
     await this.toggleDisplay('AddRelatedList');
@@ -665,6 +732,7 @@ class Main extends Component {
                   <MenuItem onClick={() => this.exportJSON()}>Export Data</MenuItem>
                   <MenuItem onClick={() => this.exportCSV()}>Export CSV New</MenuItem>
                   <MenuItem onClick={() => this.createNew()}>Create New</MenuItem>
+                  <MenuItem onClick={() => this.launchReport()}>Show Report</MenuItem>
                   <MenuItem onClick={() => this.launchAddList()}>Add Related List</MenuItem>
                   <MenuItem onClick={() => this.ignoreOld()}>Ignore Old Recurring</MenuItem>
                   <MenuItem onClick={() => this.ignoreOldDailies()}>Ignore Old Dailies</MenuItem>
@@ -770,6 +838,14 @@ class Main extends Component {
               deleteTask={this.deleteTask}
               launchNewDate={this.launchNewDate}
               uuidv4={this.uuidv4}
+            />
+          }
+          {this.state.display === 'Report' &&
+            <Report
+              categoryReport={this.state.categoryReport}
+              toggleDisplay={this.toggleDisplay}
+              updateReportWeek={this.updateReportWeek}
+              reportWeek={this.state.reportWeek}
             />
           }
           {this.state.display !== 'Details' &&
