@@ -845,7 +845,7 @@ class Main extends Component {
                   color:'#bbb',
                 }}>
                 <Typography variant="caption">
-                  v20241006.1
+                  v20250222.02
                 </Typography>
               </div>
               <TextField
