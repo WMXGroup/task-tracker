@@ -21,6 +21,7 @@ import TimeframeSelector from './TimeframeSelector';
 import PresetSelector from './PresetSelector';
 import CategoryFilter from './CategoryFilter';
 import Report from './Report';
+import ReportMonthly from './ReportMonthly'
 import AddRelatedList from './AddRelatedList';
 import moment from 'moment';
 import axios from 'axios';
@@ -84,6 +85,8 @@ class Main extends Component {
     currentPreset: 'Next 7 Days',
     categoryReport: [],
     reportWeek: moment().startOf('week').format('YYYY-MM-DD'),
+    reportMonthStart: moment().startOf('month').format('YYYY-MM-DD'),
+    monthlyReport: []
   }
 
   componentDidMount = () => {
@@ -520,6 +523,41 @@ class Main extends Component {
     })
   }
 
+  calculateMonthly = () => {
+    const {
+      tasks,
+      reportMonthStart,
+    } = this.state;
+
+    let pointsArray = [];
+    let reportMonthEnd   = moment(reportMonthStart).endOf('month').format('YYYY-MM-DD');
+    let monthlyPoints = moment(reportMonthStart).daysInMonth();
+
+    for (let i = 0; i < tasks.length; i++) {
+      if (tasks[i].frequency === 'Daily') {
+          let runningTotal = 0;
+          for (let k = 0; k < tasks[i].dates.length; k++) {
+            let taskDate = moment(tasks[i].dates[k].date).format('YYYY-MM-DD')
+            if (taskDate >= reportMonthStart && taskDate <= reportMonthEnd) {
+              if (tasks[i].dates[k].state === 'closed') {
+                runningTotal += 1
+              }
+            }
+          }
+          pointsArray.push({
+          taskName:tasks[i].description,
+          category: tasks[i].category,
+          totalPoints: runningTotal,
+          monthlyPoints: monthlyPoints
+        })
+      }
+    }
+
+    this.setState({
+      monthlyReport: pointsArray,
+    })
+  }
+
   updateReportWeek = async (direction) => {
     if (direction === 1){
       this.setState({
@@ -532,10 +570,28 @@ class Main extends Component {
     }
   }
 
+  updateReportMonth = async (direction) => {
+    if (direction === 1){
+      this.setState({
+        reportMonthStart: moment(this.state.reportMonthStart).add(1, 'months').format('YYYY-MM-DD')
+      }, () => this.calculateMonthly())
+    } else {
+      this.setState({
+        reportMonthStart: moment(this.state.reportMonthStart).subtract(1, 'months').format('YYYY-MM-DD')
+      }, () => this.calculateMonthly())
+    }
+  }
+
   launchReport = async () => {
     await this.handleClose();
     await this.calculatePoints();
     await this.toggleDisplay('Report');
+  }
+
+  launchMonthlyReport = async () => {
+    await this.handleClose();
+    await this.calculateMonthly();
+    await this.toggleDisplay('MonthlyReport');
   }
 
   launchAddList = async () => {
@@ -733,6 +789,7 @@ class Main extends Component {
                   <MenuItem onClick={() => this.exportCSV()}>Export CSV New</MenuItem>
                   <MenuItem onClick={() => this.createNew()}>Create New</MenuItem>
                   <MenuItem onClick={() => this.launchReport()}>Show Report</MenuItem>
+                  <MenuItem onClick={() => this.launchMonthlyReport()}>Show Monthly Report</MenuItem>
                   <MenuItem onClick={() => this.launchAddList()}>Add Related List</MenuItem>
                   <MenuItem onClick={() => this.ignoreOld()}>Ignore Old Recurring</MenuItem>
                   <MenuItem onClick={() => this.ignoreOldDailies()}>Ignore Old Dailies</MenuItem>
@@ -846,6 +903,14 @@ class Main extends Component {
               toggleDisplay={this.toggleDisplay}
               updateReportWeek={this.updateReportWeek}
               reportWeek={this.state.reportWeek}
+            />
+          }
+          {this.state.display === 'MonthlyReport' &&
+            <ReportMonthly
+              categoryReport={this.state.monthlyReport}
+              toggleDisplay={this.toggleDisplay}
+              updateReportMonth={this.updateReportMonth}
+              reportMonthStart={this.state.reportMonthStart}
             />
           }
           {this.state.display !== 'Details' &&
