@@ -8,6 +8,7 @@ import MenuIcon from '@material-ui/icons/Menu';
 import RefreshIcon from '@material-ui/icons/Refresh';
 import Typography from '@material-ui/core/Typography';
 import TextField from '@material-ui/core/TextField';
+import Button from '@material-ui/core/Button';
 import Fab from '@material-ui/core/Fab';
 import AddIcon from '@material-ui/icons/Add';
 import Divider from '@material-ui/core/Divider';
@@ -58,6 +59,14 @@ const styles = theme => ({
     left: 0,
     right: 0,
     margin: '0 auto',
+  },
+  buttonStyle: {
+    margin: '5px',
+    padding: '5px',
+  },
+  buttonContainer: {
+    display: 'flex',
+    padding: '5px',
   },
 });
 
@@ -570,6 +579,20 @@ class Main extends Component {
     }
   }
 
+  updateWeek = async (direction) => {
+    if (direction === 1){
+      this.setState({
+        startDate: moment(this.state.startDate).add(7, 'days').format('YYYY-MM-DD'),
+        endDate: moment(this.state.endDate).add(7, 'days').format('YYYY-MM-DD')
+      }, () => this.handleTimeframeChange())
+    } else {
+      this.setState({
+        startDate: moment(this.state.startDate).subtract(7, 'days').format('YYYY-MM-DD'),
+        endDate: moment(this.state.endDate).subtract(7, 'days').format('YYYY-MM-DD')
+      }, () => this.handleTimeframeChange())
+    }
+  }
+
   updateReportMonth = async (direction) => {
     if (direction === 1){
       this.setState({
@@ -788,7 +811,7 @@ class Main extends Component {
                   <MenuItem onClick={() => this.exportJSON()}>Export Data</MenuItem>
                   <MenuItem onClick={() => this.exportCSV()}>Export CSV New</MenuItem>
                   <MenuItem onClick={() => this.createNew()}>Create New</MenuItem>
-                  <MenuItem onClick={() => this.launchReport()}>Show Report</MenuItem>
+                  <MenuItem onClick={() => this.launchReport()}>Show Weekly Report</MenuItem>
                   <MenuItem onClick={() => this.launchMonthlyReport()}>Show Monthly Report</MenuItem>
                   <MenuItem onClick={() => this.launchAddList()}>Add Related List</MenuItem>
                   <MenuItem onClick={() => this.ignoreOld()}>Ignore Old Recurring</MenuItem>
@@ -845,8 +868,28 @@ class Main extends Component {
                   color:'#bbb',
                 }}>
                 <Typography variant="caption">
-                  v20250222.02
+                  v20250225.01
                 </Typography>
+              </div>
+              <div className={classes.buttonContainer}>
+                <div className={classes.buttonStyle}>
+                  <Button 
+                    variant="contained"
+                    color="primary"
+                    onClick={() => this.updateWeek(0)}
+                    >
+                    -
+                  </Button>
+                </div>
+                <div className={classes.buttonStyle}>
+                  <Button 
+                    variant="contained"
+                    color="primary"
+                    onClick={() => this.updateWeek(1)}
+                    >
+                    +
+                  </Button>
+                </div>
               </div>
               <TextField
                 InputProps={{

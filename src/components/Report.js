@@ -93,24 +93,24 @@ class Report extends Component {
         </div>
         <div className={classes.buttonContainer}>
           <div className={classes.buttonStyle}>
-              <Button 
-                variant="contained"
-                color="primary"
-                onClick={() => updateReportWeek(1)}
-                >
-                +
-              </Button>
-            </div>
-            <div className={classes.buttonStyle}>
-              <Button 
-                variant="contained"
-                color="primary"
-                onClick={() => updateReportWeek(0)}
-                >
-                -
-              </Button>
-            </div>
+            <Button 
+              variant="contained"
+              color="primary"
+              onClick={() => updateReportWeek(0)}
+              >
+              -
+            </Button>
           </div>
+          <div className={classes.buttonStyle}>
+            <Button 
+              variant="contained"
+              color="primary"
+              onClick={() => updateReportWeek(1)}
+              >
+              +
+            </Button>
+          </div>
+        </div>
         <div className={classes.reportContainer}>
           {categoryReport.map ((item, i) => (
             <div className={classes.fieldContainer}>
