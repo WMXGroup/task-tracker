@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import Task from './Task';
+import TaskRead from './TaskRead';
 import moment from 'moment';
 
 export default class TaskGroup extends Component {
@@ -50,7 +51,24 @@ export default class TaskGroup extends Component {
         groupTasks = tasks.filter((task) => (task['category'] === header))
       }
       groupTasks.sort((a,b) => (a.description > b.description) ? 1 : -1);
+    } else if (currentView === 'Completed') {
+      for (let i = 0; i < tasks.length; i++) {
+        for (let j = 0; j < tasks[i].dates.length; j++) {
+          if (tasks[i].category === header && tasks[i].dates[j].date >= moment(startDate).format('YYYY-MM-DD') && tasks[i].dates[j].date <= moment(endDate).format('YYYY-MM-DD') &&(tasks[i].dates[j].state === 'closed' && (tasks[i].type === 'Deadline' || tasks[i].type === 'Periodic' || tasks[i].type === 'Floating'))){
+            const task = {
+              description: tasks[i].description,
+              date: tasks[i].dates[j].date,
+              category: tasks[i].category,
+              id: tasks[i].id
+            }
+            console.log(task)
+            groupTasks.push(task)
+          }
+        }  
+      }
+      groupTasks.sort((a,b) => (a.date > b.date) ? 1 : -1);
     }
+    
 
     // groupTasks.sort((a,b) => (new Date('1970/01/01 ' + a.startTime) - new Date('1970/01/01 ' + b.startTime)));
 
@@ -66,19 +84,36 @@ export default class TaskGroup extends Component {
           {header}{' '}{currentView === 'Scheduled' && moment(header).format('dddd')}
         </h2>
         }
-        {groupTasks.map ((task, i) => (
-          <Task
-          header={header}
-          task={task}
-          key={i}
-          completeTask={completeTask}
-          launchDetails={launchDetails}
-          snoozeDay={snoozeDay}
-          makeCurrent={makeCurrent}
-          ignoreTask={ignoreTask}
-          deleteOccurence={deleteOccurence}
-          />
-        ))}
+        {currentView === 'Completed' &&
+          <React.Fragment>
+            {groupTasks.map ((task, i) => (
+              <div>
+                <TaskRead
+                  task={task}
+                  key={i}
+                  launchDetails={launchDetails}
+                />
+              </div>
+            ))}
+          </React.Fragment>
+        }
+        {currentView !== 'Completed' &&
+          <React.Fragment>
+            {groupTasks.map ((task, i) => (
+              <Task
+              header={header}
+              task={task}
+              key={i}
+              completeTask={completeTask}
+              launchDetails={launchDetails}
+              snoozeDay={snoozeDay}
+              makeCurrent={makeCurrent}
+              ignoreTask={ignoreTask}
+              deleteOccurence={deleteOccurence}
+              />
+            ))}
+          </React.Fragment>
+        }
       </React.Fragment>
     )
   }

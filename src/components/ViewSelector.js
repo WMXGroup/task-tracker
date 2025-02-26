@@ -11,6 +11,7 @@ export default class ViewSelector extends Component {
       'All Tasks',
       'Scheduled',
       'Unscheduled',
+      'Completed'
     ],
     anchorEl: null,
     setAnchorEl: false,

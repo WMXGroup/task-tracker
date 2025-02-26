@@ -214,5 +214,41 @@ export const tasks = [
     recurDays: '',
     recurStart: '',
     recurEnd: '',
+  },
+  {
+    id: 12,
+    type: 'Floating',
+    frequency: 'One-time',
+    description: 'Test Completed Task',
+    category:'Chore',
+    dates: [
+      {
+        date: '2025-02-24',
+        state: 'closed',
+      },
+    ], 
+    priority: '1',
+    notes: '',
+    recurDays: '',
+    recurStart: '',
+    recurEnd: '',
+  },
+  {
+    id: 13,
+    type: 'Floating',
+    frequency: 'One-time',
+    description: 'Test Completed Task',
+    category:'Health',
+    dates: [
+      {
+        date: '2025-02-24',
+        state: 'closed',
+      },
+    ], 
+    priority: '1',
+    notes: '',
+    recurDays: '',
+    recurStart: '',
+    recurEnd: '',
   }
 ]

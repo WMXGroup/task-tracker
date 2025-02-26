@@ -380,6 +380,10 @@ class Main extends Component {
     } else if (currentView === 'All Tasks') {
       for (let i = 0; i < tasks.length; i++) {
         resArr.push(tasks[i].category)
+      }
+    } else if (currentView === 'Completed') {
+      for (let i = 0; i < tasks.length; i++) {
+        resArr.push(tasks[i].category)
       };
   }
     
@@ -512,20 +516,6 @@ class Main extends Component {
         })
       }
     }
-
-    // for (let i = 0; i < tasks.length; i++) {
-    //   for (let j = 0; j < pointsArray.length; j++) {
-    //     if (pointsArray[j].category === tasks[i].category) {
-    //       pointsArray[j].weeklyPoints = parseInt(pointsArray[j].weeklyPoints) + ((tasks[i].weeklyGoal === null || tasks[i].weeklyGoal === '' ) ? 0 : parseInt(tasks[i].weeklyGoal))
-    //       for (let k = 0; k < tasks[i].completedDates.length; k++) {
-    //         if (moment(tasks[i].completedDates[k]).format('YYYY-MM-DD') >= reportWeek && moment(tasks[i].completedDates[k]).format('YYYY-MM-DD') < moment(reportWeek).add(7, 'days').format('YYYYMMDD')) {
-    //           const newPoints = (tasks[i].points === null || tasks[i].points === '') ? 0 : parseInt(tasks[i].points);
-    //           pointsArray[j].totalPoints = parseInt(pointsArray[j].totalPoints) + newPoints;
-    //         }
-    //       }
-    //     }
-    //   }
-    // }
 
     this.setState({
       categoryReport: pointsArray,
@@ -760,7 +750,7 @@ class Main extends Component {
   render() {
 
     if(this.state.debugMode === true){
-        console.log(this.state);
+        //console.log(this.state);
     }
 
     const {
@@ -868,7 +858,7 @@ class Main extends Component {
                   color:'#bbb',
                 }}>
                 <Typography variant="caption">
-                  v20250225.01
+                  v_20250225.02
                 </Typography>
               </div>
               <div className={classes.buttonContainer}>
