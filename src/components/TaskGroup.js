@@ -61,7 +61,6 @@ export default class TaskGroup extends Component {
               category: tasks[i].category,
               id: tasks[i].id
             }
-            console.log(task)
             groupTasks.push(task)
           }
         }  

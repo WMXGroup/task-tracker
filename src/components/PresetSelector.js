@@ -52,7 +52,7 @@ export default class PresetSelector extends Component {
     let newView = this.props.currentView;
 
     if (currentPreset ===  'Next 7 days') {
-      newCategoryFilter = ['Activity','Chore','Event','Finance','House','Health','Pets','Task']
+      newCategoryFilter = ['All']
       newView = 'Scheduled'
       newStart = moment().format('YYYY-MM-DD')
       newEnd = moment().add(7,'days').format('YYYY-MM-DD')

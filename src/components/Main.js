@@ -750,7 +750,7 @@ class Main extends Component {
   render() {
 
     if(this.state.debugMode === true){
-        //console.log(this.state);
+        console.log(this.state);
     }
 
     const {
@@ -858,7 +858,7 @@ class Main extends Component {
                   color:'#bbb',
                 }}>
                 <Typography variant="caption">
-                  v_20250225.02
+                  v_20250225.03
                 </Typography>
               </div>
               <div className={classes.buttonContainer}>

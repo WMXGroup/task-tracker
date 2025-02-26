@@ -250,7 +250,6 @@ export default class DetailModal extends Component {
         }
         return item
       })
-      console.log('test2')
       this.setState({ 
         dates: newDates
       })
