@@ -470,17 +470,18 @@ class Main extends Component {
     const { categoryFilter } = this.state;
     if (category === 'All'){
       this.setState({
-        categoryFilter: ['All'],
-    })} else if (categoryFilter.includes(category)) {
+        categoryFilter: [...this.state.categories],
+      }, () => this.getHeaders(this.state.tasks, this.state.currentView, this.state.startDate, this.state.endDate))
+    } else if (categoryFilter.includes(category)) {
       const newCategoryFilter = categoryFilter.filter((value) => value !== category)
       this.setState({
         categoryFilter: newCategoryFilter,
-      })
+      }, () => this.getHeaders(this.state.tasks, this.state.currentView, this.state.startDate, this.state.endDate))
     } else {
       const newCategoryFilter = categoryFilter.filter((value) => value !== 'All')
       this.setState({
         categoryFilter: [...newCategoryFilter, category]
-      })
+      }, () => this.getHeaders(this.state.tasks, this.state.currentView, this.state.startDate, this.state.endDate))
     }
   };
 
@@ -858,7 +859,7 @@ class Main extends Component {
                   color:'#bbb',
                 }}>
                 <Typography variant="caption">
-                  v_20250225.04
+                  v_20250225.05
                 </Typography>
               </div>
               <div className={classes.buttonContainer}>
