@@ -359,16 +359,16 @@ class Main extends Component {
     if (currentView === 'Scheduled') {
       for (let i = 0; i < tasks.length; i++) {
         for (let j = 0; j < tasks[i].dates.length; j++) {
-          if (startDate === 'Invalid date' && tasks[i].dates[j].date <= moment(endDate).format('YYYY-MM-DD') && categoryFilter.includes(tasks[i].category)){
+          if (startDate === 'Invalid date' && tasks[i].dates[j].date <= moment(endDate).format('YYYY-MM-DD') && (categoryFilter.includes(tasks[i].category) || categoryFilter.includes('All'))){
             resArr.push(tasks[i].dates[j].date)
           }
-          if (endDate === 'Invalid date' && tasks[i].dates[j].date >= moment(startDate).format('YYYY-MM-DD') && categoryFilter.includes(tasks[i].category)){
+          if (endDate === 'Invalid date' && tasks[i].dates[j].date >= moment(startDate).format('YYYY-MM-DD') && (categoryFilter.includes(tasks[i].category) || categoryFilter.includes('All'))){
             resArr.push(tasks[i].dates[j].date)
           }
-          if (tasks[i].dates[j].date >= moment(startDate).format('YYYY-MM-DD') && tasks[i].dates[j].date <= moment(endDate).format('YYYY-MM-DD') && categoryFilter.includes(tasks[i].category)) {
+          if (tasks[i].dates[j].date >= moment(startDate).format('YYYY-MM-DD') && tasks[i].dates[j].date <= moment(endDate).format('YYYY-MM-DD') && (categoryFilter.includes(tasks[i].category) || categoryFilter.includes('All'))) {
             resArr.push(tasks[i].dates[j].date)
           }
-          if (tasks[i].dates[j].date <= moment(endDate).format('YYYY-MM-DD') && tasks[i].dates[j].state === 'open' && categoryFilter.includes(tasks[i].category) && (tasks[i].type === 'Deadline' || tasks[i].type === 'Periodic')) {
+          if (tasks[i].dates[j].date <= moment(endDate).format('YYYY-MM-DD') && tasks[i].dates[j].state === 'open' && (categoryFilter.includes(tasks[i].category) || categoryFilter.includes('All')) && (tasks[i].type === 'Deadline' || tasks[i].type === 'Periodic')) {
             resArr.push(tasks[i].dates[j].date)
           }
         }
@@ -859,7 +859,7 @@ class Main extends Component {
                   color:'#bbb',
                 }}>
                 <Typography variant="caption">
-                  v_20250225.05
+                  v_20250225.06
                 </Typography>
               </div>
               <div className={classes.buttonContainer}>
