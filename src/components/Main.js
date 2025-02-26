@@ -85,7 +85,7 @@ class Main extends Component {
     categories: [],
     taskDetails: {},
     currentView: 'Scheduled',
-    categoryFilter: ['Activity','Chore','Event','Finance','Health','House','Pets','Task'],
+    categoryFilter: ['All'],
     display: 'Tasks',
     debugMode: window.location.hostname === "localhost",
     relatedLists: [],
@@ -858,7 +858,7 @@ class Main extends Component {
                   color:'#bbb',
                 }}>
                 <Typography variant="caption">
-                  v_20250225.03
+                  v_20250225.04
                 </Typography>
               </div>
               <div className={classes.buttonContainer}>
