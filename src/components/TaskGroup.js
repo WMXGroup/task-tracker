@@ -73,7 +73,6 @@ export default class TaskGroup extends Component {
         } else if (tasks[i].category === header && tasks[i].frequency === 'One-time') {
             if(tasks[i].dates.length === 0) {
               groupTasks.push(tasks[i])
-              break
             } else {
               for (let j = 0; j < tasks[i].dates.length; j++) {
                 if (tasks[i].dates[j].state === 'open'){
