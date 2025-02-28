@@ -381,21 +381,12 @@ class Main extends Component {
           }
         }
       }
-    } else if (currentView === 'Unscheduled') {
+    } else if (currentView === 'Unscheduled' || currentView === 'All Tasks' || currentView === 'Completed' || currentView === 'Things to do') {
         for (let i = 0; i < tasks.length; i++) {
           resArr.push(tasks[i].category)
         };
-    } else if (currentView === 'All Tasks') {
-      for (let i = 0; i < tasks.length; i++) {
-        resArr.push(tasks[i].category)
-      }
-    } else if (currentView === 'Completed') {
-      for (let i = 0; i < tasks.length; i++) {
-        resArr.push(tasks[i].category)
-      };
-  }
+    }
     
-
     //remove dupes
     for (let i = 0; i < resArr.length; i++) {
       if (uniqArr.includes(resArr[i]) === false) {
@@ -889,7 +880,7 @@ class Main extends Component {
                   color:'#bbb',
                 }}>
                 <Typography variant="caption">
-                  v_20250227.01
+                  v_20250228.01
                 </Typography>
               </div>
               <div className={classes.buttonContainer}>

@@ -242,7 +242,7 @@ export const tasks = [
     dates: [
       {
         date: '2025-02-24',
-        state: 'closed',
+        state: 'open',
       },
     ], 
     priority: '1',
