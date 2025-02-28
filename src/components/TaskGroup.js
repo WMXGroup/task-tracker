@@ -71,12 +71,17 @@ export default class TaskGroup extends Component {
         if (tasks[i].category === header && tasks[i].frequency === 'Ongoing'){
           groupTasks.push(tasks[i])
         } else if (tasks[i].category === header && tasks[i].frequency === 'One-time') {
-          for (let j = 0; j < tasks[i].dates.length; j++) {
-            if (tasks[i].dates[j].state === 'open' || tasks[i].dates.length === 0){
+            if(tasks[i].dates.length === 0) {
               groupTasks.push(tasks[i])
               break
+            } else {
+              for (let j = 0; j < tasks[i].dates.length; j++) {
+                if (tasks[i].dates[j].state === 'open'){
+                  groupTasks.push(tasks[i])
+                  break
+                }
+              }
             }
-          }
         } else if (tasks[i].category === header && tasks[i].frequency === 'Recurring') {
           for (let j = 0; j < tasks[i].dates.length; j++) {
             if (tasks[i].dates[j].state === 'open' && tasks[i].dates[j].date < moment().format('YYYY-MM-DD')){
