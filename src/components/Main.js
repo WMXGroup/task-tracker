@@ -68,6 +68,14 @@ const styles = theme => ({
     display: 'flex',
     padding: '5px',
   },
+  headerName: {
+    margin: '.1rem'
+  },
+  headerContainer: {
+    display: 'flex',
+    justifyContent: 'space-between',
+    padding: '10px',
+  },
 });
 
 class Main extends Component {
@@ -902,6 +910,13 @@ class Main extends Component {
                     >
                     +
                   </Button>
+                </div>
+                <div className={classes.headerContainer}> 
+                  <div className={classes.headerName}>
+                      <Typography variant="h6">
+                          {`Start Date of ${this.state.startDate}`}
+                      </Typography>
+                  </div>
                 </div>
               </div>
               <TextField

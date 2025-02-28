@@ -87,7 +87,7 @@ class ReportMonthly extends Component {
         <div className={classes.headerContainer}> 
           <div className={classes.headerName}>
               <Typography variant="h6">
-                  {`Week of ${reportMonthStart}`}
+                  {`Month of ${reportMonthStart}`}
               </Typography>
           </div>
         </div>
