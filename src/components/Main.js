@@ -447,8 +447,16 @@ class Main extends Component {
   };
 
   handleViewChange = (currentView) => {
+    let newStart = this.state.startDate
+    let newEnd = this.state.endDate
+    if (currentView === 'Completed'){
+      newStart = moment().startOf('month').format('YYYY-MM-DD')
+      newEnd = moment(newStart).endOf('month').format('YYYY-MM-DD');
+    }
     this.setState({
       currentView,
+      startDate: newStart,
+      endDate: newEnd
     }, () => this.getHeaders(this.state.tasks, currentView, this.state.startDate, this.state.endDate))
   };
 
@@ -570,17 +578,31 @@ class Main extends Component {
     }
   }
 
-  updateWeek = async (direction) => {
+  updateTimeframe = async (direction) => {
     if (direction === 1){
-      this.setState({
-        startDate: moment(this.state.startDate).add(7, 'days').format('YYYY-MM-DD'),
-        endDate: moment(this.state.endDate).add(7, 'days').format('YYYY-MM-DD')
-      }, () => this.handleTimeframeChange())
+      if (this.state.currentView === 'Completed'){
+        this.setState({
+          startDate: moment(this.state.startDate).add(1, 'months').format('YYYY-MM-DD'),
+          endDate: moment(this.state.startDate).add(1, 'months').endOf('month').format('YYYY-MM-DD')
+        }, () => this.handleTimeframeChange())
+      } else {
+        this.setState({
+          startDate: moment(this.state.startDate).add(7, 'days').format('YYYY-MM-DD'),
+          endDate: moment(this.state.endDate).add(7, 'days').format('YYYY-MM-DD')
+        }, () => this.handleTimeframeChange())
+      }
     } else {
-      this.setState({
-        startDate: moment(this.state.startDate).subtract(7, 'days').format('YYYY-MM-DD'),
-        endDate: moment(this.state.endDate).subtract(7, 'days').format('YYYY-MM-DD')
-      }, () => this.handleTimeframeChange())
+      if (this.state.currentView === 'Completed'){
+        this.setState({
+          startDate: moment(this.state.startDate).subtract(1, 'months').format('YYYY-MM-DD'),
+          endDate: moment(this.state.startDate).subtract(1, 'months').endOf('month').format('YYYY-MM-DD')
+        }, () => this.handleTimeframeChange())
+      } else {
+        this.setState({
+          startDate: moment(this.state.startDate).subtract(7, 'days').format('YYYY-MM-DD'),
+          endDate: moment(this.state.endDate).subtract(7, 'days').format('YYYY-MM-DD')
+        }, () => this.handleTimeframeChange())
+      }
     }
   }
 
@@ -859,7 +881,7 @@ class Main extends Component {
                   color:'#bbb',
                 }}>
                 <Typography variant="caption">
-                  v_20250225.06
+                  v_20250227.01
                 </Typography>
               </div>
               <div className={classes.buttonContainer}>
@@ -867,7 +889,7 @@ class Main extends Component {
                   <Button 
                     variant="contained"
                     color="primary"
-                    onClick={() => this.updateWeek(0)}
+                    onClick={() => this.updateTimeframe(0)}
                     >
                     -
                   </Button>
@@ -876,7 +898,7 @@ class Main extends Component {
                   <Button 
                     variant="contained"
                     color="primary"
-                    onClick={() => this.updateWeek(1)}
+                    onClick={() => this.updateTimeframe(1)}
                     >
                     +
                   </Button>
