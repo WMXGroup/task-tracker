@@ -90,7 +90,8 @@ export default class TaskGroup extends Component {
           }
         }
       }
-      groupTasks.sort((a,b) => (a.date > b.date) ? 1 : -1);
+      groupTasks.sort((a,b) => (a.description > b.description) ? 1 : -1);
+      groupTasks.sort((a,b) => (a.priority > b.priority) ? 1 : -1);
     }
     
 
