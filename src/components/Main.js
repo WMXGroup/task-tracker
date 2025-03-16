@@ -98,7 +98,7 @@ class Main extends Component {
     debugMode: window.location.hostname === "localhost",
     relatedLists: [],
     startDate:moment().format('YYYY-MM-DD'),
-    endDate: moment().add(7,'days').format('YYYY-MM-DD'),
+    endDate: moment().add(6,'days').format('YYYY-MM-DD'),
     currentPreset: 'Next 7 Days',
     categoryReport: [],
     reportWeek: moment().startOf('week').format('YYYY-MM-DD'),
@@ -885,7 +885,7 @@ class Main extends Component {
                   color:'#bbb',
                 }}>
                 <Typography variant="caption">
-                  v_20250316.02
+                  v_20250316.03
                 </Typography>
               </div>
               <div className={classes.buttonContainer}>
