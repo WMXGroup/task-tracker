@@ -29,7 +29,7 @@ export default class TaskGroup extends Component {
           if (tasks[i].dates[j].date === header && tasks[i].dates[j].date >= moment(startDate).format('YYYY-MM-DD') && tasks[i].type !== 'Tracking'){
             groupTasks.push(tasks[i])
           }
-          if (tasks[i].dates[j].date === header && tasks[i].dates[j].date < moment(startDate).format('YYYY-MM-DD') &&(tasks[i].dates[j].state === 'open' && (tasks[i].type === 'Deadline' || tasks[i].type === 'Periodic'))){
+          if (tasks[i].dates[j].date === header && tasks[i].dates[j].date < moment(startDate).format('YYYY-MM-DD') &&(tasks[i].dates[j].state === 'open' && tasks[i].type === 'Deadline')){
             groupTasks.push(tasks[i])
           }
           if (tasks[i].dates[j].date === header && tasks[i].dates[j].date >= moment(startDate).format('YYYY-MM-DD') && tasks[i].type === 'Tracking' & parseInt(tasks[i].recurDays,10) > 1){
