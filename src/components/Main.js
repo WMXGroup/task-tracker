@@ -396,9 +396,10 @@ class Main extends Component {
 
     // //sort
     if (moment(startDate).format('YYYY-MM-DD') < moment().format('YYYY-MM-DD') || startDate === 'Invalid date'){
-      uniqArr.sort()
+      uniqArr.sort().reverse()
+
     } else {
-      uniqArr.sort().reverse();;
+      uniqArr.sort()
     }
 
     this.setState({
