@@ -523,7 +523,7 @@ export default class DetailModal extends Component {
             New State
           </Typography>
           <Autocomplete
-            options={['open','closed']}
+            options={['open','ignored','closed']}
             getOptionLabel={(option) => typeof option === 'string' ? option : option.newState}
             style={styles.fieldStyle}
             size='small'
