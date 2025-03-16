@@ -395,7 +395,11 @@ class Main extends Component {
     }
 
     // //sort
-    uniqArr.sort();
+    if (moment(startDate).format('YYYY-MM-DD') < moment().format('YYYY-MM-DD') || startDate === 'Invalid date'){
+      uniqArr.sort()
+    } else {
+      uniqArr.sort().reverse();;
+    }
 
     this.setState({
       headers: uniqArr,
